@@ -1,0 +1,18 @@
+{
+  "name": "casino-collectables",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "truffle develop",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nic Smith",
+  "license": "ISC",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.3.0"
+  }
+}
