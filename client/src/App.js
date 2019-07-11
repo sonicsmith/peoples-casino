@@ -18,9 +18,11 @@ class App extends Component {
     accounts: null,
     contract: null,
     //
-    ownerOfToken: false,
+    ownerOfToken: null,
+    houseReserve: null,
     oddsPercentage: 50,
-    betAmount: 1
+    betAmount: 1,
+    amountForHouse: 0
   }
 
   componentDidMount = async () => {
@@ -30,8 +32,6 @@ class App extends Component {
       await onboardUser()
       const accounts = await web3.eth.getAccounts()
       const network = CasinoCollectablesContract.networks[NETWORK_ID]
-      console.log(CasinoCollectablesContract.networks)
-      console.log(network)
       const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
       const contract = assistInstance.Contract(
         new web3.eth.Contract(
@@ -71,8 +71,15 @@ class App extends Component {
     const { contract, accounts } = this.state
     if (contract) {
       const { methods } = contract
-      // do what needs to be refreshed here
-      this.setState({ ownerOfToken: true })
+      const houseReserve = await methods.getHouseReserve(TOKEN_ID).call()
+      const ownerOfToken = await methods.ownerOf(TOKEN_ID).call()
+      console.log("houseReserve:", houseReserve)
+      console.log("ownerOfToken:", ownerOfToken)
+      const betAmount = this.state.web3.utils.fromWei(
+        (houseReserve / 2).toString(),
+        "ether"
+      )
+      this.setState({ houseReserve, ownerOfToken, betAmount })
     }
   }
 
@@ -140,13 +147,34 @@ class App extends Component {
 
   subtractFromHouseReserve = () => {}
 
+  mint = async () => {
+    const { contract, accounts } = this.state
+    if (contract) {
+      const { methods } = contract
+      const from = accounts[0]
+      const res = await methods
+        .mint(TOKEN_ID)
+        .send({ from, value: 0, gas: 300000 })
+      console.log(res)
+      this.refresh()
+    }
+  }
+
   render() {
-    // if (!this.state.web3) {
-    //   return <div>Loading Web3, accounts, and contract...</div>
-    // }
-    const { oddsPercentage, betAmount, ownerOfToken } = this.state
+    if (!this.state.web3) {
+      return <div>Loading Web3, accounts, and contract...</div>
+    }
+    const {
+      accounts,
+      oddsPercentage,
+      betAmount,
+      ownerOfToken,
+      houseReserve
+    } = this.state
 
     const payout = (betAmount * 98) / oddsPercentage
+    const payoutInWei = this.state.web3.utils.toWei(payout.toString(), "ether")
+    const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
     return (
       <div className="App">
         <h1>Nic Smith's Wheel of fortune</h1>
@@ -158,8 +186,8 @@ class App extends Component {
         <div>
           <input
             type="range"
-            min="1"
-            max="97"
+            min={1}
+            max={97}
             value={oddsPercentage}
             onChange={event =>
               this.setState({ oddsPercentage: event.target.value })
@@ -174,9 +202,14 @@ class App extends Component {
             onChange={event => this.setState({ betAmount: event.target.value })}
           />
         </div>
-        <h3>PAYOUT {payout} ETH</h3>
+        <h3 style={{ color: payoutTooHigh ? "red" : "black" }}>
+          PAYOUT {payout} ETH
+        </h3>
+        {payoutTooHigh && (
+          <p>Not enough money in the house for a wager that high!</p>
+        )}
         <button onClick={this.makeBet}>BET</button>
-        {ownerOfToken && (
+        {ownerOfToken === accounts[0] && (
           <div>
             <span>
               <button onClick={this.addToHouseReserve}>DEPOSIT</button>
@@ -184,6 +217,9 @@ class App extends Component {
             </span>
           </div>
         )}
+        <div style={{ padding: 16 }}>
+          <button onClick={this.mint}>MINT</button>
+        </div>
       </div>
     )
   }

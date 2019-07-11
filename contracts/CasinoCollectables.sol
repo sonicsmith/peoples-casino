@@ -6,7 +6,7 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 /**
  * @title CasinoCollectables
- * CasinoCollectables - a contract for my non-fungible creatures.
+ * CasinoCollectables - a contract for non-fungible functional casino games.
  */
 contract CasinoCollectables is TradeableERC721Token {
 
@@ -22,6 +22,14 @@ contract CasinoCollectables is TradeableERC721Token {
   function baseTokenURI() public view returns (string memory) {
     // TODO: Host images for token
     return "https://opensea-creatures-api.herokuapp.com/api/creature/";
+  }
+
+  function mint(uint tokenId) public payable onlyOwner {
+    _mint(msg.sender, tokenId);
+  }
+
+  function setMaxPayout(uint maxPayout) public payable onlyOwner {
+    MAX_PAYOUT = maxPayout;
   }
 
   function getHouseReserve(uint tokenId) public view returns (uint) {
@@ -45,18 +53,20 @@ contract CasinoCollectables is TradeableERC721Token {
   function makeBet(uint tokenId, uint oddsPercentage) public payable {
     require(oddsPercentage > 0);
     require(oddsPercentage < 100);
-
     // Remove 2% house charges
     uint payout = msg.value.mul(98).div(oddsPercentage);
-
-    require(payout < houseReserves[tokenId]);
+    require(payout < houseReserves[tokenId].add(msg.value));
     require(payout < MAX_PAYOUT);
-
+    // Bet is now underway. 
+    // Add wager to house.
+    houseReserves[tokenId] = houseReserves[tokenId].add(msg.value);
+    // Roll the dice
     uint roll = getRandomPercent();
+    // Payout winner if needed
     if (roll <= oddsPercentage) {
       msg.sender.transfer(payout);
     }
-    
+    // Make the result available
     emit BetResult(tokenId, roll, roll <= oddsPercentage);
   }
 

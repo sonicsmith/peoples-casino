@@ -20,4 +20,4 @@ const getTokenId = () => {
 
 export const NETWORK_ID = getNetwork()
 export const TOKEN_ID = getTokenId()
-export const ASSIST_DAPP_ID = "3ffaf8a8-c2b0-47cd-8773-307f1427d40a"
+export const ASSIST_DAPP_ID = "c437fc37-df96-4cc0-ae0b-b7e694b7cc93"

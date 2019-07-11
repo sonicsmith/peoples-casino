@@ -1,14 +1,14 @@
-const CasinoCollectables = artifacts.require("./CasinoCollectables.sol")
+const CasinoCollectables = artifacts.require("CasinoCollectables")
 
-contract("CasinoCollectables", accounts => {
-  it("do the thing it's meant to", async () => {
-    const CasinoCollectablesInstance = await CasinoCollectables.deployed()
-
-    // // Set value of 89
-    // await CasinoCollectablesInstance.set(89, { from: accounts[0] })
-    // // Get stored value
-    // const storedData = await CasinoCollectablesInstance.get.call()
-
-    assert.equal(storedData, 89, "The thing did not happen")
+contract("CasinoCollectables token", accounts => {
+  it("Should make first account an owner", async () => {
+    let instance = await CasinoCollectables.deployed()
+    let owner = await instance.owner()
+    assert.equal(owner, accounts[0])
   })
+  // it("Should mint a token with owner", async () => {
+  //   let instance = await CasinoCollectables.deployed()
+  //   let owner = await instance.owner()
+  //   assert.equal(owner, accounts[0])
+  // })
 })
