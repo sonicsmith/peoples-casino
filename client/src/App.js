@@ -1,10 +1,21 @@
 import React, { Component } from "react"
+import {
+  Grommet,
+  Button,
+  Heading,
+  Text,
+  RangeInput,
+  TextInput,
+  Box
+} from "grommet"
 import CasinoCollectablesContract from "./contracts/CasinoCollectables.json"
 import getWeb3 from "./utils/getWeb3"
 import { NETWORK_ID, TOKEN_ID } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
+import { TokenImage } from "./components/TokenImage"
+import { HouseBank } from "./components/HouseBank"
 
-import "./App.css"
+// import "./App.css"
 
 const CONTRACT_ADDRESSES = {
   1: "",
@@ -22,7 +33,7 @@ class App extends Component {
     houseReserve: null,
     oddsPercentage: 50,
     betAmount: 1,
-    amountForHouse: 0
+    isManagingCasino: false
   }
 
   componentDidMount = async () => {
@@ -169,58 +180,93 @@ class App extends Component {
       oddsPercentage,
       betAmount,
       ownerOfToken,
-      houseReserve
+      houseReserve,
+      isManagingCasino
     } = this.state
 
     const payout = (betAmount * 98) / oddsPercentage
     const payoutInWei = this.state.web3.utils.toWei(payout.toString(), "ether")
     const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
     return (
-      <div className="App">
-        <h1>Nic Smith's Wheel of fortune</h1>
-        <h3>
-          Welcome to Nic Smith's Wheel of fortune, where you can make your
-          fortune by making a bet on the luck of my wheel!
-        </h3>
-        <h4>WIN CHANCE {oddsPercentage}%</h4>
-        <div>
-          <input
-            type="range"
-            min={1}
-            max={97}
-            value={oddsPercentage}
-            onChange={event =>
-              this.setState({ oddsPercentage: event.target.value })
-            }
-          />
-        </div>
-        <h4>BET AMOUNT {betAmount} ETH</h4>
-        <div>
-          <input
-            type="number"
-            value={betAmount}
-            onChange={event => this.setState({ betAmount: event.target.value })}
-          />
-        </div>
-        <h3 style={{ color: payoutTooHigh ? "red" : "black" }}>
-          PAYOUT {payout} ETH
-        </h3>
-        {payoutTooHigh && (
-          <p>Not enough money in the house for a wager that high!</p>
-        )}
-        <button onClick={this.makeBet}>BET</button>
-        {ownerOfToken === accounts[0] && (
+      <Grommet plain>
+        <Box align="center">
+          <Box
+            align="center"
+            direction="column"
+            border={{ color: "brand", size: "large" }}
+            pad="medium"
+            margin="medium"
+            round={true}
+            width="large"
+          >
+            <Heading level={2}>Nic Smith's Wheel of fortune</Heading>
+            {/* <Box align="center"> */}
+            <Text textAlign="center">
+              Welcome to my Wheel of fortune, where you can make your fortune by
+              making a bet on the luck of my wheel!
+            </Text>
+            {/* </Box> */}
+            <TokenImage tokenId={TOKEN_ID} />
+            <Box
+              align="center"
+              direction="column"
+              border={{ color: "brand", size: "medium" }}
+              margin="medium"
+              pad="medium"
+              round={true}
+            >
+              <Box align="center">
+                <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
+              </Box>
+              <Box margin="medium" width="medium">
+                <RangeInput
+                  min={1}
+                  max={97}
+                  value={oddsPercentage}
+                  onChange={event =>
+                    this.setState({ oddsPercentage: event.target.value })
+                  }
+                />
+              </Box>
+              <Text>BET AMOUNT {betAmount} ETH</Text>
+              <Box margin="medium">
+                <TextInput
+                  type="number"
+                  value={betAmount}
+                  onChange={event =>
+                    this.setState({ betAmount: event.target.value })
+                  }
+                />
+              </Box>
+              <Box
+                align="center"
+                style={{ color: payoutTooHigh ? "red" : "black" }}
+              >
+                <Text>PAYOUT {payout} ETH</Text>
+                {payoutTooHigh && (
+                  <Text>
+                    Not enough money in the house for a wager that high!
+                  </Text>
+                )}
+              </Box>
+            </Box>
+            <Button label={"BET"} primary onClick={this.makeBet} />
+            {ownerOfToken === accounts[0] && (
+              <Button
+                label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
+                primary
+                onClick={() =>
+                  this.setState({ isManagingCasino: !isManagingCasino })
+                }
+              />
+            )}
+            {isManagingCasino && <HouseBank />}
+          </Box>
           <div>
-            <span>
-              <button onClick={this.addToHouseReserve}>DEPOSIT</button>
-              <button onClick={this.subtractFromHouseReserve}>WITHDRAWL</button>
-            </span>
+            <Button label={"MINT"} primary onClick={this.mint} />
           </div>
-        )}
-        <div style={{ padding: 16 }}>
-          <button onClick={this.mint}>MINT</button>
-        </div>
-      </div>
+        </Box>
+      </Grommet>
     )
   }
 }
