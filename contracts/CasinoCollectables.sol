@@ -14,6 +14,7 @@ contract CasinoCollectables is TradeableERC721Token {
   mapping(uint => uint) houseReserves;
   uint MAX_PAYOUT = 3 ether;
   event BetResult(uint tokenId, uint roll, bool win);
+  string _baseTokenURI = "https://opensea-creatures-api.herokuapp.com/api/creature/";
 
   constructor(address _proxyRegistryAddress) 
   TradeableERC721Token("CasinoCollectables", "OSC", _proxyRegistryAddress) 
@@ -21,12 +22,16 @@ contract CasinoCollectables is TradeableERC721Token {
 
   function baseTokenURI() public view returns (string memory) {
     // TODO: Host images for token
-    return "https://opensea-creatures-api.herokuapp.com/api/creature/";
+    return _baseTokenURI;
   }
 
   function mint(uint tokenId) public payable onlyOwner {
     _mint(msg.sender, tokenId);
   }
+
+  function setMaxPayout(string memory tokenURI) public payable onlyOwner {
+    _baseTokenURI = tokenURI;
+  } 
 
   function setMaxPayout(uint maxPayout) public payable onlyOwner {
     MAX_PAYOUT = maxPayout;
@@ -54,7 +59,7 @@ contract CasinoCollectables is TradeableERC721Token {
     require(oddsPercentage > 0);
     require(oddsPercentage < 100);
     // Remove 2% house charges
-    uint payout = msg.value.mul(98).div(oddsPercentage);
+    uint payout = msg.value.mul(99).div(oddsPercentage);
     require(payout < houseReserves[tokenId].add(msg.value));
     require(payout < MAX_PAYOUT);
     // Bet is now underway. 
