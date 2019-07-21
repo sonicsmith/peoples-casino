@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import {
   Grommet,
   Button,
@@ -8,18 +8,13 @@ import {
   TextInput,
   Box
 } from "grommet"
-import initWeb3 from "./../utils/initWeb3"
+import { useWeb3 } from "./../utils/useWeb3"
 import { TOKEN_ID } from "./../config"
-import { tokenMetadata } from "./../Api"
+import { getTokenMetadata } from "./../Api"
 import ImageData from "./ImageData"
 import { HouseBank } from "./HouseBank"
 
 const initialState = {
-  web3Error: null,
-  web3: null,
-  accounts: null,
-  contract: null,
-  //
   ownerOfToken: null,
   houseReserve: null,
   oddsPercentage: 50,
@@ -29,21 +24,10 @@ const initialState = {
 
 const Main = () => {
   const [state, setState] = useState(initialState)
-
-  useEffect(() => {
-    window.addEventListener("load", () => {
-      initWeb3().then(changes => {
-        setState({ ...state, ...changes })
-      })
-      refresh()
-    })
-    return () => {
-      window.removeEventListener("load")
-    }
-  }, [])
+  const web3Obj = useWeb3()
+  const { web3Error, web3, accounts, contract } = web3Obj
 
   const refresh = async () => {
-    const { contract, accounts } = state
     if (contract) {
       const { methods } = contract
       console.log("contract", contract)
@@ -60,7 +44,7 @@ const Main = () => {
   }
 
   const makeBet = () => {
-    const { contract, accounts, oddsPercentage, betAmount } = state
+    const { oddsPercentage, betAmount } = state
     if (contract) {
       const { methods } = contract
       const from = accounts[0]
@@ -95,11 +79,10 @@ const Main = () => {
   }
 
   const addToHouseReserve = () => {
-    const { contract, accounts } = state
     if (contract) {
       const { methods } = contract
       const from = accounts[0]
-      const value = state.web3.utils.toWei("0.5", "ether")
+      const value = web3.utils.toWei("0.5", "ether")
       methods
         .addToHouseReserve(TOKEN_ID)
         .send({ from, value, gas: 300000 }, res => {
@@ -124,7 +107,6 @@ const Main = () => {
   const subtractFromHouseReserve = (() => {}, [])
 
   const mint = async () => {
-    const { contract, accounts } = state
     if (contract) {
       const { methods } = contract
       const from = accounts[0]
@@ -136,12 +118,11 @@ const Main = () => {
     }
   }
 
-  if (!state.web3) {
+  if (!web3) {
     return <div>Loading Web3, accounts, and contract...</div>
   }
 
   const {
-    accounts,
     oddsPercentage,
     betAmount,
     ownerOfToken,
@@ -150,8 +131,9 @@ const Main = () => {
   } = state
 
   const payout = (betAmount * 99) / oddsPercentage
-  const payoutInWei = state.web3.utils.toWei(payout.toString(), "ether")
+  const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
+  const tokenMetadata = getTokenMetadata(TOKEN_ID)
   return (
     <Grommet plain>
       <Box align="center">
@@ -170,9 +152,9 @@ const Main = () => {
           <Box width="medium">
             <Text textAlign="center">{tokenMetadata.description}</Text>
           </Box>
-
-          <ImageData tokenId={TOKEN_ID} />
-
+          <Box>
+            <ImageData tokenId={TOKEN_ID} />
+          </Box>
           <Box
             align="center"
             direction="column"

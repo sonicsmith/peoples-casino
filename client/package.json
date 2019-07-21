@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "avataaars": "^1.2.1",
     "bnc-assist": "^0.9.2",
     "grommet": "^2.7.3",
     "polished": "^3.4.1",
+    "random": "^2.1.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",

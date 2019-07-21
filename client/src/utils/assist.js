@@ -1,5 +1,4 @@
 import assist from "bnc-assist"
-
 import { NETWORK_ID, ASSIST_DAPP_ID } from "../config"
 
 let assistInstance

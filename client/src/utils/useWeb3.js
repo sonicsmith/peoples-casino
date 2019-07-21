@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react"
 import Web3 from "web3"
 import CasinoCollectablesContract from "./../contracts/CasinoCollectables.json"
 import { NETWORK_ID } from "./../config"
@@ -23,8 +24,11 @@ const initWeb3 = async () => {
   try {
     console.log("Attempting to connect..")
     const web3 = getWeb3()
+    console.log("got web3")
     const assistInstance = initializeAssist(web3)
+    console.log("got assist")
     await onboardUser()
+    console.log("onboarded User")
     const accounts = await web3.eth.getAccounts()
     const network = CasinoCollectablesContract.networks[NETWORK_ID]
     const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
@@ -48,4 +52,19 @@ const initWeb3 = async () => {
   }
 }
 
-export default initWeb3
+export const useWeb3 = () => {
+  const [web3, setWeb3] = useState({})
+
+  useEffect(() => {
+    window.addEventListener("load", () => {
+      initWeb3().then(changes => {
+        setWeb3(changes)
+      })
+    })
+    return () => {
+      window.removeEventListener("load", initWeb3)
+    }
+  }, [])
+
+  return web3
+}
