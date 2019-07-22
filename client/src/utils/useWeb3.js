@@ -22,13 +22,9 @@ const getWeb3 = () => {
 
 const initWeb3 = async () => {
   try {
-    console.log("Attempting to connect..")
     const web3 = getWeb3()
-    console.log("got web3")
     const assistInstance = initializeAssist(web3)
-    console.log("got assist")
     await onboardUser()
-    console.log("onboarded User")
     const accounts = await web3.eth.getAccounts()
     const network = CasinoCollectablesContract.networks[NETWORK_ID]
     const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
@@ -38,7 +34,6 @@ const initWeb3 = async () => {
         contractAddress || (network && network.address)
       )
     )
-    console.log("Successfully connected to web3", contract)
     try {
       window.ethereum.on("accountsChanged", newAccounts => {
         return { accounts: newAccounts }
@@ -52,14 +47,14 @@ const initWeb3 = async () => {
   }
 }
 
-export const useWeb3 = () => {
-  const [web3, setWeb3] = useState({})
+export const useWeb3 = (defaultWeb3, callback) => {
+  const [web3, setWeb3] = useState(defaultWeb3)
 
   useEffect(() => {
-    window.addEventListener("load", () => {
-      initWeb3().then(changes => {
-        setWeb3(changes)
-      })
+    window.addEventListener("load", async () => {
+      const newWeb3 = await initWeb3()
+      setWeb3(newWeb3)
+      callback && callback()
     })
     return () => {
       window.removeEventListener("load", initWeb3)

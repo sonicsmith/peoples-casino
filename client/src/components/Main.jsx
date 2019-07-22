@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Grommet,
   Button,
@@ -10,7 +10,7 @@ import {
 } from "grommet"
 import { useWeb3 } from "./../utils/useWeb3"
 import { TOKEN_ID } from "./../config"
-import { getTokenMetadata } from "./../Api"
+import { getTokenMetadata } from "../tokenMetadata/useTokenMetadata"
 import ImageData from "./ImageData"
 import { HouseBank } from "./HouseBank"
 
@@ -24,8 +24,11 @@ const initialState = {
 
 const Main = () => {
   const [state, setState] = useState(initialState)
-  const web3Obj = useWeb3()
+  const web3Obj = useWeb3({}, refresh)
   const { web3Error, web3, accounts, contract } = web3Obj
+  useEffect(() => {
+    const tokenMetadata = getTokenMetadata(TOKEN_ID)
+  })
 
   const refresh = async () => {
     if (contract) {
@@ -119,7 +122,11 @@ const Main = () => {
   }
 
   if (!web3) {
-    return <div>Loading Web3, accounts, and contract...</div>
+    if (web3Error) {
+      return <div>ERROR: Cannot connect to web3</div>
+    } else {
+      return <div>Loading Web3, accounts, and contract...</div>
+    }
   }
 
   const {
@@ -133,7 +140,7 @@ const Main = () => {
   const payout = (betAmount * 99) / oddsPercentage
   const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
-  const tokenMetadata = getTokenMetadata(TOKEN_ID)
+
   return (
     <Grommet plain>
       <Box align="center">
@@ -154,6 +161,7 @@ const Main = () => {
           </Box>
           <Box>
             <ImageData tokenId={TOKEN_ID} />
+            {tokenMetadata.descriptionEmojis.object}
           </Box>
           <Box
             align="center"
