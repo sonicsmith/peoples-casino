@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { Component } from "react"
 import {
   Grommet,
   Button,
@@ -8,29 +8,24 @@ import {
   TextInput,
   Box
 } from "grommet"
-import { useWeb3 } from "./../utils/useWeb3"
 import { TOKEN_ID } from "./../config"
-import { getTokenMetadata } from "../tokenMetadata/useTokenMetadata"
+import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import ImageData from "./ImageData"
 import { HouseBank } from "./HouseBank"
 
-const initialState = {
-  ownerOfToken: null,
-  houseReserve: null,
-  oddsPercentage: 50,
-  betAmount: 1,
-  isManagingCasino: false
-}
+class Main extends Component {
+  state = {
+    oddsPercentage: 50,
+    betAmount: 1,
+    tokenMetadata: {}
+  }
 
-const Main = () => {
-  const [state, setState] = useState(initialState)
-  const web3Obj = useWeb3({}, refresh)
-  const { web3Error, web3, accounts, contract } = web3Obj
-  useEffect(() => {
-    const tokenMetadata = getTokenMetadata(TOKEN_ID)
-  })
+  componentDidMount = () => {
+    this.setState({ tokenMetadata: getTokenMetadata(TOKEN_ID) })
+  }
 
-  const refresh = async () => {
+  refresh = async () => {
+    const { contract, web3 } = this.props
     if (contract) {
       const { methods } = contract
       console.log("contract", contract)
@@ -38,20 +33,21 @@ const Main = () => {
       const ownerOfToken = await methods.ownerOf(TOKEN_ID).call()
       console.log("houseReserve:", houseReserve)
       console.log("ownerOfToken:", ownerOfToken)
-      const betAmount = state.web3.utils.fromWei(
+      const betAmount = web3.utils.fromWei(
         (houseReserve / 2).toString(),
         "ether"
       )
-      setState({ ...state, houseReserve, ownerOfToken, betAmount })
+      this.setState({ houseReserve, ownerOfToken, betAmount })
     }
   }
 
-  const makeBet = () => {
-    const { oddsPercentage, betAmount } = state
+  makeBet = () => {
+    const { web3, contract, accounts } = this.props
+    const { oddsPercentage, betAmount } = this.state
     if (contract) {
-      const { methods } = contract
+      const { methods } = web3.contract
       const from = accounts[0]
-      const value = state.web3.utils.toWei(betAmount.toString(), "ether")
+      const value = web3.utils.toWei(betAmount.toString(), "ether")
       methods
         .makeBet(TOKEN_ID, oddsPercentage)
         .send({ from, value, gas: 300000 }, res => {
@@ -81,7 +77,8 @@ const Main = () => {
     }
   }
 
-  const addToHouseReserve = () => {
+  addToHouseReserve = () => {
+    const { web3, contract, accounts } = this.props
     if (contract) {
       const { methods } = contract
       const from = accounts[0]
@@ -107,9 +104,10 @@ const Main = () => {
     }
   }
 
-  const subtractFromHouseReserve = (() => {}, [])
+  subtractFromHouseReserve = () => {}
 
-  const mint = async () => {
+  mint = async () => {
+    const { contract, accounts } = this.props
     if (contract) {
       const { methods } = contract
       const from = accounts[0]
@@ -117,119 +115,128 @@ const Main = () => {
         .mint(TOKEN_ID)
         .send({ from, value: 0, gas: 300000 })
       console.log(res)
-      refresh()
+      this.refresh()
     }
   }
 
-  if (!web3) {
-    if (web3Error) {
-      return <div>ERROR: Cannot connect to web3</div>
-    } else {
-      return <div>Loading Web3, accounts, and contract...</div>
+  render() {
+    const { web3, accounts, web3Error } = this.props
+
+    if (!web3) {
+      if (web3Error) {
+        return <div>ERROR: Cannot connect to web3</div>
+      } else {
+        return <div>Loading Web3, accounts, and contract...</div>
+      }
     }
-  }
 
-  const {
-    oddsPercentage,
-    betAmount,
-    ownerOfToken,
-    houseReserve,
-    isManagingCasino
-  } = state
+    const {
+      oddsPercentage,
+      betAmount,
+      ownerOfToken,
+      houseReserve,
+      isManagingCasino,
+      tokenMetadata
+    } = this.state
 
-  const payout = (betAmount * 99) / oddsPercentage
-  const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
-  const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
+    const payout = (betAmount * 99) / oddsPercentage
+    const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
+    const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
 
-  return (
-    <Grommet plain>
-      <Box align="center">
-        <Box
-          align="center"
-          direction="column"
-          border={{ color: "brand", size: "large" }}
-          pad="medium"
-          margin="medium"
-          round={true}
-          width="large"
-        >
-          <Heading textAlign="center" level={2}>
-            {tokenMetadata.name}
-          </Heading>
-          <Box width="medium">
-            <Text textAlign="center">{tokenMetadata.description}</Text>
-          </Box>
-          <Box>
-            <ImageData tokenId={TOKEN_ID} />
-            {tokenMetadata.descriptionEmojis.object}
-          </Box>
+    return (
+      <Grommet plain>
+        <Box align="center">
           <Box
             align="center"
             direction="column"
-            border={{ color: "brand", size: "medium" }}
-            margin="medium"
+            border={{ color: "brand", size: "large" }}
             pad="medium"
+            margin="medium"
             round={true}
+            width="large"
           >
-            <Box align="center">
-              <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
+            <Heading textAlign="center" level={2}>
+              {tokenMetadata.name}
+            </Heading>
+            <Box width="medium">
+              <Text textAlign="center">{tokenMetadata.description}</Text>
             </Box>
-            <Box margin="medium" width="medium">
-              <RangeInput
-                min={1}
-                max={97}
-                value={oddsPercentage}
-                onChange={event =>
-                  setState({ ...state, oddsPercentage: event.target.value })
-                }
-              />
-            </Box>
-            <Text>BET AMOUNT {betAmount} ETH</Text>
-            <Box margin="medium">
-              <TextInput
-                type="number"
-                value={betAmount}
-                onChange={event =>
-                  setState({ ...state, betAmount: event.target.value })
-                }
-              />
+            <Box>
+              <ImageData tokenId={TOKEN_ID} />
+              {tokenMetadata.descriptionEmojis.object}
             </Box>
             <Box
               align="center"
-              style={{ color: payoutTooHigh ? "red" : "black" }}
+              direction="column"
+              border={{ color: "brand", size: "medium" }}
+              margin="medium"
+              pad="medium"
+              round={true}
             >
-              <Text>PAYOUT {payout} ETH</Text>
-              {payoutTooHigh && (
-                <Text>
-                  Not enough money in the house for a wager that high!
-                </Text>
-              )}
+              <Box align="center">
+                <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
+              </Box>
+              <Box margin="medium" width="medium">
+                <RangeInput
+                  min={1}
+                  max={97}
+                  value={oddsPercentage}
+                  onChange={event =>
+                    this.setState({
+                      oddsPercentage: event.target.value
+                    })
+                  }
+                />
+              </Box>
+              <Text>BET AMOUNT {betAmount} ETH</Text>
+              <Box margin="medium">
+                <TextInput
+                  type="number"
+                  value={betAmount}
+                  onChange={event =>
+                    this.setState({ betAmount: event.target.value })
+                  }
+                />
+              </Box>
+              <Box
+                align="center"
+                style={{ color: payoutTooHigh ? "red" : "black" }}
+              >
+                <Text>PAYOUT {payout} ETH</Text>
+                {payoutTooHigh && (
+                  <Text>
+                    Not enough money in the house for a wager that high!
+                  </Text>
+                )}
+              </Box>
             </Box>
+            <Button label={"BET"} primary onClick={this.makeBet} />
+            {ownerOfToken === accounts[0] && (
+              <Button
+                label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
+                primary
+                onClick={() =>
+                  this.setState({
+                    isManagingCasino: !isManagingCasino
+                  })
+                }
+              />
+            )}
+            {isManagingCasino && (
+              <HouseBank
+                addToHouseReserve={this.addToHouseReserve}
+                subtractFromHouseReserve={this.subtractFromHouseReserve}
+              />
+            )}
           </Box>
-          <Button label={"BET"} primary onClick={makeBet} />
-          {ownerOfToken === accounts[0] && (
-            <Button
-              label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
-              primary
-              onClick={() =>
-                setState({ ...state, isManagingCasino: !isManagingCasino })
-              }
-            />
-          )}
-          {isManagingCasino && (
-            <HouseBank
-              addToHouseReserve={addToHouseReserve}
-              subtractFromHouseReserve={subtractFromHouseReserve}
-            />
-          )}
+          {/* TODO: TEMP */}
+          <div>
+            <Button label={"MINT"} primary onClick={this.mint} />
+          </div>
         </Box>
-        {/* TODO: TEMP */}
-        <div>
-          <Button label={"MINT"} primary onClick={mint} />
-        </div>
-      </Box>
-    </Grommet>
-  )
+      </Grommet>
+    )
+  }
 }
 
 export default Main

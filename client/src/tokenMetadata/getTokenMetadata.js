@@ -56,7 +56,7 @@ export const getImageAttributes = tokenId => {
   }
 }
 
-export const useTokenMetadata = tokenId => {
+export const getTokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
     description: getDescription(tokenId),
