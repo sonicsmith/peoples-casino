@@ -1,1 +1,8 @@
-{ "name": ["barrel", "stadium", "room", "house", "van", "planet"], "emoji": [] }
+[
+  { "name": "barrel" },
+  { "name": "stadium" },
+  { "name": "room" },
+  { "name": "house" },
+  { "name": "van" },
+  { "name": "planet" }
+]

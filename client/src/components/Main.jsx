@@ -20,8 +20,9 @@ class Main extends Component {
     tokenMetadata: {}
   }
 
-  componentDidMount = () => {
-    this.setState({ tokenMetadata: getTokenMetadata(TOKEN_ID) })
+  constructor() {
+    super()
+    this.state.tokenMetadata = getTokenMetadata(TOKEN_ID)
   }
 
   refresh = async () => {
@@ -162,7 +163,7 @@ class Main extends Component {
               <Text textAlign="center">{tokenMetadata.description}</Text>
             </Box>
             <Box>
-              <ImageData tokenId={TOKEN_ID} />
+              <ImageData imageAttributes={tokenMetadata.imageAttributes} />
               {tokenMetadata.descriptionEmojis.object}
             </Box>
             <Box

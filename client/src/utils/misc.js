@@ -28,7 +28,6 @@ export const getRandomIndex = (s, array) => {
   // Seed is concatenated with first item in array
   const firstItem = typeof array[0] !== "string" ? array[0].name : array[0]
   const seed = `${firstItem}${s}`
-  console.log(seed)
   const rnd = random(seed, array.length)
   return rnd
 }

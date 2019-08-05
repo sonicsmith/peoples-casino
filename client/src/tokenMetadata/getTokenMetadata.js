@@ -1,39 +1,37 @@
-import random from "random"
-import seedrandom from "seedrandom"
+import { getRandomItem, getRandomIndex } from "./../utils/misc"
 import names from "./names"
 import containers from "./containers"
 import subjects from "./subjects"
 import objects from "./objects"
 import imageAttributes from "./imageAttributes"
 
-const getRandom = array => {
-  const rnd = random.int(0, array.length - 1)
-  console.log(array[rnd])
-  return array[rnd]
+const getIsMale = tokenId => {
+  const nameIndex = getRandomIndex(tokenId, names.first)
+  return nameIndex % 2 === 1
 }
 
 export const getName = tokenId => {
-  random.use(seedrandom(`${tokenId}1`))
-  const first = getRandom(names.first)
-  const last = getRandom(names.last)
-  return `${first} ${last}`
+  const first = getRandomItem(tokenId, names.first)
+  const last = getRandomItem(tokenId, names.last)
+  const container = getRandomItem(tokenId, containers).name
+  const object = getRandomItem(tokenId, objects).name
+  return `${first} ${last}'s ${container} of ${object}`
 }
 
 export const getDescription = tokenId => {
-  random.use(seedrandom(`${tokenId}2`))
-  const container = getRandom(containers.name)
-  const subject = getRandom(subjects.name)
-  const object = getRandom(objects.name)
-  return `Welcome to the ${container} of ${object}, 
-  where you can make a whole heap of money by finding a ${subject} 
+  const container = getRandomItem(tokenId, containers).name
+  const subject = getRandomItem(tokenId, subjects).name
+  const object = getRandomItem(tokenId, objects).name
+  return `[TODO: Greeting] 
+  Wanna try your luck!?
+  You can make a whole heap of money by finding some ${subject} 
   in my ${container} full of ${object}`
 }
 
 export const getDescriptionEmojis = tokenId => {
-  random.use(seedrandom(`${tokenId}2`))
-  const container = getRandom(containers.emoji)
-  const subject = getRandom(subjects.emoji)
-  const object = getRandom(objects.emoji)
+  const container = getRandomItem(tokenId, containers).emoji
+  const subject = getRandomItem(tokenId, subjects).emoji
+  const object = getRandomItem(tokenId, objects).emoji
   return {
     container,
     subject,
@@ -42,17 +40,28 @@ export const getDescriptionEmojis = tokenId => {
 }
 
 export const getImageAttributes = tokenId => {
-  random.use(seedrandom(`${tokenId}3`))
+  const sex = getIsMale(tokenId) ? "male" : "female"
+  const {
+    topTypes,
+    facialHairTypes,
+    accessoriesTypes,
+    hairColors,
+    clotheTypes,
+    eyeTypes,
+    eyebrowTypes,
+    mouthTypes,
+    skinTypes
+  } = imageAttributes
   return {
-    topTypes: getRandom(imageAttributes.topTypes),
-    accessoriesTypes: getRandom(imageAttributes.accessoriesTypes),
-    hairColors: getRandom(imageAttributes.hairColors),
-    facialHairTypes: getRandom(imageAttributes.facialHairTypes),
-    clotheTypes: getRandom(imageAttributes.clotheTypes),
-    eyeTypes: getRandom(imageAttributes.eyeTypes),
-    eyebrowTypes: getRandom(imageAttributes.eyebrowTypes),
-    mouthTypes: getRandom(imageAttributes.mouthTypes),
-    skinTypes: getRandom(imageAttributes.skinTypes)
+    topTypes: getRandomItem(tokenId, topTypes[sex]),
+    facialHairTypes: getRandomItem(tokenId, facialHairTypes[sex]),
+    accessoriesTypes: getRandomItem(tokenId, accessoriesTypes),
+    hairColors: getRandomItem(tokenId, hairColors),
+    clotheTypes: getRandomItem(tokenId, clotheTypes),
+    eyeTypes: getRandomItem(tokenId, eyeTypes),
+    eyebrowTypes: getRandomItem(tokenId, eyebrowTypes),
+    mouthTypes: getRandomItem(tokenId, mouthTypes),
+    skinTypes: getRandomItem(tokenId, skinTypes)
   }
 }
 

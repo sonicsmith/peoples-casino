@@ -1,1 +1,7 @@
-{ "name": ["monkey", "fish", "sandwich", "twig", "tv"], "emoji": [] }
+[
+  { "name": "monkey" },
+  { "name": "fish" },
+  { "name": "sandwich" },
+  { "name": "twig" },
+  { "name": "tv" }
+]
