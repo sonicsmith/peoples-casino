@@ -9,12 +9,11 @@ const getNetwork = () => {
 }
 
 const getTokenId = () => {
-  return Number("1")
   const url = window.location.href
   const regex = new RegExp("[?&]tokenId(=([^&#]*)|&|#|$)"),
     results = regex.exec(url)
-  if (!results) return 1
-  if (!results[2]) return 1
+  if (!results) return -1
+  if (!results[2]) return -1
   return Number(decodeURIComponent(results[2].replace(/\+/g, " ")))
 }
 

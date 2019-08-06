@@ -10,8 +10,7 @@ import {
 } from "grommet"
 import { TOKEN_ID } from "./../config"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
-import ImageData from "./ImageData"
-import { HouseBank } from "./HouseBank"
+import TokenView from "./TokenView"
 
 class Main extends Component {
   state = {
@@ -22,7 +21,9 @@ class Main extends Component {
 
   constructor() {
     super()
-    this.state.tokenMetadata = getTokenMetadata(TOKEN_ID)
+    if (TOKEN_ID >= 0) {
+      this.state.tokenMetadata = getTokenMetadata(TOKEN_ID)
+    }
   }
 
   refresh = async () => {
@@ -121,7 +122,11 @@ class Main extends Component {
   }
 
   render() {
-    const { web3, accounts, web3Error } = this.props
+    const { web3, web3Error } = this.props
+
+    if (TOKEN_ID >= 0) {
+      return <TokenView {...this} {...this.props} />
+    }
 
     if (!web3) {
       if (web3Error) {
@@ -131,111 +136,10 @@ class Main extends Component {
       }
     }
 
-    const {
-      oddsPercentage,
-      betAmount,
-      ownerOfToken,
-      houseReserve,
-      isManagingCasino,
-      tokenMetadata
-    } = this.state
-
-    const payout = (betAmount * 99) / oddsPercentage
-    const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
-    const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
-
     return (
-      <Grommet plain>
-        <Box align="center">
-          <Box
-            align="center"
-            direction="column"
-            border={{ color: "brand", size: "large" }}
-            pad="medium"
-            margin="medium"
-            round={true}
-            width="large"
-          >
-            <Heading textAlign="center" level={2}>
-              {tokenMetadata.name}
-            </Heading>
-            <Box width="medium">
-              <Text textAlign="center">{tokenMetadata.description}</Text>
-            </Box>
-            <Box>
-              <ImageData imageAttributes={tokenMetadata.imageAttributes} />
-              {tokenMetadata.descriptionEmojis.object}
-            </Box>
-            <Box
-              align="center"
-              direction="column"
-              border={{ color: "brand", size: "medium" }}
-              margin="medium"
-              pad="medium"
-              round={true}
-            >
-              <Box align="center">
-                <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
-              </Box>
-              <Box margin="medium" width="medium">
-                <RangeInput
-                  min={1}
-                  max={97}
-                  value={oddsPercentage}
-                  onChange={event =>
-                    this.setState({
-                      oddsPercentage: event.target.value
-                    })
-                  }
-                />
-              </Box>
-              <Text>BET AMOUNT {betAmount} ETH</Text>
-              <Box margin="medium">
-                <TextInput
-                  type="number"
-                  value={betAmount}
-                  onChange={event =>
-                    this.setState({ betAmount: event.target.value })
-                  }
-                />
-              </Box>
-              <Box
-                align="center"
-                style={{ color: payoutTooHigh ? "red" : "black" }}
-              >
-                <Text>PAYOUT {payout} ETH</Text>
-                {payoutTooHigh && (
-                  <Text>
-                    Not enough money in the house for a wager that high!
-                  </Text>
-                )}
-              </Box>
-            </Box>
-            <Button label={"BET"} primary onClick={this.makeBet} />
-            {ownerOfToken === accounts[0] && (
-              <Button
-                label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
-                primary
-                onClick={() =>
-                  this.setState({
-                    isManagingCasino: !isManagingCasino
-                  })
-                }
-              />
-            )}
-            {isManagingCasino && (
-              <HouseBank
-                addToHouseReserve={this.addToHouseReserve}
-                subtractFromHouseReserve={this.subtractFromHouseReserve}
-              />
-            )}
-          </Box>
-          {/* TODO: TEMP */}
-          <div>
-            <Button label={"MINT"} primary onClick={this.mint} />
-          </div>
-        </Box>
-      </Grommet>
+      <div>
+        <h1>Main page / no token</h1>
+      </div>
     )
   }
 }
