@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import {
   Grommet,
   Button,
@@ -8,27 +8,37 @@ import {
   TextInput,
   Box
 } from "grommet"
+import { TOKEN_ID } from "./../config"
+import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import ImageData from "./ImageData"
 import { HouseBank } from "./HouseBank"
+import {
+  makeBet,
+  addToHouseReserve,
+  subtractFromHouseReserve
+} from "../utils/methods"
+
+const useTokenMetadata = () => {
+  const [tokenMetadata, setTokenMetadata] = useState({})
+  useEffect(() => {
+    if (TOKEN_ID >= 0) {
+      setTokenMetadata(getTokenMetadata(TOKEN_ID))
+    }
+  }, TOKEN_ID)
+  return tokenMetadata
+}
 
 const TokenView = ({
-  state,
-  setState,
+  ownerOfToken,
+  houseReserve,
   web3,
   accounts,
-  web3Error,
-  addToHouseReserve,
-  subtractFromHouseReserve,
-  makeBet
+  web3Error
 }) => {
-  const {
-    oddsPercentage,
-    betAmount,
-    ownerOfToken,
-    houseReserve,
-    isManagingCasino,
-    tokenMetadata
-  } = state
+  const [oddsPercentage, setOddsPercentage] = useState(50)
+  const [betAmount, setBetAmount] = useState(1)
+  const [isManagingCasino, setIsManagingCasino] = useState(false)
+  const tokenMetadata = useTokenMetadata(TOKEN_ID)
 
   if (!web3) {
     if (web3Error) {
@@ -80,11 +90,7 @@ const TokenView = ({
                 min={1}
                 max={97}
                 value={oddsPercentage}
-                onChange={event =>
-                  setState({
-                    oddsPercentage: event.target.value
-                  })
-                }
+                onChange={event => setOddsPercentage(event.target.value)}
               />
             </Box>
             <Text>BET AMOUNT {betAmount} ETH</Text>
@@ -92,7 +98,7 @@ const TokenView = ({
               <TextInput
                 type="number"
                 value={betAmount}
-                onChange={event => setState({ betAmount: event.target.value })}
+                onChange={event => setBetAmount(event.target.value)}
               />
             </Box>
             <Box
@@ -112,11 +118,7 @@ const TokenView = ({
             <Button
               label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
               primary
-              onClick={() =>
-                setState({
-                  isManagingCasino: !isManagingCasino
-                })
-              }
+              onClick={() => setIsManagingCasino(!isManagingCasino)}
             />
           )}
           {isManagingCasino && (

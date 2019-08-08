@@ -1,5 +1,6 @@
 import { getRandomItem, getRandomIndex } from "./../utils/misc"
 import names from "./names"
+import greetings from "./greetings"
 import containers from "./containers"
 import subjects from "./subjects"
 import objects from "./objects"
@@ -19,10 +20,11 @@ export const getName = tokenId => {
 }
 
 export const getDescription = tokenId => {
+  const greeting = getRandomItem(tokenId, greetings)
   const container = getRandomItem(tokenId, containers).name
   const subject = getRandomItem(tokenId, subjects).name
   const object = getRandomItem(tokenId, objects).name
-  return `[TODO: Greeting] 
+  return `${greeting}
   Wanna try your luck!?
   You can make a whole heap of money by finding some ${subject} 
   in my ${container} full of ${object}`
