@@ -11,12 +11,14 @@ import {
 import { TOKEN_ID } from "./../config"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import ImageData from "./ImageData"
-import { HouseBank } from "./HouseBank"
+import HouseBank from "./HouseBank"
+import BetControls from "./BetControls"
 import {
   makeBet,
   addToHouseReserve,
   subtractFromHouseReserve
 } from "../utils/methods"
+import { titleCase } from "../utils/misc"
 
 const useTokenMetadata = () => {
   const [tokenMetadata, setTokenMetadata] = useState({})
@@ -26,6 +28,11 @@ const useTokenMetadata = () => {
     }
   }, TOKEN_ID)
   return tokenMetadata
+}
+
+const noAddress = "0x0000000000000000000000000000000000000000"
+const getIsTokenOwned = address => {
+  return address !== noAddress
 }
 
 const TokenView = ({
@@ -40,6 +47,10 @@ const TokenView = ({
   const [isManagingCasino, setIsManagingCasino] = useState(false)
   const tokenMetadata = useTokenMetadata(TOKEN_ID)
 
+  const convertToWei = amount => {
+    return web3.utils.toWei(amount.toString(), "ether")
+  }
+
   if (!web3) {
     if (web3Error) {
       return <div>ERROR: Cannot connect to web3</div>
@@ -48,72 +59,76 @@ const TokenView = ({
     }
   }
 
-  const payout = (betAmount * 99) / oddsPercentage
-  const payoutInWei = web3.utils.toWei(payout.toString(), "ether")
-  const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
-
+  const isTokenOwned = getIsTokenOwned(ownerOfToken)
+  const { descriptionEmojis, imageAttributes } = tokenMetadata
+  const { object: objectEmoji, subject: subjectEmoji } = descriptionEmojis
+  const objectEmojis = []
+  for (let i = 0; i < 6; i++) {
+    objectEmojis.push(objectEmoji)
+  }
+  const subjectEmojis = []
+  for (let i = 0; i < 6; i++) {
+    subjectEmojis.push(subjectEmoji)
+  }
+  const tokenTheme = {
+    global: { colors: { ...imageAttributes.colorScheme } }
+  }
+  console.log(tokenTheme)
   return (
-    <Grommet plain>
+    <Grommet plain theme={tokenTheme}>
       <Box align="center">
         <Box
           align="center"
           direction="column"
-          border={{ color: "brand", size: "large" }}
-          pad="medium"
+          border={{ color: "border", size: "large" }}
+          pad="small"
           margin="medium"
           round={true}
           width="large"
+          background="background"
         >
           <Heading textAlign="center" level={2}>
-            {tokenMetadata.name}
+            {titleCase(tokenMetadata.name)} (#{TOKEN_ID})
           </Heading>
           <Box width="medium">
-            <Text textAlign="center">{tokenMetadata.description}</Text>
+            {tokenMetadata.description.map(line => {
+              return (
+                <Text textAlign="center" key={line}>
+                  {line}
+                </Text>
+              )
+            })}
           </Box>
           <Box>
+            <Box pad="small">
+              <Text textAlign="center" size="xlarge">
+                {objectEmojis}
+              </Text>
+            </Box>
             <ImageData imageAttributes={tokenMetadata.imageAttributes} />
-            {tokenMetadata.descriptionEmojis.object}
-          </Box>
-          <Box
-            align="center"
-            direction="column"
-            border={{ color: "brand", size: "medium" }}
-            margin="medium"
-            pad="medium"
-            round={true}
-          >
-            <Box align="center">
-              <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
-            </Box>
-            <Box margin="medium" width="medium">
-              <RangeInput
-                min={1}
-                max={97}
-                value={oddsPercentage}
-                onChange={event => setOddsPercentage(event.target.value)}
-              />
-            </Box>
-            <Text>BET AMOUNT {betAmount} ETH</Text>
-            <Box margin="medium">
-              <TextInput
-                type="number"
-                value={betAmount}
-                onChange={event => setBetAmount(event.target.value)}
-              />
-            </Box>
-            <Box
-              align="center"
-              style={{ color: payoutTooHigh ? "red" : "black" }}
-            >
-              <Text>PAYOUT {payout} ETH</Text>
-              {payoutTooHigh && (
-                <Text>
-                  Not enough money in the house for a wager that high!
-                </Text>
-              )}
+            <Box pad="small">
+              <Text textAlign="center" size="xlarge">
+                {subjectEmojis}
+              </Text>
             </Box>
           </Box>
-          <Button label={"BET"} primary onClick={makeBet} />
+          {isTokenOwned ? (
+            <BetControls
+              convertToWei={convertToWei}
+              oddsPercentage={oddsPercentage}
+              setOddsPercentage={setOddsPercentage}
+              betAmount={betAmount}
+              setBetAmount={setBetAmount}
+              makeBet={makeBet}
+            />
+          ) : (
+            <Box>
+              <Heading textAlign="center" level={3}>
+                This token is unowned! Buy it in{" "}
+                <a href="https://opensea.io/">OpenSea!</a>
+              </Heading>
+            </Box>
+          )}
           {ownerOfToken === accounts[0] && (
             <Button
               label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}

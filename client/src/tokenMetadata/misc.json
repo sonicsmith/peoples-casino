@@ -1,0 +1,24 @@
+{
+  "greetings": [
+    "Yo Yo",
+    "Hello",
+    "Oh Hai",
+    "Greetings",
+    "Hi",
+    "Hi there",
+    "Wuzzup"
+  ],
+  "moneyAdjectives": ["a whole heap of", "some serious", "a tonne of"],
+  "moneySlangs": [
+    "moolah",
+    "moneys",
+    "cash",
+    "money",
+    "dough",
+    "bread",
+    "big bucks",
+    "coin",
+    "loot",
+    "scrilla"
+  ]
+}

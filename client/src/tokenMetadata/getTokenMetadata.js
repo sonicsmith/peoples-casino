@@ -1,6 +1,11 @@
-import { getRandomItem, getRandomIndex } from "./../utils/misc"
+import {
+  getRandomItem,
+  getRandomIndex,
+  invertColor,
+  getRandomColor
+} from "./../utils/misc"
 import names from "./names"
-import greetings from "./greetings"
+import { greetings, moneyAdjectives, moneySlangs } from "./misc"
 import containers from "./containers"
 import subjects from "./subjects"
 import objects from "./objects"
@@ -19,15 +24,18 @@ export const getName = tokenId => {
   return `${first} ${last}'s ${container} of ${object}`
 }
 
-export const getDescription = tokenId => {
+export const getDescriptionArray = tokenId => {
   const greeting = getRandomItem(tokenId, greetings)
+  const moneyAdjective = getRandomItem(tokenId, moneyAdjectives)
+  const moneySlang = getRandomItem(tokenId, moneySlangs)
   const container = getRandomItem(tokenId, containers).name
   const subject = getRandomItem(tokenId, subjects).name
   const object = getRandomItem(tokenId, objects).name
-  return `${greeting}
-  Wanna try your luck!?
-  You can make a whole heap of money by finding some ${subject} 
-  in my ${container} full of ${object}`
+  return [
+    `${greeting}, wanna try your luck!?`,
+    `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} 
+  in my ${container} full of ${object}!`
+  ]
 }
 
 export const getDescriptionEmojis = tokenId => {
@@ -54,6 +62,8 @@ export const getImageAttributes = tokenId => {
     mouthTypes,
     skinTypes
   } = imageAttributes
+  const background = getRandomColor(`${tokenId}`)
+  const border = invertColor(background)
   return {
     topTypes: getRandomItem(tokenId, topTypes[sex]),
     facialHairTypes: getRandomItem(tokenId, facialHairTypes[sex]),
@@ -63,14 +73,15 @@ export const getImageAttributes = tokenId => {
     eyeTypes: getRandomItem(tokenId, eyeTypes),
     eyebrowTypes: getRandomItem(tokenId, eyebrowTypes),
     mouthTypes: getRandomItem(tokenId, mouthTypes),
-    skinTypes: getRandomItem(tokenId, skinTypes)
+    skinTypes: getRandomItem(tokenId, skinTypes),
+    colorScheme: { background, border }
   }
 }
 
 export const getTokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
-    description: getDescription(tokenId),
+    description: getDescriptionArray(tokenId),
     descriptionEmojis: getDescriptionEmojis(tokenId),
     imageAttributes: getImageAttributes(tokenId)
   }

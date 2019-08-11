@@ -9,11 +9,15 @@ import TokenView from "./components/TokenView"
 
 const CONTRACT_ADDRESSES = {
   1: "",
-  4: "0x0facaadd39bec3526405c8d783546faf9de09ee8"
+  4: "0x250eA3D088Ee3073B7594b4a3E76719fCe2442Fe"
 }
 
+const noAddress = "0x0000000000000000000000000000000000000000"
+
 class App extends Component {
-  state = {}
+  state = {
+    ownerOfToken: noAddress
+  }
 
   componentDidMount = async () => {
     try {

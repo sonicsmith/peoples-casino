@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Button, Heading, Text, RangeInput, TextInput, Box } from "grommet"
 
-export const HouseBank = ({ deposit, withdrawl }) => {
+const HouseBank = ({ deposit, withdrawl }) => {
   const [amount, setAmount] = useState(0)
   return (
     <Box>
@@ -19,3 +19,5 @@ export const HouseBank = ({ deposit, withdrawl }) => {
     </Box>
   )
 }
+
+export default HouseBank
