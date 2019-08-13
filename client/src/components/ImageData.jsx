@@ -4,7 +4,7 @@ import Avatar from "avataaars"
 const ImageData = ({ imageAttributes }) => {
   return (
     <Avatar
-      avatarStyle="Transparent"
+      avatarStyle="Circle"
       topType={imageAttributes.topTypes}
       accessoriesType={imageAttributes.accessoriesTypes}
       hairColor={imageAttributes.hairColors}

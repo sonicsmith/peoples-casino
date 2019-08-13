@@ -34,7 +34,6 @@
     "Dizzy",
     "EyeRoll",
     "Happy",
-    "Hearts",
     "Side",
     "Squint",
     "Surprised",
@@ -66,7 +65,6 @@
   ],
   "topTypes": {
     "male": [
-      "LongHairDreads",
       "LongHairFro",
       "LongHairFroBand",
       "LongHairShavedSides",
@@ -106,7 +104,6 @@
       "LongHairFroBand",
       "LongHairMiaWallace",
       "LongHairNotTooLong",
-
       "LongHairStraight",
       "LongHairStraight2",
       "LongHairStraightStrand"
@@ -125,7 +122,6 @@
     "female": ["Blank"]
   },
   "accessoriesTypes": [
-    "Blank",
     "Kurt",
     "Prescription01",
     "Prescription02",

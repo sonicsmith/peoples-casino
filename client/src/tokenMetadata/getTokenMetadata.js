@@ -21,7 +21,8 @@ export const getName = tokenId => {
   const last = getRandomItem(tokenId, names.last)
   const container = getRandomItem(tokenId, containers).name
   const object = getRandomItem(tokenId, objects).name
-  return `${first} ${last}'s ${container} of ${object}`
+  const s = last.charAt(last.length - 1) === "s" ? "" : "s"
+  return `${first} ${last}'${s} ${container} of ${object}`
 }
 
 export const getDescriptionArray = tokenId => {
@@ -63,18 +64,23 @@ export const getImageAttributes = tokenId => {
     skinTypes
   } = imageAttributes
   const background = getRandomColor(`${tokenId}`)
-  const border = invertColor(background)
+  const tokenBackground = invertColor(background)
+  let accessories = "Blank"
+  // Every 3rd token has accessories
+  if (tokenId % 3 === 0) {
+    accessories = getRandomItem(tokenId, accessoriesTypes)
+  }
   return {
     topTypes: getRandomItem(tokenId, topTypes[sex]),
     facialHairTypes: getRandomItem(tokenId, facialHairTypes[sex]),
-    accessoriesTypes: getRandomItem(tokenId, accessoriesTypes),
+    accessoriesTypes: accessories,
     hairColors: getRandomItem(tokenId, hairColors),
     clotheTypes: getRandomItem(tokenId, clotheTypes),
     eyeTypes: getRandomItem(tokenId, eyeTypes),
     eyebrowTypes: getRandomItem(tokenId, eyebrowTypes),
     mouthTypes: getRandomItem(tokenId, mouthTypes),
     skinTypes: getRandomItem(tokenId, skinTypes),
-    colorScheme: { background, border }
+    colorScheme: { tokenBackground, background }
   }
 }
 

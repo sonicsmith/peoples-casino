@@ -4,7 +4,6 @@ import CasinoCollectablesContract from "./contracts/CasinoCollectables.json"
 import { NETWORK_ID } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
 import Main from "./components/Main"
-import { TOKEN_ID } from "./config"
 import TokenView from "./components/TokenView"
 
 const CONTRACT_ADDRESSES = {
@@ -57,10 +56,11 @@ class App extends Component {
 
   refresh = async () => {
     const { contract } = this.state
+    const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
-      const houseReserve = await methods.getHouseReserve(TOKEN_ID).call()
-      const ownerOfToken = await methods.ownerOf(TOKEN_ID).call()
+      const houseReserve = await methods.getHouseReserve(tokenId).call()
+      const ownerOfToken = await methods.ownerOf(tokenId).call()
       console.log("houseReserve:", houseReserve)
       console.log("ownerOfToken:", ownerOfToken)
       this.setState({ houseReserve, ownerOfToken })
@@ -69,8 +69,8 @@ class App extends Component {
 
   render() {
     const { web3, accounts, web3Error, houseReserve, ownerOfToken } = this.state
-
-    if (TOKEN_ID >= 0) {
+    const { tokenId } = this.props
+    if (tokenId >= 0) {
       return (
         <TokenView
           ownerOfToken={ownerOfToken}
@@ -78,6 +78,7 @@ class App extends Component {
           web3={web3}
           accounts={accounts}
           web3Error={web3Error}
+          tokenId={tokenId}
         />
       )
     }

@@ -8,7 +8,6 @@ import {
   TextInput,
   Box
 } from "grommet"
-import { TOKEN_ID } from "./../config"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import ImageData from "./ImageData"
 import HouseBank from "./HouseBank"
@@ -20,13 +19,13 @@ import {
 } from "../utils/methods"
 import { titleCase } from "../utils/misc"
 
-const useTokenMetadata = () => {
+const useTokenMetadata = tokenId => {
   const [tokenMetadata, setTokenMetadata] = useState({})
   useEffect(() => {
-    if (TOKEN_ID >= 0) {
-      setTokenMetadata(getTokenMetadata(TOKEN_ID))
+    if (tokenId >= 0) {
+      setTokenMetadata(getTokenMetadata(tokenId))
     }
-  }, TOKEN_ID)
+  }, tokenId)
   return tokenMetadata
 }
 
@@ -40,12 +39,13 @@ const TokenView = ({
   houseReserve,
   web3,
   accounts,
-  web3Error
+  web3Error,
+  tokenId
 }) => {
   const [oddsPercentage, setOddsPercentage] = useState(50)
   const [betAmount, setBetAmount] = useState(1)
   const [isManagingCasino, setIsManagingCasino] = useState(false)
-  const tokenMetadata = useTokenMetadata(TOKEN_ID)
+  const tokenMetadata = useTokenMetadata(tokenId)
 
   const convertToWei = amount => {
     return web3.utils.toWei(amount.toString(), "ether")
@@ -62,21 +62,21 @@ const TokenView = ({
   const isTokenOwned = getIsTokenOwned(ownerOfToken)
   const { descriptionEmojis, imageAttributes } = tokenMetadata
   const { object: objectEmoji, subject: subjectEmoji } = descriptionEmojis
-  const objectEmojis = []
-  for (let i = 0; i < 6; i++) {
-    objectEmojis.push(objectEmoji)
-  }
-  const subjectEmojis = []
-  for (let i = 0; i < 6; i++) {
-    subjectEmojis.push(subjectEmoji)
+  let emojis = []
+  for (let i = 0; i < 3; i++) {
+    emojis = [...emojis, subjectEmoji, objectEmoji]
   }
   const tokenTheme = {
-    global: { colors: { ...imageAttributes.colorScheme } }
+    global: {
+      font: { family: "Oswald" },
+      colors: { ...imageAttributes.colorScheme, border: "black" }
+    }
   }
-  console.log(tokenTheme)
+  console.log(imageAttributes)
+
   return (
     <Grommet plain theme={tokenTheme}>
-      <Box align="center">
+      <Box align="center" background="background">
         <Box
           align="center"
           direction="column"
@@ -85,15 +85,15 @@ const TokenView = ({
           margin="medium"
           round={true}
           width="large"
-          background="background"
+          background="tokenBackground"
         >
           <Heading textAlign="center" level={2}>
-            {titleCase(tokenMetadata.name)} (#{TOKEN_ID})
+            {titleCase(tokenMetadata.name)} (#{tokenId})
           </Heading>
           <Box width="medium">
             {tokenMetadata.description.map(line => {
               return (
-                <Text textAlign="center" key={line}>
+                <Text textAlign="center" size="large" key={line}>
                   {line}
                 </Text>
               )
@@ -101,14 +101,11 @@ const TokenView = ({
           </Box>
           <Box>
             <Box pad="small">
-              <Text textAlign="center" size="xlarge">
-                {objectEmojis}
-              </Text>
+              <ImageData imageAttributes={tokenMetadata.imageAttributes} />
             </Box>
-            <ImageData imageAttributes={tokenMetadata.imageAttributes} />
             <Box pad="small">
               <Text textAlign="center" size="xlarge">
-                {subjectEmojis}
+                {emojis}
               </Text>
             </Box>
           </Box>
@@ -120,6 +117,7 @@ const TokenView = ({
               betAmount={betAmount}
               setBetAmount={setBetAmount}
               makeBet={makeBet}
+              houseReserve={houseReserve}
             />
           ) : (
             <Box>

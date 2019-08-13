@@ -9,6 +9,10 @@ import {
   Box
 } from "grommet"
 
+const round = amount => {
+  return Math.round(amount * 1000) / 1000
+}
+
 const BetControls = ({
   convertToWei,
   oddsPercentage,
@@ -22,14 +26,15 @@ const BetControls = ({
   const payoutInWei = convertToWei(payout)
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
   return (
-    <div>
+    <Box align="center">
       <Box
         align="center"
         direction="column"
-        border={{ color: "brand", size: "medium" }}
+        border={{ color: "border", size: "large" }}
         margin="medium"
         pad="medium"
         round={true}
+        background="white"
       >
         <Box align="center">
           <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
@@ -50,15 +55,15 @@ const BetControls = ({
             onChange={event => setBetAmount(event.target.value)}
           />
         </Box>
-        <Box align="center" style={{ color: payoutTooHigh ? "red" : "black" }}>
-          <Text>PAYOUT {payout} ETH</Text>
+        <Box align="center" style={payoutTooHigh ? { color: "red" } : {}}>
+          <Text>PAYOUT {round(payout)} ETH</Text>
           {payoutTooHigh && (
             <Text>Not enough money in the house for a wager that high!</Text>
           )}
         </Box>
       </Box>
       <Button label={"BET"} primary onClick={makeBet} />
-    </div>
+    </Box>
   )
 }
 
