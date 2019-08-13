@@ -38,6 +38,7 @@ const TokenView = ({
   ownerOfToken,
   houseReserve,
   web3,
+  contract,
   accounts,
   web3Error,
   tokenId
@@ -68,11 +69,10 @@ const TokenView = ({
   }
   const tokenTheme = {
     global: {
-      font: { family: "Oswald" },
+      // font: { family: "Oswald" },
       colors: { ...imageAttributes.colorScheme, border: "black" }
     }
   }
-  console.log(imageAttributes)
 
   return (
     <Grommet plain theme={tokenTheme}>
@@ -136,8 +136,18 @@ const TokenView = ({
           )}
           {isManagingCasino && (
             <HouseBank
-              addToHouseReserve={addToHouseReserve}
-              subtractFromHouseReserve={subtractFromHouseReserve}
+              addToHouseReserve={amount => {
+                addToHouseReserve({ web3, contract, accounts, tokenId, amount })
+              }}
+              subtractFromHouseReserve={amount => {
+                subtractFromHouseReserve({
+                  web3,
+                  contract,
+                  accounts,
+                  tokenId,
+                  amount
+                })
+              }}
             />
           )}
         </Box>

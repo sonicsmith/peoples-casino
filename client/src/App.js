@@ -68,7 +68,14 @@ class App extends Component {
   }
 
   render() {
-    const { web3, accounts, web3Error, houseReserve, ownerOfToken } = this.state
+    const {
+      web3,
+      accounts,
+      web3Error,
+      houseReserve,
+      ownerOfToken,
+      contract
+    } = this.state
     const { tokenId } = this.props
     if (tokenId >= 0) {
       return (
@@ -77,6 +84,7 @@ class App extends Component {
           houseReserve={houseReserve}
           web3={web3}
           accounts={accounts}
+          contract={contract}
           web3Error={web3Error}
           tokenId={tokenId}
         />
