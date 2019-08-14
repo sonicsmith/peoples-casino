@@ -1,3 +1,9 @@
+# Peoples Casino
+
+### Deployment Status:
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a386c689-a4ca-40e9-9e93-35022d9237ad/deploy-status)](https://app.netlify.com/sites/peoplescasino/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

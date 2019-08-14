@@ -5,10 +5,10 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 /**
- * @title CasinoCollectables
- * CasinoCollectables - a contract for non-fungible functional casino games.
+ * @title PeoplesCasino
+ * PeoplesCasino - a contract for non-fungible functional casino games.
  */
-contract CasinoCollectables is TradeableERC721Token {
+contract PeoplesCasino is TradeableERC721Token {
 
   using SafeMath for uint;
   mapping(uint => uint) houseReserves;
@@ -17,7 +17,7 @@ contract CasinoCollectables is TradeableERC721Token {
   string _baseTokenURI = "";
 
   constructor(address _proxyRegistryAddress) 
-  TradeableERC721Token("CasinoCollectables", "CCT", _proxyRegistryAddress) 
+  TradeableERC721Token("PeoplesCasino", "PCT", _proxyRegistryAddress) 
   public {}
 
   function baseTokenURI() public view returns (string memory) {
@@ -57,6 +57,7 @@ contract CasinoCollectables is TradeableERC721Token {
   }
 
   function makeBet(uint tokenId, uint oddsPercentage) public payable {
+    require(ownerOf(tokenId) != address(0));
     require(oddsPercentage > 0);
     require(oddsPercentage < 100);
     // Remove 1% house charges

@@ -1,4 +1,4 @@
-const CasinoCollectables = artifacts.require("./CasinoCollectables.sol")
+const PeoplesCasino = artifacts.require("./PeoplesCasino.sol")
 
 module.exports = function(deployer, network) {
   // OpenSea proxy registry addresses for rinkeby and mainnet.
@@ -9,13 +9,13 @@ module.exports = function(deployer, network) {
     proxyRegistryAddress = "0xa5409ec958c83c3f309868babaca7c86dcb077c1"
   }
 
-  deployer.deploy(CasinoCollectables, proxyRegistryAddress, { gas: 5000000 })
+  deployer.deploy(PeoplesCasino, proxyRegistryAddress, { gas: 5000000 })
 
   // Uncomment this if you want initial item sale support.
-  // deployer.deploy(CasinoCollectables, proxyRegistryAddress, {gas: 5000000}).then(() => {
-  //   return deployer.deploy(CasinoCollectablesFactory, proxyRegistryAddress, CasinoCollectables.address, {gas: 7000000});
+  // deployer.deploy(PeoplesCasino, proxyRegistryAddress, {gas: 5000000}).then(() => {
+  //   return deployer.deploy(PeoplesCasinoFactory, proxyRegistryAddress, PeoplesCasino.address, {gas: 7000000});
   // }).then(async() => {
-  //   var CasinoCollectables = await CasinoCollectables.deployed();
-  //   return CasinoCollectables.transferOwnership(CasinoCollectablesFactory.address);
+  //   var PeoplesCasino = await PeoplesCasino.deployed();
+  //   return PeoplesCasino.transferOwnership(PeoplesCasinoFactory.address);
   // })
 }

@@ -7,4 +7,4 @@ const Api = ({ tokenId }) => {
   return JSON.stringify(tokenMetadata)
 }
 
-export { Api }
+export default Api

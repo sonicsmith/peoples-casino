@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import getWeb3 from "./utils/getWeb3"
-import CasinoCollectablesContract from "./contracts/CasinoCollectables.json"
+import PeoplesCasinoContract from "./contracts/PeoplesCasino.json"
 import { NETWORK_ID } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
 import Main from "./components/Main"
@@ -24,11 +24,11 @@ class App extends Component {
       const assistInstance = initializeAssist(web3)
       await onboardUser()
       const accounts = await web3.eth.getAccounts()
-      const network = CasinoCollectablesContract.networks[NETWORK_ID]
+      const network = PeoplesCasinoContract.networks[NETWORK_ID]
       const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
       const contract = assistInstance.Contract(
         new web3.eth.Contract(
-          CasinoCollectablesContract.abi,
+          PeoplesCasinoContract.abi,
           contractAddress || (network && network.address)
         )
       )
