@@ -8,7 +8,7 @@ import TokenView from "./components/TokenView"
 
 const CONTRACT_ADDRESSES = {
   1: "",
-  4: "0x250eA3D088Ee3073B7594b4a3E76719fCe2442Fe"
+  4: "0xc9473767d6f357b5a0b9a50a3a2cc67768c59e1f"
 }
 
 const noAddress = "0x0000000000000000000000000000000000000000"

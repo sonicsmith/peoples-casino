@@ -1200,6 +1200,13 @@ contract TradeableERC721Token is ERC721Full, Ownable {
   }
 }
 
+// File: contracts\PeoplesCasino.sol
+
+pragma solidity ^0.5.0;
+
+
+
+
 /**
  * @title PeoplesCasino
  * PeoplesCasino - a contract for non-fungible functional casino games.
@@ -1212,8 +1219,8 @@ contract PeoplesCasino is TradeableERC721Token {
   event BetResult(uint tokenId, uint roll, bool win);
   string _baseTokenURI = "";
 
-  constructor(address _proxyRegistryAddress)
-  TradeableERC721Token("PeoplesCasino", "CCT", _proxyRegistryAddress) 
+  constructor(address _proxyRegistryAddress) 
+  TradeableERC721Token("PeoplesCasino", "PCT", _proxyRegistryAddress) 
   public {}
 
   function baseTokenURI() public view returns (string memory) {
@@ -1233,10 +1240,12 @@ contract PeoplesCasino is TradeableERC721Token {
   }
 
   function getHouseReserve(uint tokenId) public view returns (uint) {
+    require(ownerOf(tokenId) != address(0));
     return houseReserves[tokenId];
   } 
 
   function addToHouseReserve(uint tokenId) public payable {
+    require(ownerOf(tokenId) != address(0));
     houseReserves[tokenId] += msg.value;
   } 
 
@@ -1251,6 +1260,7 @@ contract PeoplesCasino is TradeableERC721Token {
   }
 
   function makeBet(uint tokenId, uint oddsPercentage) public payable {
+    require(ownerOf(tokenId) != address(0));
     require(oddsPercentage > 0);
     require(oddsPercentage < 100);
     // Remove 1% house charges
