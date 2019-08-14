@@ -1,4 +1,4 @@
-# Peoples Casino
+# People's Casino
 
 ### Deployment Status:
 

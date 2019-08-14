@@ -71,7 +71,6 @@ export const invertColor = hex => {
 
 export const getRandomColor = seed => {
   var letters = "0123456789ABCDEF"
-  console.log(random(seed, 16))
   var color = "#"
   for (var i = 0; i < 6; i++) {
     const newSeed = `${seed}${i}`

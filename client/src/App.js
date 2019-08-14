@@ -59,11 +59,15 @@ class App extends Component {
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
-      const houseReserve = await methods.getHouseReserve(tokenId).call()
       const ownerOfToken = await methods.ownerOf(tokenId).call()
-      console.log("houseReserve:", houseReserve)
-      console.log("ownerOfToken:", ownerOfToken)
-      this.setState({ houseReserve, ownerOfToken })
+      if (ownerOfToken === noAddress) {
+        this.setState({ houseReserve: 0, ownerOfToken })
+      } else {
+        const houseReserve = await methods.getHouseReserve(tokenId).call()
+        console.log("houseReserve:", houseReserve)
+        console.log("ownerOfToken:", ownerOfToken)
+        this.setState({ houseReserve, ownerOfToken })
+      }
     }
   }
 
