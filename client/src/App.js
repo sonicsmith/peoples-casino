@@ -64,8 +64,6 @@ class App extends Component {
         this.setState({ houseReserve: 0, ownerOfToken })
       } else {
         const houseReserve = await methods.getHouseReserve(tokenId).call()
-        console.log("houseReserve:", houseReserve)
-        console.log("ownerOfToken:", ownerOfToken)
         this.setState({ houseReserve, ownerOfToken })
       }
     }
