@@ -20,9 +20,13 @@ class App extends Component {
 
   componentDidMount = async () => {
     try {
+      console.log("componentDidMount")
       const web3 = await getWeb3()
+      console.log("web3 got")
       const assistInstance = initializeAssist(web3)
+      console.log("assist initialized")
       await onboardUser()
+      console.log("User onboarded")
       const accounts = await web3.eth.getAccounts()
       const network = PeoplesCasinoContract.networks[NETWORK_ID]
       const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
