@@ -2,7 +2,8 @@ import {
   getRandomItem,
   getRandomIndex,
   invertColor,
-  getRandomColor
+  getRandomColor,
+  titleCase
 } from "./../utils/misc"
 import names from "./names"
 import { greetings, moneyAdjectives, moneySlangs } from "./misc"
@@ -22,7 +23,7 @@ export const getName = tokenId => {
   const container = getRandomItem(tokenId, containers).name
   const object = getRandomItem(tokenId, objects).name
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
-  return `${first} ${last}'${s} ${container} of ${object}`
+  return titleCase(`${first} ${last}'${s} ${container} of ${object}`)
 }
 
 export const getDescriptionArray = tokenId => {
@@ -32,6 +33,7 @@ export const getDescriptionArray = tokenId => {
   const container = getRandomItem(tokenId, containers).name
   const subject = getRandomItem(tokenId, subjects).name
   const object = getRandomItem(tokenId, objects).name
+  // TODO: join \n to make array
   return [
     `${greeting}, wanna try your luck!?`,
     `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} 
@@ -90,5 +92,27 @@ export const getTokenMetadata = tokenId => {
     description: getDescriptionArray(tokenId),
     descriptionEmojis: getDescriptionEmojis(tokenId),
     imageAttributes: getImageAttributes(tokenId)
+  }
+}
+
+const getAttributes = tokenId => {
+  const sex = getIsMale(tokenId) ? "male" : "female"
+  return [
+    {
+      trait_type: "sex",
+      value: sex
+    }
+  ]
+}
+
+export const getAPITokenMetadata = tokenId => {
+  return {
+    name: getName(tokenId),
+    description: getDescriptionArray(tokenId),
+    external_url: `http://peoplescasino.online/${tokenId}`,
+    // image_data: rawImageData(tokenId),
+    image: `http://peoplescasino.online/image/${tokenId}`,
+    background_color: getRandomColor(`${tokenId}`),
+    attributes: getAttributes(tokenId)
   }
 }

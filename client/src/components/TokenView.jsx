@@ -9,7 +9,7 @@ import {
   Box
 } from "grommet"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
-import ImageData from "./ImageData"
+import TokenImage from "./TokenImage"
 import HouseBank from "./HouseBank"
 import BetControls from "./BetControls"
 import {
@@ -17,7 +17,6 @@ import {
   addToHouseReserve,
   subtractFromHouseReserve
 } from "../utils/methods"
-import { titleCase } from "../utils/misc"
 
 const useTokenMetadata = tokenId => {
   const [tokenMetadata, setTokenMetadata] = useState({})
@@ -88,7 +87,7 @@ const TokenView = ({
           background="tokenBackground"
         >
           <Heading textAlign="center" level={2}>
-            {titleCase(tokenMetadata.name)} (#{tokenId})
+            {tokenMetadata.name} (#{tokenId})
           </Heading>
           <Box width="medium">
             {tokenMetadata.description.map(line => {
@@ -101,7 +100,7 @@ const TokenView = ({
           </Box>
           <Box>
             <Box pad="small">
-              <ImageData imageAttributes={tokenMetadata.imageAttributes} />
+              <TokenImage tokenId={tokenId} />
             </Box>
             <Box pad="small">
               <Text textAlign="center" size="xlarge">

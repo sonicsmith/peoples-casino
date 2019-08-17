@@ -1,1 +1,4 @@
-/*    /index.html   200
+/api/* /.netlify/functions/api 200
+/token/* /index.html 200
+/image/* /index.html 200
+/* /index.html 200

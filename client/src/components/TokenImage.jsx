@@ -1,7 +1,10 @@
 import React from "react"
 import Avatar from "avataaars"
+import { getImageAttributes } from "./../tokenMetadata/getTokenMetadata"
 
-const ImageData = ({ imageAttributes }) => {
+const TokenImage = ({ tokenId }) => {
+  const imageAttributes = getImageAttributes(tokenId)
+  console.log(tokenId, typeof tokenId)
   return (
     <Avatar
       avatarStyle="Circle"
@@ -18,4 +21,4 @@ const ImageData = ({ imageAttributes }) => {
   )
 }
 
-export default ImageData
+export default TokenImage

@@ -5,7 +5,7 @@ import App from "./App"
 import Main from "./components/Main"
 import * as serviceWorker from "./serviceWorker"
 import { BrowserRouter as Router, Route } from "react-router-dom"
-import Api from "./Api"
+import TokenImage from "./components/TokenImage"
 
 const RoutedApp = () => {
   return (
@@ -13,7 +13,17 @@ const RoutedApp = () => {
       <Route exact path="/" component={Main} />
       <Route
         exact
-        path="/:tokenId"
+        path="/image/:tokenId"
+        render={({ match }) => {
+          const { tokenId } = match.params
+          if (tokenId && !isNaN(tokenId)) {
+            return <TokenImage tokenId={tokenId} />
+          }
+        }}
+      />
+      <Route
+        exact
+        path="/token/:tokenId"
         render={({ match }) => {
           const { tokenId } = match.params
           if (!tokenId || isNaN(tokenId)) {

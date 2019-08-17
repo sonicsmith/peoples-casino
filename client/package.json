@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "avataaars": "^1.2.1",
-    "bnc-assist": "^0.9.6",
+    "bnc-assist": "^0.10.0",
     "grommet": "^2.7.3",
+    "jsx-to-string": "^1.4.0",
+    "netlify-lambda": "^1.5.1",
     "polished": "^3.4.1",
     "random": "^2.1.1",
     "react": "^16.8.6",
@@ -17,6 +19,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-api": "netlify-lambda serve lambda",
+    "build-api": "netlify-lambda build lambda",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
