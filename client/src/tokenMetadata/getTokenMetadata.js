@@ -36,8 +36,7 @@ export const getDescriptionArray = tokenId => {
   // TODO: join \n to make array
   return [
     `${greeting}, wanna try your luck!?`,
-    `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} 
-  in my ${container} full of ${object}!`
+    `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} in my ${container} full of ${object}!`
   ]
 }
 
@@ -101,6 +100,11 @@ const getAttributes = tokenId => {
     {
       trait_type: "sex",
       value: sex
+    },
+    {
+      display_type: "number",
+      trait_type: "generation",
+      value: (Number(tokenId) % 1000) + 1
     }
   ]
 }
@@ -108,9 +112,8 @@ const getAttributes = tokenId => {
 export const getAPITokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
-    description: getDescriptionArray(tokenId),
-    external_url: `http://peoplescasino.online/${tokenId}`,
-    // image_data: rawImageData(tokenId),
+    description: getDescriptionArray(tokenId).join(" "),
+    external_url: `http://peoplescasino.online/token/${tokenId}`,
     image: `http://peoplescasino.online/image/${tokenId}`,
     background_color: getRandomColor(`${tokenId}`),
     attributes: getAttributes(tokenId)
