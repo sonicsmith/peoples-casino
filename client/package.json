@@ -19,8 +19,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-api": "netlify-lambda serve lambda",
-    "build-api": "netlify-lambda build lambda",
+    "start-api": "netlify-lambda serve src/lambda",
+    "build-api": "netlify-lambda build src/lambda",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

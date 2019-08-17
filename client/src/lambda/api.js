@@ -1,4 +1,4 @@
-import { getAPITokenMetadata } from "./../../client/src/tokenMetadata/getTokenMetadata"
+import { getAPITokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 
 exports.handler = function(event, context, callback) {
   const tokenId = event.path.substring(5)
