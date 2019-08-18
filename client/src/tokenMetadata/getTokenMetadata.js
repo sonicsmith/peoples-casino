@@ -33,7 +33,6 @@ export const getDescriptionArray = tokenId => {
   const container = getRandomItem(tokenId, containers).name
   const subject = getRandomItem(tokenId, subjects).name
   const object = getRandomItem(tokenId, objects).name
-  // TODO: join \n to make array
   return [
     `${greeting}, wanna try your luck!?`,
     `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} in my ${container} full of ${object}!`
@@ -96,6 +95,7 @@ export const getTokenMetadata = tokenId => {
 
 const getAttributes = tokenId => {
   const sex = getIsMale(tokenId) ? "male" : "female"
+  const generation = Math.floor(Number(tokenId) / 1000) + 1
   return [
     {
       trait_type: "sex",
@@ -104,9 +104,34 @@ const getAttributes = tokenId => {
     {
       display_type: "number",
       trait_type: "generation",
-      value: (Number(tokenId) % 1000) + 1
+      value: generation
     }
   ]
+}
+
+const getImageUrl = tokenId => {
+  let url = "https://avataaars.io/?avatarStyle=Circle"
+  const {
+    topTypes,
+    facialHairTypes,
+    accessoriesTypes,
+    hairColors,
+    clotheTypes,
+    eyeTypes,
+    eyebrowTypes,
+    mouthTypes,
+    skinTypes
+  } = getImageAttributes(tokenId)
+  url += `topType=${topTypes}&`
+  url += `facialHairType=${facialHairTypes}&`
+  url += `accessoriesType=${accessoriesTypes}&`
+  url += `hairColor=${hairColors}&`
+  url += `clotheType=${clotheTypes}&`
+  url += `eyeType=${eyeTypes}&`
+  url += `eyebrowType=${eyebrowTypes}&`
+  url += `mouthType=${mouthTypes}&`
+  url += `skinColor=${skinTypes}`
+  return url
 }
 
 export const getAPITokenMetadata = tokenId => {
@@ -114,7 +139,8 @@ export const getAPITokenMetadata = tokenId => {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId).join(" "),
     external_url: `http://peoplescasino.online/token/${tokenId}`,
-    image: `http://peoplescasino.online/image/${tokenId}`,
+    image: getImageUrl(tokenId),
+    // image_raw: getRawImage(tokenId),
     background_color: getRandomColor(`${tokenId}`),
     attributes: getAttributes(tokenId)
   }

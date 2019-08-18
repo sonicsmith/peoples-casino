@@ -1,10 +1,10 @@
 import React from "react"
 import Avatar from "avataaars"
 import { getImageAttributes } from "./../tokenMetadata/getTokenMetadata"
+import jsxToString from "jsx-to-string"
 
 const TokenImage = ({ tokenId }) => {
   const imageAttributes = getImageAttributes(tokenId)
-  console.log(tokenId, typeof tokenId)
   return (
     <Avatar
       avatarStyle="Circle"
@@ -20,5 +20,9 @@ const TokenImage = ({ tokenId }) => {
     />
   )
 }
+
+// export const getSvgString = tokenId => {
+//   return jsxToString(<TokenImage tokenId={tokenId} />)
+// }
 
 export default TokenImage
