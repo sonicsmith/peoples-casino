@@ -110,7 +110,7 @@ const getAttributes = tokenId => {
 }
 
 const getImageUrl = tokenId => {
-  let url = "https://avataaars.io/?avatarStyle=Circle"
+  let url = "https://avataaars.io/?avatarStyle=Circle&"
   const {
     topTypes,
     facialHairTypes,
