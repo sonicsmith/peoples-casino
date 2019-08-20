@@ -13,16 +13,6 @@ const RoutedApp = () => {
       <Route exact path="/" component={Main} />
       <Route
         exact
-        path="/image/:tokenId"
-        render={({ match }) => {
-          const { tokenId } = match.params
-          if (tokenId && !isNaN(tokenId)) {
-            return <TokenImage tokenId={tokenId} />
-          }
-        }}
-      />
-      <Route
-        exact
         path="/token/:tokenId"
         render={({ match }) => {
           const { tokenId } = match.params

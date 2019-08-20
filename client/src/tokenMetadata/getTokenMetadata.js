@@ -63,8 +63,8 @@ export const getImageAttributes = tokenId => {
     mouthTypes,
     skinTypes
   } = imageAttributes
-  const background = getRandomColor(`${tokenId}`)
-  const tokenBackground = invertColor(background)
+  const tokenBackground = getRandomColor(tokenId)
+  const background = invertColor(tokenBackground)
   let accessories = "Blank"
   // Every 3rd token has accessories
   if (tokenId % 3 === 0) {
@@ -109,39 +109,12 @@ const getAttributes = tokenId => {
   ]
 }
 
-const getImageUrl = tokenId => {
-  let url = "https://avataaars.io/?avatarStyle=Circle&"
-  const {
-    topTypes,
-    facialHairTypes,
-    accessoriesTypes,
-    hairColors,
-    clotheTypes,
-    eyeTypes,
-    eyebrowTypes,
-    mouthTypes,
-    skinTypes
-  } = getImageAttributes(tokenId)
-  url += `topType=${topTypes}&`
-  url += `facialHairType=${facialHairTypes}&`
-  url += `accessoriesType=${accessoriesTypes}&`
-  url += `hairColor=${hairColors}&`
-  url += `clotheType=${clotheTypes}&`
-  url += `eyeType=${eyeTypes}&`
-  url += `eyebrowType=${eyebrowTypes}&`
-  url += `mouthType=${mouthTypes}&`
-  url += `skinColor=${skinTypes}`
-  return url
-}
-
 export const getAPITokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId).join(" "),
     external_url: `http://peoplescasino.online/token/${tokenId}`,
-    image: getImageUrl(tokenId),
-    // image_raw: getRawImage(tokenId),
-    background_color: getRandomColor(`${tokenId}`),
+    background_color: getRandomColor(tokenId),
     attributes: getAttributes(tokenId)
   }
 }
