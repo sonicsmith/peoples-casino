@@ -28,9 +28,12 @@ const useTokenMetadata = tokenId => {
   return tokenMetadata
 }
 
-const noAddress = "0x0000000000000000000000000000000000000000"
-const getIsTokenOwned = address => {
-  return address !== noAddress
+const notSold = [
+  "0x0000000000000000000000000000000000000000"
+  // "0xefDD4C11efD4df6F1173150e89102D343ae50AA4"
+]
+const getIsTokenAvailable = address => {
+  return notSold.includes(address)
 }
 
 const TokenView = ({
@@ -51,6 +54,10 @@ const TokenView = ({
     return web3.utils.toWei(amount.toString(), "ether")
   }
 
+  const convertToEth = amount => {
+    return web3.utils.fromWei(amount.toString(), "ether")
+  }
+
   if (!web3) {
     if (web3Error) {
       return <div>ERROR: Cannot connect to web3</div>
@@ -59,7 +66,7 @@ const TokenView = ({
     }
   }
 
-  const isTokenOwned = getIsTokenOwned(ownerOfToken)
+  const isTokenOwned = !getIsTokenAvailable(ownerOfToken)
   const { descriptionEmojis, imageAttributes } = tokenMetadata
   const { object: objectEmoji, subject: subjectEmoji } = descriptionEmojis
   let emojis = []
@@ -68,7 +75,7 @@ const TokenView = ({
   }
   const tokenTheme = {
     global: {
-      // font: { family: "Oswald" },
+      // font: { family: "Indie Flower" },
       colors: { ...imageAttributes.colorScheme, border: "black" }
     }
   }
@@ -108,7 +115,7 @@ const TokenView = ({
               </Text>
             </Box>
           </Box>
-          {isTokenOwned ? (
+          {isTokenOwned && !isManagingCasino ? (
             <BetControls
               convertToWei={convertToWei}
               oddsPercentage={oddsPercentage}
@@ -126,15 +133,10 @@ const TokenView = ({
               </Heading>
             </Box>
           )}
-          {ownerOfToken === accounts[0] && (
-            <Button
-              label={isManagingCasino ? "CLOSE" : "MANAGE MY TOKEN"}
-              primary
-              onClick={() => setIsManagingCasino(!isManagingCasino)}
-            />
-          )}
           {isManagingCasino && (
             <HouseBank
+              convertToEth={convertToEth}
+              houseReserve={houseReserve}
               addToHouseReserve={amount => {
                 addToHouseReserve({ web3, contract, accounts, tokenId, amount })
               }}
@@ -148,6 +150,15 @@ const TokenView = ({
                 })
               }}
             />
+          )}
+          {ownerOfToken === accounts[0] && (
+            <Box margin="medium">
+              <Button
+                label={isManagingCasino ? "BACK" : "MANAGE MY TOKEN"}
+                primary
+                onClick={() => setIsManagingCasino(!isManagingCasino)}
+              />
+            </Box>
           )}
         </Box>
       </Box>

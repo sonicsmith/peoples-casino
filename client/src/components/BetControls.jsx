@@ -55,14 +55,20 @@ const BetControls = ({
             onChange={event => setBetAmount(event.target.value)}
           />
         </Box>
-        <Box align="center" style={payoutTooHigh ? { color: "red" } : {}}>
+        <Box
+          align="center"
+          margin="medium"
+          style={payoutTooHigh ? { color: "red" } : {}}
+        >
           <Text>PAYOUT {round(payout)} ETH</Text>
           {payoutTooHigh && (
             <Text>Not enough money in the house for a wager that high!</Text>
           )}
         </Box>
+        <Box>
+          <Button label={"BET"} primary onClick={makeBet} />
+        </Box>
       </Box>
-      <Button label={"BET"} primary onClick={makeBet} />
     </Box>
   )
 }
