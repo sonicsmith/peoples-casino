@@ -7,12 +7,11 @@ const makeBet = ({
   tokenId
 }) => {
   if (contract) {
-    const { methods } = web3.contract
+    const { methods } = contract
     const from = accounts[0]
-    const value = web3.utils.toWei(betAmount.toString(), "ether")
     methods
       .makeBet(tokenId, oddsPercentage)
-      .send({ from, value, gas: 300000 }, res => {
+      .send({ from, value: betAmount, gas: 300000 }, res => {
         if (!res) {
           console.log("Transaction sent", res)
           // Transaction sent

@@ -7,8 +7,8 @@ const HouseBank = ({
   addToHouseReserve,
   subtractFromHouseReserve
 }) => {
-  const [amount, setAmount] = useState(0)
   const currentBalance = convertToEth(houseReserve)
+  const [amount, setAmount] = useState(currentBalance)
   return (
     <Box
       align="center"
@@ -24,9 +24,9 @@ const HouseBank = ({
           "Enter the amount of ETH you would",
           "like to deposit into your token.",
           "(House balance can be withdrawn at any time)"
-        ].map(line => {
+        ].map((line, i) => {
           return (
-            <Text textAlign="center" size="medium">
+            <Text textAlign="center" size="medium" key={i}>
               {line}
             </Text>
           )
@@ -41,7 +41,11 @@ const HouseBank = ({
         <TextInput
           type="number"
           value={amount}
-          onChange={event => setAmount(event.target.value)}
+          onChange={event => {
+            if (event.target.value <= currentBalance) {
+              setAmount(event.target.value)
+            }
+          }}
         />
       </Box>
       <Box margin="small">

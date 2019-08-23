@@ -45,17 +45,15 @@ const TokenView = ({
   web3Error,
   tokenId
 }) => {
-  const [oddsPercentage, setOddsPercentage] = useState(50)
-  const [betAmount, setBetAmount] = useState(1)
   const [isManagingCasino, setIsManagingCasino] = useState(false)
   const tokenMetadata = useTokenMetadata(tokenId)
 
   const convertToWei = amount => {
-    return web3.utils.toWei(amount.toString(), "ether")
+    return web3.utils.toWei(String(amount), "ether")
   }
 
   const convertToEth = amount => {
-    return web3.utils.fromWei(amount.toString(), "ether")
+    return web3.utils.fromWei(String(amount), "ether")
   }
 
   if (!web3) {
@@ -118,11 +116,17 @@ const TokenView = ({
           {isTokenOwned && !isManagingCasino ? (
             <BetControls
               convertToWei={convertToWei}
-              oddsPercentage={oddsPercentage}
-              setOddsPercentage={setOddsPercentage}
-              betAmount={betAmount}
-              setBetAmount={setBetAmount}
-              makeBet={makeBet}
+              convertToEth={convertToEth}
+              makeBet={(amount, oddsPercentage) => {
+                makeBet({
+                  web3,
+                  contract,
+                  accounts,
+                  oddsPercentage,
+                  betAmount: convertToWei(amount),
+                  tokenId
+                })
+              }}
               houseReserve={houseReserve}
             />
           ) : (

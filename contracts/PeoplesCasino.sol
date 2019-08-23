@@ -15,6 +15,7 @@ contract PeoplesCasino is TradeableERC721Token {
   uint MAX_PAYOUT = 3 ether;
   event BetResult(uint tokenId, uint roll, bool win);
   string _baseTokenURI = "";
+  mapping(uint => string) extraData;
 
   constructor(address _proxyRegistryAddress) 
   TradeableERC721Token("PeoplesCasino", "PCT", _proxyRegistryAddress) 
@@ -49,6 +50,7 @@ contract PeoplesCasino is TradeableERC721Token {
   function subtractFromHouseReserve(uint tokenId, uint amount) public payable {
     require(msg.sender == ownerOf(tokenId));
     require(houseReserves[tokenId] >= amount);
+    houseReserves[tokenId] -= amount;
     msg.sender.transfer(amount);
   } 
 
@@ -58,8 +60,8 @@ contract PeoplesCasino is TradeableERC721Token {
 
   function makeBet(uint tokenId, uint oddsPercentage) public payable {
     require(ownerOf(tokenId) != address(0));
-    require(oddsPercentage > 0);
-    require(oddsPercentage < 100);
+    require(oddsPercentage > 1);
+    require(oddsPercentage < 99);
     // Remove 1% house charges
     uint payout = msg.value.mul(99).div(oddsPercentage);
     require(payout < houseReserves[tokenId].add(msg.value));
@@ -72,9 +74,16 @@ contract PeoplesCasino is TradeableERC721Token {
     // Payout winner if needed
     if (roll <= oddsPercentage) {
       msg.sender.transfer(payout);
+      // Remove winnings from house.
+      houseReserves[tokenId] = houseReserves[tokenId].sub(payout);
     }
     // Make the result available
     emit BetResult(tokenId, roll, roll <= oddsPercentage);
   }
+
+  function setExtraData(uint tokenId, string memory data) public payable {
+    require(ownerOf(tokenId) != address(0));
+    extraData[tokenId] = data;
+  } 
 
 }

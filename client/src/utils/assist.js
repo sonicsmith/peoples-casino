@@ -10,6 +10,12 @@ export const decorateContract = contract => getAssist().Contract(contract)
 export const decorateTransaction = txObject => getAssist().Transaction(txObject)
 export const getUserState = () => getAssist().getState()
 
+const METHOD_TO_WORD = {
+  makeBet: "bet",
+  addToHouseReserve: "deposit",
+  subtractFromHouseReserve: "withdrawl"
+}
+
 // Returns initialized assist object if previously initialized.
 // Otherwise will initialize assist with the config object
 export function getAssist(web3) {
@@ -25,27 +31,21 @@ export function getAssist(web3) {
       },
 
       messages: {
-        txRequest: () => "Waiting for you to confirm the action",
+        txRequest: () => "Waiting for you to confirm the transaction",
+        nsfFail: ({ contract }) =>
+          `You don't have enough ETH to make this ${
+            METHOD_TO_WORD[contract.methodName]
+          }`,
         txStall: ({ contract }) =>
-          contract.methodName === "sendMinersToPlanet"
-            ? `The miners are taking longer to get to the planet than expected...`
-            : `Selling Kerium is taking longer than expected...`,
-        txSent: ({ contract }) =>
-          contract.methodName === "sendMinersToPlanet"
-            ? "Preparing your miners"
-            : "Putting in a request to sell your Kerium",
-        txPending: ({ contract }) =>
-          contract.methodName === "sendMinersToPlanet"
-            ? "Your miners are on their way!"
-            : "Selling your Kerium",
+          `Your ${
+            METHOD_TO_WORD[contract.methodName]
+          } is taking a bit longer than expected`,
         txConfirmed: ({ contract }) =>
-          contract.methodName === "sendMinersToPlanet"
-            ? "Your miners have arrived on the planet!"
-            : "Your Kerium sold!",
+          `Your ${METHOD_TO_WORD[contract.methodName]} has been made!`,
         txFailed: ({ contract }) =>
-          contract.methodName === "sendMinersToPlanet"
-            ? "Something went wrong while deploying your miners"
-            : "Something went wrong while selling your Kerium"
+          `The transaction to make your ${
+            METHOD_TO_WORD[contract.methodName]
+          } has failed`
       }
     })
   }
