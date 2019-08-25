@@ -18,7 +18,6 @@ const round = amount => {
 }
 
 const roundDown = amount => {
-  console.log(amount * NUM_DP)
   return Math.floor(amount * NUM_DP) / NUM_DP
 }
 
@@ -68,7 +67,7 @@ const BetControls = ({ convertToWei, convertToEth, makeBet, houseReserve }) => {
         >
           <Text>PAYOUT {round(payout)} ETH</Text>
           {payoutTooHigh && (
-            <Text>Not enough money in the house for a wager that high!</Text>
+            <Text>Casino not backed for a wager that high!</Text>
           )}
         </Box>
         <Box>

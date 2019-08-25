@@ -27,7 +27,7 @@ const getRawSvg = tokenId => {
 exports.handler = function(event, context, callback) {
   const tokenId = event.path.substring(5)
   const metaData = getAPITokenMetadata(`${tokenId}`)
-  metaData.image_raw = getRawSvg(tokenId)
+  metaData.image_data = getRawSvg(tokenId)
   callback(null, {
     statusCode: 200,
     body: JSON.stringify(metaData)

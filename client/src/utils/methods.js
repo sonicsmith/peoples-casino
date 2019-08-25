@@ -9,33 +9,15 @@ const makeBet = ({
   if (contract) {
     const { methods } = contract
     const from = accounts[0]
-    methods
+    return methods
       .makeBet(tokenId, oddsPercentage)
-      .send({ from, value: betAmount, gas: 300000 }, res => {
-        if (!res) {
-          console.log("Transaction sent", res)
-          // Transaction sent
-        } else {
-          console.log("Canceled", res)
-          // Canceled
-        }
+      .send({ from, value: betAmount, gas: 300000 }, err => {
+        return err && { canceled: true }
       })
-      .then(res => {
-        const { BetResult } = res.events
-        const { roll, win } = BetResult.returnValues
-        console.log("Transaction went through")
-        if (win) {
-          // Show win result
-          console.log("WINNER", roll)
-        } else {
-          // Show lose result
-          console.log("LOSS", roll)
-        }
-      })
-      .catch(e => {
-        console.log("ERROR", e)
-      })
+      .then(({ events }) => events.BetResult.returnValues)
+      .catch(e => e)
   }
+  return { err: true }
 }
 
 const addToHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
@@ -43,25 +25,13 @@ const addToHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
     const { methods } = contract
     const from = accounts[0]
     const value = web3.utils.toWei(amount, "ether")
-    methods
+    return methods
       .addToHouseReserve(tokenId)
-      .send({ from, value, gas: 300000 }, res => {
-        if (!res) {
-          console.log("Transaction sent", res)
-          // Transaction sent
-        } else {
-          console.log("Canceled", res)
-          // Canceled
-        }
-      })
-      .then(res => {
-        console.log("Transaction went through", res)
-        // Transaction went through
-      })
-      .catch(e => {
-        //
-      })
+      .send({ from, value, gas: 300000 }, res => !res)
+      .then(() => true)
+      .catch(() => false)
   }
+  return false
 }
 
 const subtractFromHouseReserve = ({
@@ -75,25 +45,13 @@ const subtractFromHouseReserve = ({
     const { methods } = contract
     const from = accounts[0]
     const wei = web3.utils.toWei(amount, "ether")
-    methods
+    return methods
       .subtractFromHouseReserve(tokenId, wei)
-      .send({ from, value: 0, gas: 300000 }, res => {
-        if (!res) {
-          console.log("Transaction sent", res)
-          // Transaction sent
-        } else {
-          console.log("Canceled", res)
-          // Canceled
-        }
-      })
-      .then(res => {
-        console.log("Transaction went through", res)
-        // Transaction went through
-      })
-      .catch(e => {
-        //
-      })
+      .send({ from, value: 0, gas: 300000 }, res => !res)
+      .then(() => true)
+      .catch(() => false)
   }
+  return false
 }
 
 export { makeBet, addToHouseReserve, subtractFromHouseReserve }

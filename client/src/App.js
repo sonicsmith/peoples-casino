@@ -1,21 +1,26 @@
 import React, { Component } from "react"
 import getWeb3 from "./utils/getWeb3"
 import PeoplesCasinoContract from "./contracts/PeoplesCasino.json"
-import { NETWORK_ID } from "./config"
+import { NETWORK_ID, CONTRACT_ADDRESSES } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
+import { getIsTokenForSale, getIsTokenMinted } from "./utils/misc"
 import Main from "./components/Main"
 import TokenView from "./components/TokenView"
 
-const CONTRACT_ADDRESSES = {
-  1: "",
-  4: "0xc9473767d6f357b5a0b9a50a3a2cc67768c59e1f"
-}
-
-const noAddress = "0x0000000000000000000000000000000000000000"
-
 class App extends Component {
   state = {
-    ownerOfToken: noAddress
+    ownerOfToken: null,
+    notificationEvent: () => {
+      console.log("event swallowed")
+    }
+  }
+
+  handleNotificationEvent = event => {
+    return this.state.notificationEvent(event)
+  }
+
+  setNotificationEventListener = callback => {
+    this.setState({ notificationEvent: callback })
   }
 
   componentDidMount = async () => {
@@ -23,7 +28,10 @@ class App extends Component {
       console.log("componentDidMount")
       const web3 = await getWeb3()
       console.log("web3 got")
-      const assistInstance = initializeAssist(web3)
+      const assistInstance = initializeAssist(
+        web3,
+        this.handleNotificationEvent
+      )
       console.log("assist initialized")
       await onboardUser()
       console.log("User onboarded")
@@ -58,16 +66,19 @@ class App extends Component {
   }
 
   refresh = async () => {
-    const { contract } = this.state
+    const { contract, accounts } = this.state
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
+      // await methods
+      //   .mint(tokenId)
+      //   .send({ from: accounts[0], value: 0, gas: 300000 })
       const ownerOfToken = await methods.ownerOf(tokenId).call()
-      if (ownerOfToken === noAddress) {
-        this.setState({ houseReserve: 0, ownerOfToken })
-      } else {
+      if (getIsTokenMinted(ownerOfToken)) {
         const houseReserve = await methods.getHouseReserve(tokenId).call()
         this.setState({ houseReserve, ownerOfToken })
+      } else {
+        this.setState({ houseReserve: 0, ownerOfToken })
       }
     }
   }
@@ -82,11 +93,13 @@ class App extends Component {
       contract
     } = this.state
     const { tokenId } = this.props
-    if (tokenId >= 0) {
+    if (tokenId >= 0 && getIsTokenMinted(ownerOfToken)) {
       return (
         <TokenView
+          setNotificationEventListener={this.setNotificationEventListener}
           ownerOfToken={ownerOfToken}
           houseReserve={houseReserve}
+          refreshData={this.refresh}
           web3={web3}
           accounts={accounts}
           contract={contract}

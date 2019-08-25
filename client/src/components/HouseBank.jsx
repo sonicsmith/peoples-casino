@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Button, Heading, Text, RangeInput, TextInput, Box } from "grommet"
 
 const HouseBank = ({
+  boxStyle,
+  refreshData,
   convertToEth,
   houseReserve,
   addToHouseReserve,
@@ -10,15 +12,7 @@ const HouseBank = ({
   const currentBalance = convertToEth(houseReserve)
   const [amount, setAmount] = useState(currentBalance)
   return (
-    <Box
-      align="center"
-      direction="column"
-      border={{ color: "border", size: "large" }}
-      margin="small"
-      pad="medium"
-      round={true}
-      background="white"
-    >
+    <Box {...boxStyle}>
       <Box margin="small">
         {[
           "Enter the amount of ETH you would",
@@ -42,7 +36,7 @@ const HouseBank = ({
           type="number"
           value={amount}
           onChange={event => {
-            if (event.target.value <= currentBalance) {
+            if (event.target.value > 0) {
               setAmount(event.target.value)
             }
           }}
@@ -57,6 +51,7 @@ const HouseBank = ({
       </Box>
       <Box margin="small">
         <Button
+          disabled={amount > currentBalance}
           label={"WITHDRAWL"}
           primary
           onClick={() => subtractFromHouseReserve(amount)}

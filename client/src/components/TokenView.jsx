@@ -8,45 +8,66 @@ import {
   TextInput,
   Box
 } from "grommet"
+import { ownerAdddress } from "./../config"
+import { getIsTokenForSale, getIsTokenMinted } from "./../utils/misc"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import TokenImage from "./TokenImage"
 import HouseBank from "./HouseBank"
 import BetControls from "./BetControls"
+import OutcomeView from "./OutcomeView"
 import {
   makeBet,
   addToHouseReserve,
   subtractFromHouseReserve
 } from "../utils/methods"
 
-const useTokenMetadata = tokenId => {
-  const [tokenMetadata, setTokenMetadata] = useState({})
-  useEffect(() => {
-    if (tokenId >= 0) {
-      setTokenMetadata(getTokenMetadata(tokenId))
-    }
-  }, tokenId)
-  return tokenMetadata
+const MAIN_BOX_STYLE = {
+  align: "center",
+  direction: "column",
+  border: { color: "border", size: "large" },
+  margin: "medium",
+  pad: "medium",
+  round: true,
+  background: "white"
 }
 
-const notSold = [
-  "0x0000000000000000000000000000000000000000"
-  // "0xefDD4C11efD4df6F1173150e89102D343ae50AA4"
-]
-const getIsTokenAvailable = address => {
-  return notSold.includes(address)
-}
+const WAITING_FOR_BET = 0
+const WAITING_FOR_RESULT = 1
+const DISPLAYING_RESULT = 2
 
 const TokenView = ({
   ownerOfToken,
   houseReserve,
+  refreshData,
   web3,
   contract,
   accounts,
   web3Error,
-  tokenId
+  tokenId,
+  setNotificationEventListener
 }) => {
   const [isManagingCasino, setIsManagingCasino] = useState(false)
-  const tokenMetadata = useTokenMetadata(tokenId)
+  const tokenMetadata = getTokenMetadata(tokenId)
+  const [betState, setBetState] = useState(WAITING_FOR_BET)
+  const [betOutcome, setBetOutcome] = useState()
+  /*
+eventCode txRequest makeBet
+TokenView.jsx:56 eventCode txSent makeBet
+TokenView.jsx:56 eventCode txPending makeBet
+TokenView.jsx:56 eventCode txConfirmed makeBet
+TokenView.jsx:56 eventCode txConfirmedClient makeBet
+*/
+  useEffect(() => {
+    setNotificationEventListener(({ eventCode, contract }) => {
+      console.log("eventCode", eventCode, contract.methodName)
+      if (contract.methodName === "makeBet") {
+        if (eventCode === "txSent") {
+          setBetState(WAITING_FOR_RESULT)
+        }
+      }
+      return true
+    })
+  }, [])
 
   const convertToWei = amount => {
     return web3.utils.toWei(String(amount), "ether")
@@ -64,9 +85,10 @@ const TokenView = ({
     }
   }
 
-  const isTokenOwned = !getIsTokenAvailable(ownerOfToken)
+  const tokenForSale = getIsTokenForSale(ownerOfToken)
   const { descriptionEmojis, imageAttributes } = tokenMetadata
   const { object: objectEmoji, subject: subjectEmoji } = descriptionEmojis
+
   let emojis = []
   for (let i = 0; i < 3; i++) {
     emojis = [...emojis, subjectEmoji, objectEmoji]
@@ -91,6 +113,7 @@ const TokenView = ({
           width="large"
           background="tokenBackground"
         >
+          {/* TOKEN */}
           <Heading textAlign="center" level={2}>
             {tokenMetadata.name} (#{tokenId})
           </Heading>
@@ -113,8 +136,19 @@ const TokenView = ({
               </Text>
             </Box>
           </Box>
-          {isTokenOwned && !isManagingCasino ? (
+          {/* NO OWNER */}
+          {tokenForSale && (
+            <Box>
+              <Heading textAlign="center" level={3}>
+                This token is unowned! Buy it in{" "}
+                <a href="https://opensea.io/">OpenSea!</a>
+              </Heading>
+            </Box>
+          )}
+          {/* BET CONTROLS */}
+          {!tokenForSale && !isManagingCasino && betState === WAITING_FOR_BET && (
             <BetControls
+              boxStyle={MAIN_BOX_STYLE}
               convertToWei={convertToWei}
               convertToEth={convertToEth}
               makeBet={(amount, oddsPercentage) => {
@@ -125,24 +159,46 @@ const TokenView = ({
                   oddsPercentage,
                   betAmount: convertToWei(amount),
                   tokenId
+                }).then(outcome => {
+                  const { err, cancelled } = outcome
+                  console.log("outcome", outcome)
+                  if (!err && !cancelled) {
+                    setBetOutcome(outcome)
+                  } else {
+                    setBetState(WAITING_FOR_BET)
+                  }
                 })
               }}
               houseReserve={houseReserve}
             />
-          ) : (
-            <Box>
-              <Heading textAlign="center" level={3}>
-                This token is unowned! Buy it in{" "}
-                <a href="https://opensea.io/">OpenSea!</a>
-              </Heading>
-            </Box>
           )}
+          {/* BET OUTCOME */}
+          {betState !== WAITING_FOR_BET && (
+            <OutcomeView
+              boxStyle={MAIN_BOX_STYLE}
+              betOutcome={betOutcome}
+              objectEmoji={objectEmoji}
+              subjectEmoji={subjectEmoji}
+            />
+          )}
+          {/* TOKEN MANAGEMENT */}
           {isManagingCasino && (
             <HouseBank
+              boxStyle={MAIN_BOX_STYLE}
               convertToEth={convertToEth}
               houseReserve={houseReserve}
               addToHouseReserve={amount => {
-                addToHouseReserve({ web3, contract, accounts, tokenId, amount })
+                addToHouseReserve({
+                  web3,
+                  contract,
+                  accounts,
+                  tokenId,
+                  amount
+                }).then(success => {
+                  if (success) {
+                    refreshData()
+                  }
+                })
               }}
               subtractFromHouseReserve={amount => {
                 subtractFromHouseReserve({
@@ -151,6 +207,10 @@ const TokenView = ({
                   accounts,
                   tokenId,
                   amount
+                }).then(success => {
+                  if (success) {
+                    refreshData()
+                  }
                 })
               }}
             />

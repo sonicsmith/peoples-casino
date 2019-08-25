@@ -1,3 +1,5 @@
+import { noAddress, ownerAdddress } from "./../config"
+
 const xmur3 = str => {
   for (var i = 0, h = 1779033703 ^ str.length; i < str.length; i++)
     h = Math.imul(h ^ str.charCodeAt(i), 3432918353)
@@ -77,4 +79,12 @@ export const getRandomColor = seed => {
     color += letters[Math.floor(random(newSeed, 16))]
   }
   return color
+}
+
+export const getIsTokenForSale = tokenOwnerAdddress => {
+  return tokenOwnerAdddress === ownerAdddress
+}
+
+export const getIsTokenMinted = tokenOwnerAdddress => {
+  return tokenOwnerAdddress && tokenOwnerAdddress !== noAddress
 }
