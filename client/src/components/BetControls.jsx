@@ -35,7 +35,7 @@ const BetControls = ({ convertToWei, convertToEth, makeBet, houseReserve }) => {
   const [oddsPercentage, setOddsPercentage] = useState(ODDS_MAX)
   const maxBetAmount = convertToEth((houseReserve * oddsPercentage) / 99)
   const [betAmount, setBetAmount] = useState(roundDown(maxBetAmount))
-  const payout = (betAmount * 99) / oddsPercentage
+  const payout = ((betAmount * 99) / oddsPercentage).toFixed(18)
   const payoutInWei = convertToWei(payout)
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
   if (Number(houseReserve) > 0) {

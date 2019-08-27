@@ -35,14 +35,14 @@ export const getDescriptionArray = tokenId => {
   const object = getRandomItem(tokenId, objects).name
   return [
     `${greeting}, wanna try your luck!?`,
-    `You can make ${moneyAdjective} ${moneySlang} by finding some ${subject} in my ${container} full of ${object}!`
+    `You can make ${moneyAdjective} ${moneySlang} by randomly pulling enough ${subject} from my ${container} full of ${object}!`
   ]
 }
 
-export const getDescriptionEmojis = tokenId => {
-  const container = getRandomItem(tokenId, containers).emoji
-  const subject = getRandomItem(tokenId, subjects).emoji
-  const object = getRandomItem(tokenId, objects).emoji
+export const getDescriptionItems = tokenId => {
+  const container = getRandomItem(tokenId, containers)
+  const subject = getRandomItem(tokenId, subjects)
+  const object = getRandomItem(tokenId, objects)
   return {
     container,
     subject,
@@ -88,23 +88,49 @@ export const getTokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId),
-    descriptionEmojis: getDescriptionEmojis(tokenId),
+    descriptionItems: getDescriptionItems(tokenId),
     imageAttributes: getImageAttributes(tokenId)
   }
 }
 
 const getAttributes = tokenId => {
   const sex = getIsMale(tokenId) ? "male" : "female"
-  const generation = Math.floor(Number(tokenId) / 1000) + 1
+  const generation = Math.floor(Number(tokenId) / 100) + 1
+  const mouthType = getRandomItem(tokenId, imageAttributes.mouthTypes)
+  const personalityMap = {
+    Concerned: "concerned",
+    Default: "easy going",
+    Disbelief: "dispointed",
+    Eating: "reserved",
+    Grimace: "uptight",
+    Sad: "sad",
+    ScreamOpen: "fearful",
+    Serious: "serious",
+    Smile: "happy",
+    Tongue: "silly",
+    Twinkle: "gentle",
+    Vomit: "sick"
+  }
+  const personality = personalityMap[mouthType]
+  const luckCharmLevel = tokenId % 99
   return [
     {
       trait_type: "sex",
       value: sex
     },
     {
+      trait_type: "personality",
+      value: personality
+    },
+    {
       display_type: "number",
       trait_type: "generation",
       value: generation
+    },
+    {
+      display_type: "boost_percentage",
+      trait_type: "luck_charm_level",
+      value: luckCharmLevel
     }
   ]
 }

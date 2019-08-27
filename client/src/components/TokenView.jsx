@@ -50,13 +50,7 @@ const TokenView = ({
   const tokenMetadata = getTokenMetadata(tokenId)
   const [betState, setBetState] = useState(WAITING_FOR_BET)
   const [betOutcome, setBetOutcome] = useState()
-  /*
-eventCode txRequest makeBet
-TokenView.jsx:56 eventCode txSent makeBet
-TokenView.jsx:56 eventCode txPending makeBet
-TokenView.jsx:56 eventCode txConfirmed makeBet
-TokenView.jsx:56 eventCode txConfirmedClient makeBet
-*/
+
   useEffect(() => {
     setNotificationEventListener(({ eventCode, contract }) => {
       console.log("eventCode", eventCode, contract.methodName)
@@ -86,13 +80,17 @@ TokenView.jsx:56 eventCode txConfirmedClient makeBet
   }
 
   const tokenForSale = getIsTokenForSale(ownerOfToken)
-  const { descriptionEmojis, imageAttributes } = tokenMetadata
-  const { object: objectEmoji, subject: subjectEmoji } = descriptionEmojis
+  const { descriptionItems, imageAttributes } = tokenMetadata
+  const { object: objectItem, subject: subjectItem } = descriptionItems
+  const objectEmoji = objectItem.emoji
+  const subjectEmoji = subjectItem.emoji
+  const subjectName = subjectItem.name
 
   let emojis = []
-  for (let i = 0; i < 3; i++) {
-    emojis = [...emojis, subjectEmoji, objectEmoji]
+  for (let i = 0; i < 4; i++) {
+    emojis = [...emojis, objectEmoji, subjectEmoji]
   }
+  emojis.pop()
   const tokenTheme = {
     global: {
       // font: { family: "Indie Flower" },
@@ -179,6 +177,8 @@ TokenView.jsx:56 eventCode txConfirmedClient makeBet
               betOutcome={betOutcome}
               objectEmoji={objectEmoji}
               subjectEmoji={subjectEmoji}
+              subjectName={subjectName}
+              goBack={() => setBetState(WAITING_FOR_BET)}
             />
           )}
           {/* TOKEN MANAGEMENT */}
