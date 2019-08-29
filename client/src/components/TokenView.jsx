@@ -226,6 +226,12 @@ const TokenView = ({
             </Box>
           )}
         </Box>
+        <Box margin="medium">
+          <Text textAlign="center">
+            Want to get buy own casino?! Check out Peoples Casino on{" "}
+            <a href="https://opensea.io/">OpenSea!</a>
+          </Text>
+        </Box>
       </Box>
     </Grommet>
   )
