@@ -23,7 +23,7 @@ export const getName = tokenId => {
   const container = getRandomItem(tokenId, containers).name
   const object = getRandomItem(tokenId, objects).name
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
-  return titleCase(`${first} ${last}'${s} ${container} of ${object}`)
+  return titleCase(`${first} ${last}'${s} ${object} Casino!`)
 }
 
 export const getDescriptionArray = tokenId => {
@@ -35,7 +35,8 @@ export const getDescriptionArray = tokenId => {
   const object = getRandomItem(tokenId, objects).name
   return [
     `${greeting}, wanna try your luck!?`,
-    `You can make ${moneyAdjective} ${moneySlang} by randomly pulling enough ${subject} from my ${container} full of ${object}!`
+    `You can make ${moneyAdjective} ${moneySlang} by 
+    matching three ${subject} in my slot machine full of ${object}!`
   ]
 }
 

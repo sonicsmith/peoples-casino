@@ -20,6 +20,7 @@ import {
   addToHouseReserve,
   subtractFromHouseReserve
 } from "../utils/methods"
+import SlotMachine from "./SlotMachine"
 
 const MAIN_BOX_STYLE = {
   align: "center",
@@ -129,9 +130,14 @@ const TokenView = ({
               <TokenImage tokenId={tokenId} />
             </Box>
             <Box pad="small">
-              <Text textAlign="center" size="xlarge">
+              {/* <Text textAlign="center" size="xlarge">
                 {emojis}
-              </Text>
+              </Text> */}
+              {/* <SlotMachine
+                objectEmoji={objectEmoji}
+                subjectEmoji={subjectEmoji}
+                win={false}
+              /> */}
             </Box>
           </Box>
           {/* NO OWNER */}
