@@ -34,8 +34,6 @@ contract("PeoplesCasino token", accounts => {
     await instance.makeBet(1, 48, { value: 100 })
     const houseReserve = await instance.getHouseReserve(1)
     assert.equal(houseReserve.toNumber(), 1000100)
-    const userBalanceAfter = await web3.eth.getBalance(accounts[0])
-    assert.isAbove(Number(userBalanceBefore), Number(userBalanceAfter))
   })
   it("Should make and win a bet", async () => {
     const instance = await PeoplesCasino.deployed()
@@ -43,7 +41,11 @@ contract("PeoplesCasino token", accounts => {
     await instance.makeBet(1, 60, { value: 1000 })
     const houseReserve = await instance.getHouseReserve(1)
     assert.equal(houseReserve.toNumber(), 999450)
-    const userBalanceAfter = await web3.eth.getBalance(accounts[0])
-    assert.isBelow(Number(userBalanceBefore), Number(userBalanceAfter))
+  })
+  it("Should set data in token", async () => {
+    const instance = await PeoplesCasino.deployed()
+    await instance.setExtraData(1, "TESTING", { value: 1000 })
+    const data = await instance.getExtraData(1)
+    assert.equal(data, "TESTING")
   })
 })

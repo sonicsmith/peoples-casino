@@ -94,7 +94,7 @@ const TokenView = ({
   emojis.pop()
   const tokenTheme = {
     global: {
-      // font: { family: "Indie Flower" },
+      font: { family: "Roboto" },
       colors: { ...imageAttributes.colorScheme, border: "black" }
     }
   }
@@ -130,14 +130,9 @@ const TokenView = ({
               <TokenImage tokenId={tokenId} />
             </Box>
             <Box pad="small">
-              {/* <Text textAlign="center" size="xlarge">
+              <Text textAlign="center" size="xlarge">
                 {emojis}
-              </Text> */}
-              {/* <SlotMachine
-                objectEmoji={objectEmoji}
-                subjectEmoji={subjectEmoji}
-                win={false}
-              /> */}
+              </Text>
             </Box>
           </Box>
           {/* NO OWNER */}

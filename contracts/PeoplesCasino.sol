@@ -86,4 +86,9 @@ contract PeoplesCasino is TradeableERC721Token {
     extraData[tokenId] = data;
   } 
 
+  function getExtraData(uint tokenId) public view returns (string memory) {
+    require(ownerOf(tokenId) != address(0));
+    return extraData[tokenId];
+  } 
+
 }
