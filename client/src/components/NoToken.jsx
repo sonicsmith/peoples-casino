@@ -9,12 +9,15 @@ import {
   Box
 } from "grommet"
 
-const Main = () => {
+const NoToken = ({ loading }) => {
+  if (loading) {
+    return <div>LOADING</div>
+  }
   return (
     <div>
-      <h1>Main page / no token</h1>
+      <h1>Error, the casino you are trying to reach does not exist</h1>
     </div>
   )
 }
 
-export default Main
+export default NoToken

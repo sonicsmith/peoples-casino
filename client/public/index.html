@@ -2,42 +2,220 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="theme-color" content="#000000" />
-    <!--
-      manifest.json provides metadata used when your web app is added to the
-      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
     <title>People's Casino</title>
+
+    <!-- Custom fonts for this theme -->
+    <link
+      href="vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- Theme CSS -->
+    <link href="css/freelancer.min.css" rel="stylesheet" />
   </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+  <body id="page-top">
+    <!-- Navigation -->
+    <nav
+      class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top"
+      id="mainNav"
+    >
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top"
+          >People's Casino</a
+        >
+        <button
+          class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarResponsive"
+          aria-controls="navbarResponsive"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+              <a
+                class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+                href="#about"
+                >more info</a
+              >
+            </li>
+            <li class="nav-item mx-0 mx-lg-1">
+              <a
+                class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger"
+                href="#purchase"
+                >buy now</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- Masthead -->
+    <header class="masthead bg-primary text-white text-center">
+      <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image -->
+        <img class="masthead-avatar mb-5" src="img/avataaars.svg" alt="" />
+
+        <!-- Masthead Heading -->
+        <h1 class="masthead-heading text-uppercase mb-0">People's Casino</h1>
+
+        <!-- Icon Divider -->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Masthead Subheading -->
+        <p class="masthead-subheading font-weight-light mb-0">
+          Own your own casino on the blockchain!
+        </p>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="page-section" id="about">
+      <div class="container">
+        <!-- About Section Heading -->
+        <h2
+          class="page-section-heading text-center text-uppercase text-secondary mb-0"
+        >
+          More Info
+        </h2>
+
+        <!-- Icon Divider -->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- About Section Content -->
+        <div class="row">
+          <div
+            class="col-lg-8"
+            style="width: 100%;
+          height: 100%;
+          margin: 0 auto;"
+          >
+            <p class="lead text-center">
+              People's Casino allows you to purchase and run your own fully
+              functional casino on the Ethereum blockchain. Each casino is a
+              unique fully functional casino with a 1% house edge. You are
+              responsible for supplying the house reserve, and will solely
+              benefit from all earnings. No further operational work is needed
+              for each casino to continue.
+              <br />
+              We do not take any percentage of casino takings.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Purchase Section -->
+    <section class="page-section bg-primary text-white mb-0" id="purchase">
+      <div class="container">
+        <!-- Purchase Section Heading -->
+        <h2 class="page-section-heading text-center text-uppercase">Buy Now</h2>
+
+        <!-- Icon Divider -->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Purchase Grid Items -->
+        <div class="row">
+          <div
+            class="col-lg-8"
+            style="width: 100%;
+          height: 100%;
+          margin: 0 auto;"
+          >
+            <p class="lead text-center">
+              Since each casino is ERC-721 compliant, they can be bought and
+              traded like any other Ethereum token.
+              <br />
+              Follow the link below to buy your own casino on OpenSea today!
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="" style="width:100%;  padding: 16px">
+            <a href="https://opensea.io/" title="Buy on OpenSea" target="_blank"
+              ><img
+                style="width:160px; border-radius:5px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
+                display: block; margin-left: auto; margin-right: auto;"
+                src="https://storage.googleapis.com/opensea-static/opensea-brand/buy-button-white.png"
+                alt="Buy on OpenSea badge"
+            /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Copyright Section -->
+    <section class="copyright py-4 text-center text-white">
+      <div class="container">
+        <small>Copyright &copy; People's Casino 2019</small>
+      </div>
+    </section>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-to-top d-lg-none position-fixed ">
+      <a
+        class="js-scroll-trigger d-block text-center text-white rounded"
+        href="#page-top"
+      >
+        <i class="fa fa-chevron-up"></i>
+      </a>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="js/jqBootstrapValidation.js"></script>
+    <script src="js/contact_me.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/freelancer.min.js"></script>
   </body>
 </html>

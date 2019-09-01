@@ -2,14 +2,13 @@ import React from "react"
 import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
-import Main from "./components/Main"
+import NoToken from "./components/NoToken"
 import * as serviceWorker from "./serviceWorker"
 import { BrowserRouter as Router, Route } from "react-router-dom"
 
 const RoutedApp = () => {
   return (
     <Router>
-      <Route exact path="/" component={Main} />
       <Route
         exact
         path="/token/:tokenId"
@@ -18,10 +17,12 @@ const RoutedApp = () => {
           if (tokenId && Number(tokenId) > 0) {
             return <App tokenId={tokenId} />
           } else {
-            return <Main />
+            return <NoToken loading={false} />
           }
         }}
       />
+      {/* USING AS A DEV / DEBUG FOR NOW */}
+      <Route path="**" render={() => <App tokenId={1} />} />
     </Router>
   )
 }

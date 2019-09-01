@@ -4,7 +4,7 @@ import PeoplesCasinoContract from "./contracts/PeoplesCasino.json"
 import { NETWORK_ID, CONTRACT_ADDRESSES } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
 import { getIsTokenForSale, getIsTokenMinted } from "./utils/misc"
-import Main from "./components/Main"
+import NoToken from "./components/NoToken"
 import TokenView from "./components/TokenView"
 
 class App extends Component {
@@ -117,7 +117,7 @@ class App extends Component {
       }
     }
 
-    return <Main />
+    return <NoToken loading={!ownerOfToken} />
   }
 }
 
