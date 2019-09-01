@@ -16,6 +16,7 @@ const getRawSvg = tokenId => {
       hairColor={imageAttributes.hairColors}
       facialHairType={imageAttributes.facialHairTypes}
       clotheType={imageAttributes.clotheTypes}
+      clotheColor={imageAttributes.clotheColors}
       eyeType={imageAttributes.eyeTypes}
       eyebrowType={imageAttributes.eyebrowTypes}
       mouthType={imageAttributes.mouthTypes}
