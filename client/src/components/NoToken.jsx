@@ -1,7 +1,8 @@
 import React from "react"
+import "./Loading.css"
 import image from "./../img/404.png"
 
-const NoToken = ({ loading }) => {
+const NoToken = ({ loading, web3Error }) => {
   return (
     <div
       style={{
@@ -16,7 +17,13 @@ const NoToken = ({ loading }) => {
       }}
     >
       {loading ? (
-        <div style={{ textAlign: "center" }}>LOADING</div>
+        <div style={{ textAlign: "center" }}>
+          <div className="lds-facebook">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
       ) : (
         <div>
           <div style={{ textAlign: "center" }}>
@@ -24,7 +31,11 @@ const NoToken = ({ loading }) => {
           </div>
           <div style={{ textAlign: "center" }}>
             <h1>OH NOES!</h1>
-            <h2>The casino you are trying to visit can not be found</h2>
+            <h2>
+              {web3Error
+                ? "The casino you are trying to visit can not be found"
+                : "Cannot connect to the blockchain"}
+            </h2>
           </div>
         </div>
       )}

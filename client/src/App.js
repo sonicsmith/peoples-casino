@@ -93,6 +93,7 @@ class App extends Component {
       contract
     } = this.state
     const { tokenId } = this.props
+
     if (tokenId >= 0 && getIsTokenMinted(ownerOfToken)) {
       return (
         <TokenView
@@ -108,15 +109,10 @@ class App extends Component {
         />
       )
     }
-
+    // If we can't connect to web3, or find the token
     if (!web3) {
-      if (web3Error) {
-        return <div>ERROR: Cannot connect to web3</div>
-      } else {
-        return <div>Loading Web3, accounts, and contract...</div>
-      }
+      return <NoToken loading={!web3Error} web3Error={web3Error} />
     }
-
     return <NoToken loading={!ownerOfToken} />
   }
 }
