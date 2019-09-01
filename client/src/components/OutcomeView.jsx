@@ -10,21 +10,24 @@ const OutcomeView = ({
   goBack
 }) => {
   if (betOutcome) {
-    let outcomeMessage
-    if (betOutcome.win) {
-      outcomeMessage = `You won! Your winnings have been applied to your account.`
-    } else {
-      outcomeMessage = `You lost! Better luck next time!`
-    }
+    const { win } = betOutcome
     return (
       <Box {...boxStyle}>
-        <Text size="xlarge">{`Bet is over!`}</Text>
+        <Text size="xlarge" weight="bold">
+          YOU {win ? "WON" : "LOST"}!
+        </Text>
         <SlotMachine
           objectEmoji={objectEmoji}
           subjectEmoji={subjectEmoji}
           win={betOutcome.win}
         />
-        <Text size="medium">{outcomeMessage}</Text>
+        <Box width="medium">
+          <Text size="medium" textAlign={"center"}>
+            {win
+              ? "Your winnings have been applied to your account."
+              : "Better luck next time!"}
+          </Text>
+        </Box>
         <Box pad="medium">
           <Button label={"PLAY AGAIN"} primary onClick={goBack} />
         </Box>
@@ -34,7 +37,9 @@ const OutcomeView = ({
 
   return (
     <Box {...boxStyle}>
-      <Text size="xlarge">{`Bet is underway!`}</Text>
+      <Text size="xlarge" weight="bold">
+        SPINNING!!
+      </Text>
       <SlotMachine
         spinning={true}
         objectEmoji={objectEmoji}

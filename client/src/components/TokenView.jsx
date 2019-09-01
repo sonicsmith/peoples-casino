@@ -20,7 +20,7 @@ import {
   addToHouseReserve,
   subtractFromHouseReserve
 } from "../utils/methods"
-import SlotMachine from "./SlotMachine"
+import NoToken from "./NoToken"
 
 const MAIN_BOX_STYLE = {
   align: "center",
@@ -72,12 +72,9 @@ const TokenView = ({
     return web3.utils.fromWei(String(amount), "ether")
   }
 
+  // If we can't connect to web3, or find the token
   if (!web3) {
-    if (web3Error) {
-      return <div>ERROR: Cannot connect to web3</div>
-    } else {
-      return <div>Loading Web3, accounts, and contract...</div>
-    }
+    return <NoToken loading={!web3Error} web3Error={web3Error} />
   }
 
   const tokenForSale = getIsTokenForSale(ownerOfToken)
@@ -94,7 +91,6 @@ const TokenView = ({
   emojis.pop()
   const tokenTheme = {
     global: {
-      font: { family: "Roboto" },
       colors: { ...imageAttributes.colorScheme, border: "black" }
     }
   }
@@ -226,11 +222,23 @@ const TokenView = ({
             </Box>
           )}
         </Box>
-        <Box margin="medium">
-          <Text textAlign="center">
-            Want to get buy own casino?! Check out Peoples Casino on{" "}
-            <a href="https://opensea.io/">OpenSea!</a>
+        <Box>
+          <Text textAlign="center" weight="bold">
+            Want to own your own casino?! Check out our store on OpenSea:
           </Text>
+        </Box>
+        <Box align="center" margin="medium">
+          <a href="https://opensea.io/" title="Buy on OpenSea" target="_blank">
+            <img
+              style={{
+                width: 160,
+                borderRadius: 5,
+                boxShadow: "0px 1px 6px rgba(0, 0, 0, 0.25);"
+              }}
+              src="https://storage.googleapis.com/opensea-static/opensea-brand/buy-button-white.png"
+              alt="Buy on OpenSea badge"
+            />
+          </a>
         </Box>
       </Box>
     </Grommet>

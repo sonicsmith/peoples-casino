@@ -22,7 +22,7 @@ const RoutedApp = () => {
         }}
       />
       {/* USING AS A DEV / DEBUG FOR NOW */}
-      <Route exact path="/dapp.html" render={() => <App tokenId={10} />} />
+      <Route exact path="/dapp.html" render={() => <App tokenId={1} />} />
     </Router>
   )
 }
