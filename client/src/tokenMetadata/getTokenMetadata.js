@@ -6,7 +6,12 @@ import {
   titleCase
 } from "./../utils/misc"
 import names from "./names"
-import { greetings, moneyAdjectives, moneySlangs } from "./misc"
+import {
+  greetings,
+  moneyAdjectives,
+  moneySlangs,
+  luckCharmLevels
+} from "./misc"
 import containers from "./containers"
 import subjects from "./subjects"
 import objects from "./objects"
@@ -23,7 +28,7 @@ export const getName = tokenId => {
   const container = getRandomItem(tokenId, containers).name
   const object = getRandomItem(tokenId, objects).name
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
-  return titleCase(`${first} ${last}'${s} ${object} Casino!`)
+  return titleCase(`${first} ${last}'${s} Casino of ${object}!`)
 }
 
 export const getDescriptionArray = tokenId => {
@@ -59,6 +64,7 @@ export const getImageAttributes = tokenId => {
     accessoriesTypes,
     hairColors,
     clotheTypes,
+    clotheColors,
     eyeTypes,
     eyebrowTypes,
     mouthTypes,
@@ -77,6 +83,7 @@ export const getImageAttributes = tokenId => {
     accessoriesTypes: accessories,
     hairColors: getRandomItem(tokenId, hairColors),
     clotheTypes: getRandomItem(tokenId, clotheTypes),
+    clotheColors: getRandomItem(tokenId, clotheColors),
     eyeTypes: getRandomItem(tokenId, eyeTypes),
     eyebrowTypes: getRandomItem(tokenId, eyebrowTypes),
     mouthTypes: getRandomItem(tokenId, mouthTypes),
@@ -96,7 +103,7 @@ export const getTokenMetadata = tokenId => {
 
 const getAttributes = tokenId => {
   const sex = getIsMale(tokenId) ? "male" : "female"
-  const generation = Math.floor(Number(tokenId) / 100) + 1
+  const generation = Math.floor(Number(tokenId) / 1000) + 1
   const mouthType = getRandomItem(tokenId, imageAttributes.mouthTypes)
   const personalityMap = {
     Concerned: "concerned",
@@ -113,7 +120,22 @@ const getAttributes = tokenId => {
     Vomit: "sick"
   }
   const personality = personalityMap[mouthType]
-  const luckCharmLevel = tokenId % 99
+  const colorMap = {
+    Blue01: "Blue",
+    Blue02: "Blue",
+    Blue03: "Blue",
+    Gray01: "Grey",
+    Gray02: "Grey",
+    Heather: "Navy",
+    PastelBlue: "PastelBlue",
+    PastelGreen: "PastelGreen",
+    PastelOrange: "PastelOrange",
+    PastelRed: "PastelRed",
+    PastelYellow: "PastelYellow"
+  }
+  const clotheColor = getRandomItem(tokenId, imageAttributes.clotheColors)
+  const favouriteColor = colorMap[clotheColor] || clotheColor
+  const luckCharmLevel = getRandomItem(tokenId, luckCharmLevels)
   return [
     {
       trait_type: "sex",
@@ -122,6 +144,10 @@ const getAttributes = tokenId => {
     {
       trait_type: "personality",
       value: personality
+    },
+    {
+      trait_type: "favourite color",
+      value: favouriteColor
     },
     {
       display_type: "number",
