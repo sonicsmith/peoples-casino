@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import { Button, Heading, Text, RangeInput, TextInput, Box } from "grommet"
+import { Button, Text, TextInput, Box } from "grommet"
 
 const HouseBank = ({
   boxStyle,
-  refreshData,
   convertToEth,
   houseReserve,
   addToHouseReserve,
@@ -16,8 +15,8 @@ const HouseBank = ({
       <Box margin="small">
         {[
           "Enter the amount of ETH you would",
-          "like to deposit into your token.",
-          "(House balance can be withdrawn at any time)"
+          "like to deposit or withdrawl from your casino.",
+          "(Balance can be withdrawn at any time)"
         ].map((line, i) => {
           return (
             <Text textAlign="center" size="medium" key={i}>

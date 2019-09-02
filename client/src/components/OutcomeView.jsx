@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { Button, Heading, Text, RangeInput, TextInput, Box } from "grommet"
+import React from "react"
+import { Button, Text, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
 
 const OutcomeView = ({

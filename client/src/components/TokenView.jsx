@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react"
-import {
-  Grommet,
-  Button,
-  Heading,
-  Text,
-  RangeInput,
-  TextInput,
-  Box
-} from "grommet"
-import { ownerAdddress } from "./../config"
-import { getIsTokenForSale, getIsTokenMinted } from "./../utils/misc"
+import { Grommet, Button, Heading, Text, Box } from "grommet"
+import { getIsTokenForSale } from "./../utils/misc"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import TokenImage from "./TokenImage"
 import HouseBank from "./HouseBank"
@@ -34,7 +25,6 @@ const MAIN_BOX_STYLE = {
 
 const WAITING_FOR_BET = 0
 const WAITING_FOR_RESULT = 1
-const DISPLAYING_RESULT = 2
 
 const TokenView = ({
   ownerOfToken,

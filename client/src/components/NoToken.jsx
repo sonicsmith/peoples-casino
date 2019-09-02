@@ -32,8 +32,8 @@ const NoToken = ({ loading, web3Error }) => {
             <h1>OH NOES!</h1>
             <h2>
               {web3Error
-                ? "The casino you are trying to visit can not be found"
-                : "Cannot connect to the blockchain"}
+                ? "Cannot connect to the blockchain"
+                : "The casino you are trying to visit can not be found"}
             </h2>
           </div>
         </div>

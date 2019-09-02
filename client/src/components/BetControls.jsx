@@ -1,13 +1,5 @@
 import React, { useState } from "react"
-import {
-  Grommet,
-  Button,
-  Heading,
-  Text,
-  RangeInput,
-  TextInput,
-  Box
-} from "grommet"
+import { Button, Text, RangeInput, TextInput, Box } from "grommet"
 
 const NUM_DP = 10000
 const ODDS_MIN = 1
