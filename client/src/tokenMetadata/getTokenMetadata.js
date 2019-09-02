@@ -166,7 +166,7 @@ export const getAPITokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId).join(" "),
-    external_url: `http://peoplescasino.online/token/${tokenId}`,
+    external_url: `http://peoplescasino.online/${tokenId}`,
     background_color: getRandomColor(tokenId),
     attributes: getAttributes(tokenId)
   }

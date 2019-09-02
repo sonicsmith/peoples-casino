@@ -11,7 +11,7 @@ const RoutedApp = () => {
     <Router>
       <Route
         exact
-        path="/token/:tokenId"
+        path="/:tokenId"
         render={({ match }) => {
           const { tokenId } = match.params
           if (tokenId && Number(tokenId) > 0) {

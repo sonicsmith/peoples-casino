@@ -1,12 +1,11 @@
 import React from "react"
 import "./Loading.css"
-import image from "./../img/404.png"
+import image from "./../img/no-token.svg"
 
 const NoToken = ({ loading, web3Error }) => {
   return (
     <div
       style={{
-        display: "block",
         margin: "auto",
         color: "white",
         height: "100vh",
@@ -27,7 +26,7 @@ const NoToken = ({ loading, web3Error }) => {
       ) : (
         <div>
           <div style={{ textAlign: "center" }}>
-            <img src={image} width="20%" height="auto" />
+            <img src={image} width="20%" height="auto" alt="Shocked face" />
           </div>
           <div style={{ textAlign: "center" }}>
             <h1>OH NOES!</h1>
