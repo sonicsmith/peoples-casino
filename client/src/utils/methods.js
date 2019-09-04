@@ -20,13 +20,13 @@ const makeBet = ({
   return { err: true }
 }
 
-const addToHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
+const depositHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
   if (contract) {
     const { methods } = contract
     const from = accounts[0]
     const value = web3.utils.toWei(amount, "ether")
     return methods
-      .addToHouseReserve(tokenId)
+      .depositHouseReserve(tokenId)
       .send({ from, value, gas: 300000 }, res => !res)
       .then(() => true)
       .catch(() => false)
@@ -34,7 +34,7 @@ const addToHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
   return false
 }
 
-const subtractFromHouseReserve = ({
+const withdrawalHouseReserve = ({
   web3,
   contract,
   accounts,
@@ -46,7 +46,7 @@ const subtractFromHouseReserve = ({
     const from = accounts[0]
     const wei = web3.utils.toWei(amount, "ether")
     return methods
-      .subtractFromHouseReserve(tokenId, wei)
+      .withdrawalHouseReserve(tokenId, wei)
       .send({ from, value: 0, gas: 300000 }, res => !res)
       .then(() => true)
       .catch(() => false)
@@ -54,4 +54,4 @@ const subtractFromHouseReserve = ({
   return false
 }
 
-export { makeBet, addToHouseReserve, subtractFromHouseReserve }
+export { makeBet, depositHouseReserve, withdrawalHouseReserve }

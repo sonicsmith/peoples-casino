@@ -14,7 +14,7 @@ contract PeoplesCasino is TradeableERC721Token {
   mapping(uint => uint) houseReserves;
   uint MAX_PAYOUT = 3 ether;
   event BetResult(uint tokenId, uint roll, bool win);
-  string _baseTokenURI = "";
+  string _baseTokenURI = "https://peoplescasino.online/api/";
   mapping(uint => string) extraData;
 
   constructor(address _proxyRegistryAddress) 
@@ -42,12 +42,12 @@ contract PeoplesCasino is TradeableERC721Token {
     return houseReserves[tokenId];
   } 
 
-  function addToHouseReserve(uint tokenId) public payable {
+  function depositHouseReserve(uint tokenId) public payable {
     require(ownerOf(tokenId) != address(0));
     houseReserves[tokenId] += msg.value;
   } 
 
-  function subtractFromHouseReserve(uint tokenId, uint amount) public payable {
+  function withdrawalHouseReserve(uint tokenId, uint amount) public payable {
     require(msg.sender == ownerOf(tokenId));
     require(houseReserves[tokenId] >= amount);
     houseReserves[tokenId] -= amount;

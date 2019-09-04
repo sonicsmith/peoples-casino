@@ -8,8 +8,8 @@ import BetControls from "./BetControls"
 import OutcomeView from "./OutcomeView"
 import {
   makeBet,
-  addToHouseReserve,
-  subtractFromHouseReserve
+  depositHouseReserve,
+  withdrawalHouseReserve
 } from "../utils/methods"
 import NoToken from "./NoToken"
 
@@ -174,8 +174,8 @@ const TokenView = ({
               boxStyle={MAIN_BOX_STYLE}
               convertToEth={convertToEth}
               houseReserve={houseReserve}
-              addToHouseReserve={amount => {
-                addToHouseReserve({
+              depositHouseReserve={amount => {
+                depositHouseReserve({
                   web3,
                   contract,
                   accounts,
@@ -187,8 +187,8 @@ const TokenView = ({
                   }
                 })
               }}
-              subtractFromHouseReserve={amount => {
-                subtractFromHouseReserve({
+              withdrawalHouseReserve={amount => {
+                withdrawalHouseReserve({
                   web3,
                   contract,
                   accounts,

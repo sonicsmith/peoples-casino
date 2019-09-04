@@ -17,12 +17,10 @@ const RoutedApp = () => {
           if (tokenId && Number(tokenId) > 0) {
             return <App tokenId={tokenId} />
           } else {
-            return <NoToken loading={false} />
+            return <App tokenId={1} /> //<NoToken loading={false} />
           }
         }}
       />
-      {/* USING AS A DEV / DEBUG FOR NOW */}
-      <Route exact path="/dapp.html" render={() => <App tokenId={1} />} />
     </Router>
   )
 }

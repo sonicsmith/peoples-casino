@@ -13,8 +13,8 @@ export const getUserState = () => getAssist().getState()
 
 const METHOD_TO_WORD = {
   makeBet: "bet",
-  addToHouseReserve: "deposit",
-  subtractFromHouseReserve: "withdrawl"
+  depositHouseReserve: "deposit",
+  withdrawalHouseReserve: "withdrawal"
 }
 
 // Returns initialized assist object if previously initialized.

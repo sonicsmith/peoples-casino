@@ -5,8 +5,8 @@ const HouseBank = ({
   boxStyle,
   convertToEth,
   houseReserve,
-  addToHouseReserve,
-  subtractFromHouseReserve
+  depositHouseReserve,
+  withdrawalHouseReserve
 }) => {
   const currentBalance = convertToEth(houseReserve)
   const [amount, setAmount] = useState(currentBalance)
@@ -15,7 +15,7 @@ const HouseBank = ({
       <Box margin="small">
         {[
           "Enter the amount of ETH you would",
-          "like to deposit or withdrawl from your casino.",
+          "like to deposit or withdrawal from your casino.",
           "(Balance can be withdrawn at any time)"
         ].map((line, i) => {
           return (
@@ -45,7 +45,7 @@ const HouseBank = ({
         <Button
           label={"DEPOSIT"}
           primary
-          onClick={() => addToHouseReserve(amount)}
+          onClick={() => depositHouseReserve(amount)}
         />
       </Box>
       <Box margin="small">
@@ -53,7 +53,7 @@ const HouseBank = ({
           disabled={amount > currentBalance}
           label={"WITHDRAWL"}
           primary
-          onClick={() => subtractFromHouseReserve(amount)}
+          onClick={() => withdrawalHouseReserve(amount)}
         />
       </Box>
     </Box>
