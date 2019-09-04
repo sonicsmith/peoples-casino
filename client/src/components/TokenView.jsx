@@ -59,7 +59,7 @@ const TokenView = ({
   }
 
   const convertToEth = amount => {
-    return web3.utils.fromWei(String(amount), "ether")
+    return web3.utils.fromWei(String(Math.floor(amount)), "ether")
   }
 
   // If we can't connect to web3, or find the token
