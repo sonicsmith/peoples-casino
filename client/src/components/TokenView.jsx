@@ -126,7 +126,11 @@ const TokenView = ({
             <Box>
               <Heading textAlign="center" level={3}>
                 This token is unowned! Buy it in{" "}
-                <a href="https://opensea.io/">OpenSea!</a>
+                <a
+                  href={`https://rinkeby.opensea.io/assets/0x719a63f210d4ee44e24028a6ea1040510e1cbac1/${tokenId}`}
+                >
+                  OpenSea!
+                </a>
               </Heading>
             </Box>
           )}
@@ -219,7 +223,7 @@ const TokenView = ({
         </Box>
         <Box align="center" margin="medium">
           <a
-            href="https://opensea.io/assets/peoplescasino"
+            href="https://rinkeby.opensea.io/assets/peoplescasino-2"
             title="Buy on OpenSea"
             target="_blank"
           >

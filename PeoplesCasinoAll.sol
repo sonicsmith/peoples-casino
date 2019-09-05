@@ -1200,7 +1200,6 @@ contract TradeableERC721Token is ERC721Full, Ownable {
   }
 }
 
-
 // File: contracts\PeoplesCasino.sol
 
 pragma solidity ^0.5.0;
@@ -1218,7 +1217,7 @@ contract PeoplesCasino is TradeableERC721Token {
   mapping(uint => uint) houseReserves;
   uint MAX_PAYOUT = 3 ether;
   event BetResult(uint tokenId, uint roll, bool win);
-  string _baseTokenURI = "";
+  string _baseTokenURI = "https://peoplescasino.online/api/";
   mapping(uint => string) extraData;
 
   constructor(address _proxyRegistryAddress) 
@@ -1288,6 +1287,11 @@ contract PeoplesCasino is TradeableERC721Token {
   function setExtraData(uint tokenId, string memory data) public payable {
     require(ownerOf(tokenId) != address(0));
     extraData[tokenId] = data;
+  } 
+
+  function getExtraData(uint tokenId) public view returns (string memory) {
+    require(ownerOf(tokenId) != address(0));
+    return extraData[tokenId];
   } 
 
 }
