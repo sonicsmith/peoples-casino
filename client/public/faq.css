@@ -1,0 +1,25 @@
+.masthead {
+  padding-top: calc(60px);
+  padding-bottom: 1rem;
+}
+
+.collapsible {
+  color: white;
+  background-color: #1abc9c;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none !important;
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+}
+
+.faqLink {
+  color: #2c3e50;
+}
