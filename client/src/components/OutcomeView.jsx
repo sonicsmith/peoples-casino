@@ -10,7 +10,8 @@ const OutcomeView = ({
   goBack
 }) => {
   if (betOutcome) {
-    const { win } = betOutcome
+    const { roll, rollUnder } = betOutcome
+    const win = roll <= rollUnder
     return (
       <Box {...boxStyle}>
         <Text size="xlarge" weight="bold">

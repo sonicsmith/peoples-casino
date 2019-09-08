@@ -30,7 +30,7 @@ contract("PeoplesCasino token", accounts => {
   })
   it("Should make and lose a bet", async () => {
     const instance = await PeoplesCasino.deployed()
-    await instance.makeBet(1, 48, { value: 100 })
+    await instance.makeBet(1, 40, { value: 100 })
     const houseReserve = await instance.getHouseReserve(1)
     assert.equal(houseReserve.toNumber(), 1000100)
   })
@@ -38,7 +38,7 @@ contract("PeoplesCasino token", accounts => {
     const instance = await PeoplesCasino.deployed()
     await instance.makeBet(1, 60, { value: 1000 })
     const houseReserve = await instance.getHouseReserve(1)
-    assert.equal(houseReserve.toNumber(), 999450)
+    assert.equal(houseReserve.toNumber(), 999517)
   })
   it("Should set data in token", async () => {
     const instance = await PeoplesCasino.deployed()
