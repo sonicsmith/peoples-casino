@@ -76,7 +76,7 @@ contract PeoplesCasino is TradeableERC721Token {
     // Add wager to house.
     houseReserves[tokenId] = houseReserves[tokenId].add(msg.value);
     // Roll the dice
-    uint roll = 50;//getRandomPercent();
+    uint roll = getRandomPercent();
     // Payout winner if needed
     if (roll <= oddsPercentage) {
       // Remove winnings from house.

@@ -1200,6 +1200,7 @@ contract TradeableERC721Token is ERC721Full, Ownable {
   }
 }
 
+
 // File: contracts\PeoplesCasino.sol
 
 pragma solidity ^0.5.0;
@@ -1216,7 +1217,7 @@ contract PeoplesCasino is TradeableERC721Token {
   using SafeMath for uint;
   mapping(uint => uint) houseReserves;
   uint MAX_PAYOUT = 3 ether;
-  event BetResult(uint tokenId, uint roll, bool win);
+  event BetResult(uint tokenId, uint roll, uint rollUnder);
   string _baseTokenURI = "https://peoplescasino.online/api/";
   mapping(uint => string) extraData;
 
@@ -1230,6 +1231,12 @@ contract PeoplesCasino is TradeableERC721Token {
 
   function mint(uint tokenId) public payable onlyOwner {
     _mint(msg.sender, tokenId);
+  }
+
+  function mintMultiple(uint tokenIdStart, uint tokenIdEnd) public payable onlyOwner {
+    for (uint id = tokenIdStart; id <= tokenIdEnd; id++) {
+      _mint(msg.sender, id);
+    }
   }
 
   function setBaseTokenURI(string memory tokenURI) public payable onlyOwner {
@@ -1265,23 +1272,23 @@ contract PeoplesCasino is TradeableERC721Token {
     require(ownerOf(tokenId) != address(0));
     require(oddsPercentage > 1);
     require(oddsPercentage < 99);
-    // Remove 1% house charges
-    uint payout = msg.value.mul(99).div(oddsPercentage);
+    // Remove 5% house charges
+    uint payout = msg.value.mul(95).div(oddsPercentage);
     require(payout < houseReserves[tokenId].add(msg.value));
     require(payout < MAX_PAYOUT);
-    // Bet is now underway. 
+    // Bet is now underway.
     // Add wager to house.
     houseReserves[tokenId] = houseReserves[tokenId].add(msg.value);
     // Roll the dice
     uint roll = getRandomPercent();
     // Payout winner if needed
     if (roll <= oddsPercentage) {
-      msg.sender.transfer(payout);
       // Remove winnings from house.
       houseReserves[tokenId] = houseReserves[tokenId].sub(payout);
+      msg.sender.transfer(payout);
     }
     // Make the result available
-    emit BetResult(tokenId, roll, roll <= oddsPercentage);
+    emit BetResult(tokenId, roll, oddsPercentage);
   }
 
   function setExtraData(uint tokenId, string memory data) public payable {
