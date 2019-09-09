@@ -20,7 +20,7 @@ const OutcomeView = ({
         <SlotMachine
           objectEmoji={objectEmoji}
           subjectEmoji={subjectEmoji}
-          win={betOutcome.win}
+          win={win}
         />
         <Box width="medium">
           <Text size="medium" textAlign={"center"}>

@@ -38,7 +38,7 @@ contract("PeoplesCasino token", accounts => {
     const instance = await PeoplesCasino.deployed()
     await instance.makeBet(1, 60, { value: 1000 })
     const houseReserve = await instance.getHouseReserve(1)
-    assert.equal(houseReserve.toNumber(), 999517)
+    assert.equal(houseReserve.toNumber(), 999500)
   })
   it("Should set data in token", async () => {
     const instance = await PeoplesCasino.deployed()
