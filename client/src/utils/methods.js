@@ -1,5 +1,4 @@
 const makeBet = ({
-  web3,
   contract,
   accounts,
   oddsPercentage,

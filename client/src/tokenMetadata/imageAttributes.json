@@ -58,8 +58,8 @@
     "WinkWacky"
   ],
   "mouthTypes": [
-    "Concerned",
     "Default",
+    "Concerned",
     "Disbelief",
     "Eating",
     "Grimace",
@@ -72,9 +72,9 @@
     "Vomit"
   ],
   "skinTypes": [
+    "Pale",
     "Tanned",
     "Yellow",
-    "Pale",
     "Light",
     "Brown",
     "DarkBrown",
@@ -82,14 +82,15 @@
   ],
   "topTypes": {
     "male": [
+      "Eyepatch",
+      "Turban",
+      "Hat",
+      "NoHair",
       "LongHairFro",
       "LongHairFroBand",
       "LongHairShavedSides",
-      "Eyepatch",
       "HairColor",
-      "Hat",
       "HatColor",
-      "NoHair",
       "ShortHairDreads01",
       "ShortHairDreads02",
       "ShortHairFrizzle",
@@ -102,7 +103,6 @@
       "ShortHairSides",
       "ShortHairTheCaesar",
       "ShortHairTheCaesarSidePart",
-      "Turban",
       "WinterHat1",
       "WinterHat2",
       "WinterHat3",
@@ -129,12 +129,12 @@
   "facialHairTypes": {
     "male": [
       "Blank",
-      "BeardLight",
-      "BeardMajestic",
-      "BeardMedium",
       "Colors",
       "MoustacheFancy",
-      "MoustacheMagnum"
+      "MoustacheMagnum",
+      "BeardLight",
+      "BeardMajestic",
+      "BeardMedium"
     ],
     "female": ["Blank"]
   },
