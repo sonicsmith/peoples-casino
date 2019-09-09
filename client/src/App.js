@@ -66,13 +66,10 @@ class App extends Component {
   }
 
   refresh = async () => {
-    const { contract, accounts } = this.state
+    const { contract } = this.state
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
-      // await methods
-      //   .mint(tokenId)
-      //   .send({ from: accounts[0], value: 0, gas: 300000 })
       const ownerOfToken = await methods.ownerOf(tokenId).call()
       if (getIsTokenMinted(ownerOfToken)) {
         const houseReserve = await methods.getHouseReserve(tokenId).call()
