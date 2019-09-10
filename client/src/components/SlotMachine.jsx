@@ -22,8 +22,8 @@ const SlotMachine = ({ objectEmoji, subjectEmoji, spinning, win, stopped }) => {
     <div
       style={{
         position: "relative",
-        width: "25vw",
-        height: "15vw"
+        width: "50vh",
+        height: "30vh"
       }}
     >
       <div className="machine">
