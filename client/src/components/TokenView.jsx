@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Grommet, Button, Heading, Text, Box } from "grommet"
+import { Grommet, Button, Heading, Text, Box, Grid } from "grommet"
 import { getIsTokenForSale } from "./../utils/misc"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import TokenImage from "./TokenImage"
@@ -102,23 +102,18 @@ const TokenView = ({
           <Heading textAlign="center" level={2}>
             {tokenMetadata.name} (#{tokenId})
           </Heading>
-          <Box width="medium">
-            {tokenMetadata.description.map(line => {
-              return (
-                <Text textAlign="center" size="large" key={line}>
-                  {line}
-                </Text>
-              )
-            })}
-          </Box>
-          <Box>
+          <Box align="center">
             <Box pad="small">
               <TokenImage tokenId={tokenId} />
             </Box>
-            <Box pad="small">
-              <Text textAlign="center" size="xlarge">
-                {emojis}
-              </Text>
+            <Box width="medium">
+              {tokenMetadata.description.map(line => {
+                return (
+                  <Text textAlign="center" size="large" key={line}>
+                    {line}
+                  </Text>
+                )
+              })}
             </Box>
           </Box>
           {/* NO OWNER */}
@@ -127,7 +122,7 @@ const TokenView = ({
               <Heading textAlign="center" level={3}>
                 This token is unowned! Buy it in{" "}
                 <a
-                  href={`https://rinkeby.opensea.io/assets/0x719a63f210d4ee44e24028a6ea1040510e1cbac1/${tokenId}`}
+                  href={`https://opensea.io/assets/0xFEC783E2B297b69118A60267229dDE03012162A4/${tokenId}`}
                 >
                   OpenSea!
                 </a>
@@ -137,6 +132,8 @@ const TokenView = ({
           {/* BET CONTROLS */}
           {!tokenForSale && !isManagingCasino && betState === WAITING_FOR_BET && (
             <BetControls
+              objectEmoji={objectEmoji}
+              subjectEmoji={subjectEmoji}
               boxStyle={MAIN_BOX_STYLE}
               convertToWei={convertToWei}
               convertToEth={convertToEth}

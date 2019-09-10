@@ -10,6 +10,7 @@ import {
   greetings,
   moneyAdjectives,
   moneySlangs,
+  slotMachineSlangs,
   luckCharmLevels
 } from "./misc"
 import containers from "./containers"
@@ -25,17 +26,16 @@ const getIsMale = tokenId => {
 export const getName = tokenId => {
   const first = getRandomItem(tokenId, names.first)
   const last = getRandomItem(tokenId, names.last)
-  const container = getRandomItem(tokenId, containers).name
   const object = getRandomItem(tokenId, objects).name
+  const slotMachineSlang = getRandomItem(tokenId, slotMachineSlangs)
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
-  return titleCase(`${first} ${last}'${s} Casino of ${object}!`)
+  return titleCase(`${first} ${last}'${s} ${slotMachineSlang} of ${object}!`)
 }
 
 export const getDescriptionArray = tokenId => {
   const greeting = getRandomItem(tokenId, greetings)
   const moneyAdjective = getRandomItem(tokenId, moneyAdjectives)
   const moneySlang = getRandomItem(tokenId, moneySlangs)
-  const container = getRandomItem(tokenId, containers).name
   const subject = getRandomItem(tokenId, subjects).name
   const object = getRandomItem(tokenId, objects).name
   return [
@@ -127,11 +127,11 @@ const getAttributes = tokenId => {
     Gray01: "Grey",
     Gray02: "Grey",
     Heather: "Navy",
-    PastelBlue: "PastelBlue",
-    PastelGreen: "PastelGreen",
-    PastelOrange: "PastelOrange",
-    PastelRed: "PastelRed",
-    PastelYellow: "PastelYellow"
+    PastelBlue: "Blue",
+    PastelGreen: "Green",
+    PastelOrange: "Orange",
+    PastelRed: "Red",
+    PastelYellow: "Yellow"
   }
   const clotheColor = getRandomItem(tokenId, imageAttributes.clotheColors)
   const favouriteColor = colorMap[clotheColor] || clotheColor

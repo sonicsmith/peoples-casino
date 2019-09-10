@@ -40,6 +40,28 @@
     black 100%
   );
 }
+.slotStopped {
+  position: absolute;
+  top: 0vw;
+  width: 30%;
+  height: 5vw;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  -webkit-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+.slotStopped:nth-child(1) {
+  left: 3%;
+}
+.slotStopped:nth-child(2) {
+  left: 35%;
+}
+.slotStopped:nth-child(3) {
+  left: 67%;
+}
+
 .slotSpinning {
   position: absolute;
   top: 0vw;

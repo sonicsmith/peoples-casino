@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Button, Text, RangeInput, TextInput, Box } from "grommet"
+import SlotMachine from "./SlotMachine"
 
 const NUM_DP = 10000
 const ODDS_MIN = 1
@@ -23,16 +24,28 @@ const MAIN_BOX_STYLE = {
   background: "white"
 }
 
-const BetControls = ({ convertToWei, convertToEth, makeBet, houseReserve }) => {
+const BetControls = ({
+  convertToWei,
+  convertToEth,
+  makeBet,
+  houseReserve,
+  subjectEmoji,
+  objectEmoji
+}) => {
   const [oddsPercentage, setOddsPercentage] = useState(ODDS_MAX)
   const maxBetAmount = convertToEth((houseReserve * oddsPercentage) / 96)
-  const [betAmount, setBetAmount] = useState(roundDown(maxBetAmount))
+  const [betAmount, setBetAmount] = useState(roundDown(maxBetAmount / 2))
   const payout = ((betAmount * 96) / oddsPercentage).toFixed(18)
   const payoutInWei = convertToWei(payout)
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
   if (Number(houseReserve) > 0) {
     return (
       <Box {...MAIN_BOX_STYLE}>
+        <SlotMachine
+          objectEmoji={objectEmoji}
+          subjectEmoji={subjectEmoji}
+          stopped={true}
+        />
         <Box align="center">
           <Text level={5}>WIN CHANCE {oddsPercentage}%</Text>
         </Box>

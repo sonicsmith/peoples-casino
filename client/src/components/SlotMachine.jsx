@@ -1,7 +1,7 @@
 import React from "react"
 import "./SlotMachine.css"
 
-const SlotMachine = ({ objectEmoji, subjectEmoji, spinning, win }) => {
+const SlotMachine = ({ objectEmoji, subjectEmoji, spinning, win, stopped }) => {
   const slot = [0, 1, 2]
   const slots = [0, 1, 2, 3, 4]
   let emojis = [
@@ -16,6 +16,8 @@ const SlotMachine = ({ objectEmoji, subjectEmoji, spinning, win }) => {
       [objectEmoji, subjectEmoji]
     ]
   }
+  let state = spinning ? "Spinning" : ""
+  state = (stopped && "Stopped") || state
   return (
     <div
       style={{
@@ -27,7 +29,7 @@ const SlotMachine = ({ objectEmoji, subjectEmoji, spinning, win }) => {
       <div className="machine">
         <div className="slots">
           {slot.map(index => (
-            <ul key={index} className={`slot${spinning ? "Spinning" : ""}`}>
+            <ul key={index} className={`slot${state}`}>
               {slots.map(() => {
                 return emojis[index].map((e, i) => (
                   <li key={i} className="number">
