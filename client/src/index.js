@@ -17,7 +17,7 @@ const RoutedApp = () => {
           if (tokenId && Number(tokenId) > 0) {
             return <App tokenId={tokenId} />
           } else {
-            return <App tokenId={1} /> //<NoToken loading={false} />
+            return <NoToken loading={false} />
           }
         }}
       />
