@@ -220,7 +220,7 @@ const TokenView = ({
         </Box>
         <Box align="center" margin="medium">
           <a
-            href="https://rinkeby.opensea.io/assets/peoplescasino-2"
+            href="https://opensea.io/assets/peoplescasino"
             title="Buy on OpenSea"
             target="_blank"
           >

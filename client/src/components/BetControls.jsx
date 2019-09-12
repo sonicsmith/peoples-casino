@@ -2,9 +2,9 @@ import React, { useState } from "react"
 import { Button, Text, RangeInput, TextInput, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
 
-const NUM_DP = 10000
+const NUM_DP = 1000000
 const ODDS_MIN = 1
-const ODDS_MAX = 97
+const ODDS_MAX = 95
 
 const round = amount => {
   return Math.round(amount * NUM_DP) / NUM_DP

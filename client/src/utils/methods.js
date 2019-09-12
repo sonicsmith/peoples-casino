@@ -13,7 +13,10 @@ const makeBet = ({
       .send({ from, value: betAmount, gas: 300000 }, err => {
         return err && { canceled: true }
       })
-      .then(({ events }) => events.BetResult.returnValues)
+      .then(({ events, transactionHash }) => ({
+        ...events.BetResult.returnValues,
+        transactionHash
+      }))
       .catch(e => e)
   }
   return { err: true }
