@@ -26,7 +26,7 @@ const NoToken = ({ loading, web3Error }) => {
       ) : (
         <div>
           <div style={{ textAlign: "center" }}>
-            <img src={image} width="20%" height="auto" alt="Shocked face" />
+            <img src={image} height="auto" alt="Shocked face" />
           </div>
           <div style={{ textAlign: "center" }}>
             <h1>OH NOES!</h1>

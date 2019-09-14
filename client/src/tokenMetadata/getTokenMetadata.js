@@ -19,13 +19,12 @@ import objects from "./objects"
 import imageAttributes from "./imageAttributes"
 
 const getIsMale = tokenId => {
-  const nameIndex = getRandomIndex(tokenId, names.first)
-  return nameIndex % 2 === 1
+  return (tokenId % 75) % 2 === 1
 }
 
 export const getName = tokenId => {
-  const first = getRandomItem(tokenId, names.first)
-  const last = getRandomItem(tokenId, names.last)
+  const first = names.first[tokenId % 75]
+  const last = names.last[tokenId % 56]
   const object = getRandomItem(tokenId, objects).name
   const slotMachineSlang = getRandomItem(tokenId, slotMachineSlangs)
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
