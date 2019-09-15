@@ -1,6 +1,5 @@
 import {
   getRandomItem,
-  getRandomIndex,
   invertColor,
   getRandomColor,
   titleCase
@@ -11,9 +10,8 @@ import {
   moneyAdjectives,
   moneySlangs,
   slotMachineSlangs,
-  luckCharmLevels
+  percentages
 } from "./misc"
-import containers from "./containers"
 import subjects from "./subjects"
 import objects from "./objects"
 import imageAttributes from "./imageAttributes"
@@ -40,16 +38,14 @@ export const getDescriptionArray = tokenId => {
   return [
     `${greeting}, wanna try your luck!?`,
     `You can make ${moneyAdjective} ${moneySlang} by 
-    matching three ${subject} in my slot machine full of ${object}!`
+    matching three ${subject} in my ${object} themed game!`
   ]
 }
 
 export const getDescriptionItems = tokenId => {
-  const container = getRandomItem(tokenId, containers)
   const subject = getRandomItem(tokenId, subjects)
   const object = getRandomItem(tokenId, objects)
   return {
-    container,
     subject,
     object
   }
@@ -102,25 +98,23 @@ export const getTokenMetadata = tokenId => {
 
 const getAttributes = tokenId => {
   const sex = getIsMale(tokenId) ? "male" : "female"
-  const generation = Math.floor(Number(tokenId) / 1000) + 1
+  const generation = Math.floor(Number(tokenId) / 1001) + 1
   const mouthType = getRandomItem(tokenId, imageAttributes.mouthTypes)
   const personalityMap = {
     Concerned: "concerned",
     Default: "easy going",
     Disbelief: "dispointed",
-    Eating: "reserved",
+    Eating: "judgemental",
     Grimace: "uptight",
     Sad: "sad",
     ScreamOpen: "fearful",
     Serious: "serious",
     Smile: "happy",
     Tongue: "silly",
-    Twinkle: "gentle",
-    Vomit: "sick"
+    Twinkle: "gentle"
   }
   const personality = personalityMap[mouthType]
   const colorMap = {
-    Blue01: "Blue",
     Blue02: "Blue",
     Blue03: "Blue",
     Gray01: "Grey",
@@ -134,7 +128,8 @@ const getAttributes = tokenId => {
   }
   const clotheColor = getRandomItem(tokenId, imageAttributes.clotheColors)
   const favouriteColor = colorMap[clotheColor] || clotheColor
-  const luckCharmLevel = getRandomItem(tokenId, luckCharmLevels)
+  const enjoymentLevel = getRandomItem(tokenId, percentages)
+  const favEmoji = getRandomItem(tokenId, subjects).emoji
   return [
     {
       trait_type: "sex",
@@ -149,14 +144,18 @@ const getAttributes = tokenId => {
       value: favouriteColor
     },
     {
+      trait_type: "fav emoji",
+      value: favEmoji
+    },
+    {
       display_type: "number",
       trait_type: "generation",
       value: generation
     },
     {
       display_type: "boost_percentage",
-      trait_type: "luck_charm_level",
-      value: luckCharmLevel
+      trait_type: "enjoyment level",
+      value: enjoymentLevel
     }
   ]
 }

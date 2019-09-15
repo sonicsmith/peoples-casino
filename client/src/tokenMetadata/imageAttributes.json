@@ -14,7 +14,6 @@
   ],
   "clotheColors": [
     "Black",
-    "Blue01",
     "Blue02",
     "Blue03",
     "Gray01",
@@ -68,8 +67,7 @@
     "Serious",
     "Smile",
     "Tongue",
-    "Twinkle",
-    "Vomit"
+    "Twinkle"
   ],
   "skinTypes": [
     "Pale",

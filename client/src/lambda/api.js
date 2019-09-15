@@ -10,7 +10,7 @@ const getRawSvg = tokenId => {
   const imageAttributes = getImageAttributes(tokenId)
   return RDS.renderToString(
     <Avatar
-      avatarStyle="Circle"
+      // avatarStyle="Circle"
       topType={imageAttributes.topTypes}
       accessoriesType={imageAttributes.accessoriesTypes}
       hairColor={imageAttributes.hairColors}
