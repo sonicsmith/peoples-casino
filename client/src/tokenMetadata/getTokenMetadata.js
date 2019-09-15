@@ -26,7 +26,9 @@ export const getName = tokenId => {
   const object = getRandomItem(tokenId, objects).name
   const slotMachineSlang = getRandomItem(tokenId, slotMachineSlangs)
   const s = last.charAt(last.length - 1) === "s" ? "" : "s"
-  return titleCase(`${first} ${last}'${s} ${slotMachineSlang} of ${object}!`)
+  return titleCase(
+    `${first} ${last}'${s} ${object} themed ${slotMachineSlang}!`
+  )
 }
 
 export const getDescriptionArray = tokenId => {
