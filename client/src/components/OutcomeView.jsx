@@ -14,8 +14,8 @@ const OutcomeView = ({
   goBack
 }) => {
   if (betOutcome) {
-    const { roll, rollUnder, transactionHash } = betOutcome
-    const win = roll <= rollUnder
+    const { random, oddsPercentage, transactionHash } = betOutcome
+    const win = Number(random) <= Number(oddsPercentage)
     return (
       <Box {...boxStyle}>
         <Text size="xlarge" weight="bold">

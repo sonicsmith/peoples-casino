@@ -1,5 +1,5 @@
 const PeoplesCasino = artifacts.require("./PeoplesCasino.sol")
 
-module.exports = function(deployer, network) {
-  deployer.deploy(PeoplesCasino, { gas: 5000000 })
+module.exports = function(deployer) {
+  deployer.deploy(PeoplesCasino, { gas: 6721975 })
 }

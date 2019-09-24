@@ -16,9 +16,7 @@ const HouseBank = ({
         {[
           "Enter the amount of ETH you would",
           "like to deposit or withdrawal from your casino.",
-          "(Balance can be withdrawn at any time)",
-          "NOTE: Contract is currently being updated.",
-          "Deposits are temporarily disabled."
+          "(Balance can be withdrawn at any time)"
         ].map((line, i) => {
           return (
             <Text textAlign="center" size="medium" key={i}>
@@ -45,7 +43,6 @@ const HouseBank = ({
       </Box>
       <Box margin="small">
         <Button
-          disabled={true}
           label={"DEPOSIT"}
           primary
           onClick={() => depositHouseReserve(amount)}

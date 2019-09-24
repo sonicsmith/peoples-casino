@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -9,4 +9,4 @@ module.exports = {
       port: 8545
     }
   }
-};
+}

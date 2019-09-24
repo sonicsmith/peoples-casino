@@ -3,7 +3,7 @@ import getWeb3 from "./utils/getWeb3"
 import PeoplesCasinoContract from "./contracts/PeoplesCasino.json"
 import { NETWORK_ID, CONTRACT_ADDRESSES } from "./config"
 import { initializeAssist, onboardUser } from "./utils/assist"
-import { getIsTokenForSale, getIsTokenMinted } from "./utils/misc"
+import { getIsTokenMinted } from "./utils/misc"
 import NoToken from "./components/NoToken"
 import TokenView from "./components/TokenView"
 
@@ -66,14 +66,23 @@ class App extends Component {
   }
 
   refresh = async () => {
-    const { contract } = this.state
+    const { contract, accounts } = this.state
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
+      // methods
+      //   .mint(1)
+      //   .send({ from: accounts[0], value: 0, gas: 300000 }, res => !res)
+      //   .then(console.log)
+      //   .catch(console.log)
+      // return
       const ownerOfToken = await methods.ownerOf(tokenId).call()
       if (getIsTokenMinted(ownerOfToken)) {
         const houseReserve = await methods.getHouseReserve(tokenId).call()
-        this.setState({ houseReserve, ownerOfToken })
+        const ongoingBetSender = await methods
+          .getOngoingBetSender(tokenId)
+          .call()
+        this.setState({ houseReserve, ownerOfToken, ongoingBetSender })
       } else {
         this.setState({ houseReserve: 0, ownerOfToken })
       }
@@ -86,6 +95,7 @@ class App extends Component {
       accounts,
       web3Error,
       houseReserve,
+      ongoingBetSender,
       ownerOfToken,
       contract
     } = this.state
@@ -97,6 +107,7 @@ class App extends Component {
           setNotificationEventListener={this.setNotificationEventListener}
           ownerOfToken={ownerOfToken}
           houseReserve={houseReserve}
+          ongoingBetSender={ongoingBetSender}
           refreshData={this.refresh}
           web3={web3}
           accounts={accounts}

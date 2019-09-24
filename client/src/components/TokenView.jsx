@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Grommet, Button, Heading, Text, Box, Grid } from "grommet"
+import { Grommet, Button, Heading, Text, Box } from "grommet"
 import { getIsTokenForSale } from "./../utils/misc"
 import { getTokenMetadata } from "./../tokenMetadata/getTokenMetadata"
 import TokenImage from "./TokenImage"
@@ -7,7 +7,8 @@ import HouseBank from "./HouseBank"
 import BetControls from "./BetControls"
 import OutcomeView from "./OutcomeView"
 import {
-  makeBet,
+  commitBet,
+  getResult,
   depositHouseReserve,
   withdrawalHouseReserve
 } from "../utils/methods"
@@ -24,11 +25,13 @@ const MAIN_BOX_STYLE = {
 }
 
 const WAITING_FOR_BET = 0
-const WAITING_FOR_RESULT = 1
+const WAITING_FOR_SPIN = 1
+const WAITING_FOR_RESULT = 2
 
 const TokenView = ({
   ownerOfToken,
   houseReserve,
+  ongoingBetSender,
   refreshData,
   web3,
   contract,
@@ -39,14 +42,19 @@ const TokenView = ({
 }) => {
   const [isManagingCasino, setIsManagingCasino] = useState(false)
   const tokenMetadata = getTokenMetadata(tokenId)
-  const [betState, setBetState] = useState(WAITING_FOR_BET)
+  const [betState, setBetState] = useState(
+    ongoingBetSender === accounts[0] ? WAITING_FOR_SPIN : WAITING_FOR_BET
+  )
   const [betOutcome, setBetOutcome] = useState()
 
   useEffect(() => {
-    setNotificationEventListener(({ eventCode, contract }) => {
-      console.log("eventCode", eventCode, contract.methodName)
-      if (contract.methodName === "makeBet") {
-        if (eventCode === "txSent") {
+    setNotificationEventListener(({ eventCode, contract: { methodName } }) => {
+      console.log("eventCode", eventCode, methodName)
+      if (eventCode === "txConfirmed") {
+        if (methodName === "commitBet") {
+          setBetState(WAITING_FOR_SPIN)
+        }
+        if (methodName === "getResult") {
           setBetState(WAITING_FOR_RESULT)
         }
       }
@@ -74,11 +82,6 @@ const TokenView = ({
   const subjectEmoji = subjectItem.emoji
   const subjectName = subjectItem.name
 
-  let emojis = []
-  for (let i = 0; i < 4; i++) {
-    emojis = [...emojis, objectEmoji, subjectEmoji]
-  }
-  emojis.pop()
   const tokenTheme = {
     global: {
       colors: { ...imageAttributes.colorScheme, border: "black" }
@@ -130,36 +133,50 @@ const TokenView = ({
             </Box>
           )}
           {/* BET CONTROLS */}
-          {!tokenForSale && !isManagingCasino && betState === WAITING_FOR_BET && (
-            <BetControls
-              objectEmoji={objectEmoji}
-              subjectEmoji={subjectEmoji}
-              boxStyle={MAIN_BOX_STYLE}
-              convertToWei={convertToWei}
-              convertToEth={convertToEth}
-              makeBet={(amount, oddsPercentage) => {
-                makeBet({
-                  web3,
-                  contract,
-                  accounts,
-                  oddsPercentage,
-                  betAmount: convertToWei(amount),
-                  tokenId
-                }).then(outcome => {
-                  const { err, cancelled } = outcome
-                  console.log("outcome", outcome)
-                  if (!err && !cancelled) {
-                    setBetOutcome(outcome)
-                  } else {
-                    setBetState(WAITING_FOR_BET)
-                  }
-                })
-              }}
-              houseReserve={houseReserve}
-            />
-          )}
+          {!tokenForSale &&
+            !isManagingCasino &&
+            betState !== WAITING_FOR_RESULT && (
+              <BetControls
+                web3={web3}
+                betCommited={betState === WAITING_FOR_SPIN}
+                objectEmoji={objectEmoji}
+                subjectEmoji={subjectEmoji}
+                boxStyle={MAIN_BOX_STYLE}
+                convertToWei={convertToWei}
+                convertToEth={convertToEth}
+                commitBet={(amount, oddsPercentage) => {
+                  commitBet({
+                    web3,
+                    contract,
+                    accounts,
+                    oddsPercentage,
+                    betAmount: convertToWei(amount),
+                    tokenId
+                  }).then(({ err, cancelled }) => {
+                    if (!err && !cancelled) {
+                      setBetState(WAITING_FOR_SPIN)
+                    }
+                  })
+                }}
+                getResult={() => {
+                  getResult({
+                    web3,
+                    contract,
+                    accounts,
+                    tokenId
+                  }).then(outcome => {
+                    const { err, cancelled } = outcome
+                    console.log("outcome", outcome)
+                    if (!err && !cancelled) {
+                      setBetOutcome(outcome)
+                    }
+                  })
+                }}
+                houseReserve={houseReserve}
+              />
+            )}
           {/* BET OUTCOME */}
-          {betState !== WAITING_FOR_BET && (
+          {betState === WAITING_FOR_RESULT && (
             <OutcomeView
               boxStyle={MAIN_BOX_STYLE}
               betOutcome={betOutcome}

@@ -12,7 +12,8 @@ export const decorateTransaction = txObject => getAssist().Transaction(txObject)
 export const getUserState = () => getAssist().getState()
 
 const METHOD_TO_WORD = {
-  makeBet: "bet",
+  commitBet: "bet",
+  getResult: "spin",
   depositHouseReserve: "deposit",
   withdrawalHouseReserve: "withdrawal"
 }

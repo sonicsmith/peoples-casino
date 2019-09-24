@@ -1,4 +1,4 @@
-const makeBet = ({
+const commitBet = ({
   contract,
   accounts,
   oddsPercentage,
@@ -9,8 +9,22 @@ const makeBet = ({
     const { methods } = contract
     const from = accounts[0]
     return methods
-      .makeBet(tokenId, oddsPercentage)
+      .commitBet(tokenId, oddsPercentage)
       .send({ from, value: betAmount, gas: 300000 }, err => {
+        return err && { canceled: true }
+      })
+      .catch(e => e)
+  }
+  return { err: true }
+}
+
+const getResult = ({ contract, accounts, tokenId }) => {
+  if (contract) {
+    const { methods } = contract
+    const from = accounts[0]
+    return methods
+      .getResult(tokenId)
+      .send({ from, value: 0, gas: 300000 }, err => {
         return err && { canceled: true }
       })
       .then(({ events, transactionHash }) => ({
@@ -56,4 +70,4 @@ const withdrawalHouseReserve = ({
   return false
 }
 
-export { makeBet, depositHouseReserve, withdrawalHouseReserve }
+export { commitBet, getResult, depositHouseReserve, withdrawalHouseReserve }
