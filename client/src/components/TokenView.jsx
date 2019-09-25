@@ -75,7 +75,7 @@ const TokenView = ({
     return <NoToken loading={!web3Error} web3Error={web3Error} />
   }
 
-  const tokenForSale = getIsTokenForSale(ownerOfToken)
+  const tokenForSale = getIsTokenForSale(tokenId, ownerOfToken)
   const { descriptionItems, imageAttributes } = tokenMetadata
   const { object: objectItem, subject: subjectItem } = descriptionItems
   const objectEmoji = objectItem.emoji

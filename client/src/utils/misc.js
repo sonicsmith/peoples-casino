@@ -81,8 +81,8 @@ export const getRandomColor = seed => {
   return color
 }
 
-export const getIsTokenForSale = tokenOwnerAdddress => {
-  return tokenOwnerAdddress === ownerAdddress
+export const getIsTokenForSale = (tokenId, tokenOwnerAdddress) => {
+  return tokenId !== 1 && tokenOwnerAdddress === ownerAdddress
 }
 
 export const getIsTokenMinted = tokenOwnerAdddress => {
