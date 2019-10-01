@@ -133,11 +133,27 @@ const getAttributes = tokenId => {
   const enjoymentLevel = getRandomItem(tokenId, percentages)
   const favEmoji = getRandomItem(tokenId, subjects).emoji
   return [
-    { trait_type: "sex", value: sex },
-    { trait_type: "personality", value: personality },
-    { trait_type: "favourite color", value: favouriteColor },
-    { trait_type: "fav emoji", value: favEmoji },
-    { display_type: "number", trait_type: "generation", value: generation },
+    {
+      trait_type: "sex",
+      value: sex
+    },
+    {
+      trait_type: "personality",
+      value: personality
+    },
+    {
+      trait_type: "favourite color",
+      value: favouriteColor
+    },
+    {
+      trait_type: "fav emoji",
+      value: favEmoji
+    },
+    {
+      display_type: "number",
+      trait_type: "generation",
+      value: generation
+    },
     {
       display_type: "boost_percentage",
       trait_type: "enjoyment level",
