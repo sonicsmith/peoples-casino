@@ -54,6 +54,7 @@
     "style-loader": "0.23.0",
     "styled-components": "^4.3.2",
     "terser-webpack-plugin": "1.1.0",
+    "truffle-hdwallet-provider": "^1.0.17",
     "url-loader": "1.1.1",
     "web3": "^1.0.0-beta.37",
     "webpack": "4.19.1",
@@ -63,8 +64,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "start:api": "set NODE_ENV=development&& netlify-lambda serve src/lambda",
-    "build:api": "set NODE_ENV=production&& netlify-lambda build src/lambda",
+    "start:api": "set NODE_ENV=development&& netlify-lambda serve src/lambda --config ./webpack.api.js",
+    "build:api": "set NODE_ENV=production&& netlify-lambda build src/lambda --config ./webpack.api.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
