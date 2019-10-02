@@ -25,17 +25,12 @@ const getRawSvg = tokenId => {
   )
 }
 
-exports.handler = async (event, context, callback) => {
-  try {
-    const lastSlash = event.path.lastIndexOf("/")
-    const tokenId = event.path.substring(lastSlash + 1)
-    const image_data = getRawSvg(tokenId)
-    const metaData = await getAPITokenMetadata(`${tokenId}`)
-    callback(null, {
-      statusCode: 200,
-      body: JSON.stringify({ ...metaData, image_data })
-    })
-  } catch (e) {
-    callback(Error(e))
-  }
+exports.handler = function(event, context, callback) {
+  const tokenId = event.path.substring(5)
+  const metaData = getAPITokenMetadata(`${tokenId}`)
+  metaData.image_data = getRawSvg(tokenId)
+  callback(null, {
+    statusCode: 200,
+    body: JSON.stringify(metaData)
+  })
 }

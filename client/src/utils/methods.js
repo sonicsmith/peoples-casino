@@ -1,5 +1,3 @@
-import { CONTRACT_ADDRESSES } from "./../config"
-
 const commitBet = ({
   contract,
   accounts,
@@ -72,17 +70,4 @@ const withdrawalHouseReserve = ({
   return false
 }
 
-const forceUpdateMetadata = tokenId => {
-  const openSea = `https://api.opensea.io/asset/`
-  const contract = `${CONTRACT_ADDRESSES[1]}`
-  const force = `/${tokenId}/?force_update=true`
-  fetch(`${openSea}${contract}${force}`)
-}
-
-export {
-  commitBet,
-  getResult,
-  depositHouseReserve,
-  withdrawalHouseReserve,
-  forceUpdateMetadata
-}
+export { commitBet, getResult, depositHouseReserve, withdrawalHouseReserve }
