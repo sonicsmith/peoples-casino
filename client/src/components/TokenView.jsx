@@ -10,7 +10,8 @@ import {
   commitBet,
   getResult,
   depositHouseReserve,
-  withdrawalHouseReserve
+  withdrawalHouseReserve,
+  forceUpdateMetadata
 } from "../utils/methods"
 import NoToken from "./NoToken"
 
@@ -169,6 +170,7 @@ const TokenView = ({
                     console.log("outcome", outcome)
                     if (!err && !cancelled) {
                       setBetOutcome(outcome)
+                      forceUpdateMetadata()
                     }
                   })
                 }}
@@ -202,6 +204,7 @@ const TokenView = ({
                 }).then(success => {
                   if (success) {
                     refreshData()
+                    forceUpdateMetadata()
                   }
                 })
               }}
@@ -215,6 +218,7 @@ const TokenView = ({
                 }).then(success => {
                   if (success) {
                     refreshData()
+                    forceUpdateMetadata()
                   }
                 })
               }}
