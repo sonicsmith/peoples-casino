@@ -170,7 +170,7 @@ const TokenView = ({
                     console.log("outcome", outcome)
                     if (!err && !cancelled) {
                       setBetOutcome(outcome)
-                      forceUpdateMetadata()
+                      forceUpdateMetadata(tokenId)
                     }
                   })
                 }}
@@ -204,7 +204,7 @@ const TokenView = ({
                 }).then(success => {
                   if (success) {
                     refreshData()
-                    forceUpdateMetadata()
+                    forceUpdateMetadata(tokenId)
                   }
                 })
               }}
@@ -218,7 +218,7 @@ const TokenView = ({
                 }).then(success => {
                   if (success) {
                     refreshData()
-                    forceUpdateMetadata()
+                    forceUpdateMetadata(tokenId)
                   }
                 })
               }}
