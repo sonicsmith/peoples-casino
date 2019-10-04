@@ -66,7 +66,7 @@ class App extends Component {
   }
 
   refresh = async () => {
-    const { contract, accounts } = this.state
+    const { contract } = this.state
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract

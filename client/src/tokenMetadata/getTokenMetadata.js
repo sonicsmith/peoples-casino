@@ -15,10 +15,6 @@ import {
 import subjects from "./subjects"
 import objects from "./objects"
 import imageAttributes from "./imageAttributes"
-import Web3 from "web3"
-import HDWalletProvider from "truffle-hdwallet-provider"
-import { CONTRACT_ADDRESSES } from "../config"
-import ContractJson from "./../contracts/PeoplesCasino.json"
 
 const getIsMale = tokenId => {
   return (tokenId % 75) % 2 === 1
@@ -102,31 +98,7 @@ export const getTokenMetadata = tokenId => {
   }
 }
 
-const getCasinoHoldings = tokenId => {
-  // No need to hide, this is a throwaway address
-  const MNEMONIC =
-    "oil disagree hunt blush insane lift spare law news moon wonder ugly"
-  const INFURA_KEY = "18959c54058e4101bc4edfefa4134bb3"
-  const provider = new HDWalletProvider(
-    MNEMONIC,
-    `https://mainnet.infura.io/v3/${INFURA_KEY}`
-  )
-  const web3Instance = new Web3(provider)
-  const contract = new web3Instance.eth.Contract(
-    ContractJson.abi,
-    CONTRACT_ADDRESSES[1],
-    { gasLimit: "1000000" }
-  )
-  return contract.methods
-    .getHouseReserve(tokenId)
-    .call()
-    .then(amount => {
-      const ethAmount = web3Instance.utils.fromWei(String(amount), "ether")
-      return Math.floor(ethAmount * 100000) / 100000
-    })
-}
-
-const getAttributes = async tokenId => {
+const getAttributes = tokenId => {
   const sex = getIsMale(tokenId) ? "male" : "female"
   const generation = Math.floor(Number(tokenId) / 1001) + 1
   const mouthType = getRandomItem(tokenId, imageAttributes.mouthTypes)
@@ -160,13 +132,7 @@ const getAttributes = async tokenId => {
   const favouriteColor = colorMap[clotheColor] || clotheColor
   const enjoymentLevel = getRandomItem(tokenId, percentages)
   const favEmoji = getRandomItem(tokenId, subjects).emoji
-  const houseReserve = await getCasinoHoldings(tokenId)
   return [
-    {
-      display_type: "number",
-      trait_type: "Prize Pool (ETH)",
-      value: houseReserve
-    },
     { trait_type: "sex", value: sex },
     { trait_type: "personality", value: personality },
     { trait_type: "favourite color", value: favouriteColor },
@@ -180,12 +146,12 @@ const getAttributes = async tokenId => {
   ]
 }
 
-export const getAPITokenMetadata = async tokenId => {
+export const getAPITokenMetadata = tokenId => {
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId).join(" "),
     external_url: `http://peoplescasino.online/${tokenId}`,
     background_color: getRandomColor(tokenId),
-    attributes: await getAttributes(tokenId)
+    attributes: getAttributes(tokenId)
   }
 }
