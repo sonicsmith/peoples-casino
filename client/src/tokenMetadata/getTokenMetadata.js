@@ -164,7 +164,7 @@ const getAttributes = async tokenId => {
   return [
     {
       display_type: "number",
-      trait_type: "house reserve (eth)",
+      trait_type: "Prize Pool (ETH)",
       value: houseReserve
     },
     { trait_type: "sex", value: sex },
