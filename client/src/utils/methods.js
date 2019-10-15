@@ -12,8 +12,8 @@ const commitBet = ({
     const from = accounts[0]
     return methods
       .commitBet(tokenId, oddsPercentage)
-      .send({ from, value: betAmount, gas: 300000 }, err => {
-        return err && { canceled: true }
+      .send({ from, value: betAmount, gas: 300000 }, (err, res) => {
+        return { err, res }
       })
       .catch(e => e)
   }

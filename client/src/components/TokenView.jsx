@@ -59,6 +59,14 @@ const TokenView = ({
           setBetState(WAITING_FOR_RESULT)
         }
       }
+      if (eventCode === "txError") {
+        if (methodName === "commitBet") {
+          setBetState(WAITING_FOR_BET)
+        }
+        if (methodName === "getResult") {
+          setBetState(WAITING_FOR_SPIN)
+        }
+      }
       return true
     })
   }, [])
@@ -153,10 +161,8 @@ const TokenView = ({
                     oddsPercentage,
                     betAmount: convertToWei(amount),
                     tokenId
-                  }).then(({ err, cancelled }) => {
-                    if (!err && !cancelled) {
-                      setBetState(WAITING_FOR_SPIN)
-                    }
+                  }).then(result => {
+                    console.log("Commit Bet", result)
                   })
                 }}
                 getResult={() => {
