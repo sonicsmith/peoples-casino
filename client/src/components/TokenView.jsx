@@ -134,7 +134,7 @@ const TokenView = ({
               <Heading textAlign="center" level={3}>
                 This token is unowned! Buy it in{" "}
                 <a
-                  href={`https://opensea.io/assets/0xFEC783E2B297b69118A60267229dDE03012162A4/${tokenId}`}
+                  href={`https://opensea.io/assets/0x8995AD7dEaBd17c31b62AC89EE5f7D850a4BeDb0/${tokenId}`}
                 >
                   OpenSea!
                 </a>
