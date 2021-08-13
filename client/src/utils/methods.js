@@ -1,4 +1,4 @@
-import { CONTRACT_ADDRESSES, getNetworkId } from "./../config"
+import { CONTRACT_ADDRESSES, getNetworkId, POLYGON_NETWORK } from "./../config"
 
 const commitBet = ({
   contract,
@@ -74,9 +74,11 @@ const withdrawalHouseReserve = ({
 
 const forceUpdateMetadata = (tokenId) => {
   const openSea = `https://api.opensea.io/asset/`
-  const contract = `${CONTRACT_ADDRESSES[getNetworkId()]}`
+  const networkId = getNetworkId()
+  const contract = `${CONTRACT_ADDRESSES[networkId]}`
   const force = `/${tokenId}/?force_update=true`
-  fetch(`${openSea}${contract}${force}`)
+  const blockchain = networkId === POLYGON_NETWORK ? "matic/" : ""
+  fetch(`${openSea}${blockchain}${contract}${force}`)
 }
 
 export {
