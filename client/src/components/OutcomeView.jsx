@@ -2,7 +2,7 @@ import React from "react"
 import { Button, Text, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
 
-const getProofLink = transactionHash => {
+const getProofLink = (transactionHash) => {
   return `https://etherscan.io/tx/${transactionHash}#eventlog`
 }
 
@@ -11,7 +11,7 @@ const OutcomeView = ({
   betOutcome,
   objectEmoji,
   subjectEmoji,
-  goBack
+  goBack,
 }) => {
   if (betOutcome) {
     const { random, oddsPercentage, transactionHash } = betOutcome
@@ -33,7 +33,11 @@ const OutcomeView = ({
               : "Better luck next time!"}
           </Text>
           <Text size="small" textAlign={"center"}>
-            <a href={getProofLink(transactionHash)} target="_blank">
+            <a
+              href={getProofLink(transactionHash)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               PROVABLE FAIRNESS
             </a>
           </Text>

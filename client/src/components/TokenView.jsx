@@ -11,7 +11,7 @@ import {
   getResult,
   depositHouseReserve,
   withdrawalHouseReserve,
-  forceUpdateMetadata
+  forceUpdateMetadata,
 } from "../utils/methods"
 import NoToken from "./NoToken"
 
@@ -23,7 +23,7 @@ const MAIN_BOX_STYLE = {
   pad: "medium",
   size: "small",
   round: true,
-  background: "white"
+  background: "white",
 }
 
 const WAITING_FOR_BET = 0
@@ -40,7 +40,7 @@ const TokenView = ({
   accounts,
   web3Error,
   tokenId,
-  setNotificationEventListener
+  setNotificationEventListener,
 }) => {
   const [isManagingCasino, setIsManagingCasino] = useState(false)
   const tokenMetadata = getTokenMetadata(tokenId)
@@ -72,11 +72,11 @@ const TokenView = ({
     })
   }, [])
 
-  const convertToWei = amount => {
+  const convertToWei = (amount) => {
     return web3.utils.toWei(String(amount), "ether")
   }
 
-  const convertToEth = amount => {
+  const convertToEth = (amount) => {
     return web3.utils.fromWei(String(Math.floor(amount)), "ether")
   }
 
@@ -94,8 +94,8 @@ const TokenView = ({
 
   const tokenTheme = {
     global: {
-      colors: { ...imageAttributes.colorScheme, border: "black" }
-    }
+      colors: { ...imageAttributes.colorScheme, border: "black" },
+    },
   }
 
   return (
@@ -120,7 +120,7 @@ const TokenView = ({
               <TokenImage tokenId={tokenId} />
             </Box>
             <Box width="medium">
-              {tokenMetadata.description.map(line => {
+              {tokenMetadata.description.map((line) => {
                 return (
                   <Text textAlign="center" size="large" key={line}>
                     {line}
@@ -161,8 +161,8 @@ const TokenView = ({
                     accounts,
                     oddsPercentage,
                     betAmount: convertToWei(amount),
-                    tokenId
-                  }).then(result => {
+                    tokenId,
+                  }).then((result) => {
                     console.log("Commit Bet", result)
                   })
                 }}
@@ -171,8 +171,8 @@ const TokenView = ({
                     web3,
                     contract,
                     accounts,
-                    tokenId
-                  }).then(outcome => {
+                    tokenId,
+                  }).then((outcome) => {
                     const { err, cancelled } = outcome
                     console.log("outcome", outcome)
                     if (!err && !cancelled) {
@@ -201,28 +201,28 @@ const TokenView = ({
               boxStyle={MAIN_BOX_STYLE}
               convertToEth={convertToEth}
               houseReserve={houseReserve}
-              depositHouseReserve={amount => {
+              depositHouseReserve={(amount) => {
                 depositHouseReserve({
                   web3,
                   contract,
                   accounts,
                   tokenId,
-                  amount
-                }).then(success => {
+                  amount,
+                }).then((success) => {
                   if (success) {
                     refreshData()
                     forceUpdateMetadata(tokenId)
                   }
                 })
               }}
-              withdrawalHouseReserve={amount => {
+              withdrawalHouseReserve={(amount) => {
                 withdrawalHouseReserve({
                   web3,
                   contract,
                   accounts,
                   tokenId,
-                  amount
-                }).then(success => {
+                  amount,
+                }).then((success) => {
                   if (success) {
                     refreshData()
                     forceUpdateMetadata(tokenId)
@@ -251,12 +251,13 @@ const TokenView = ({
             href="https://opensea.io/assets/peoplescasino"
             title="Buy on OpenSea"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               style={{
                 width: 160,
                 borderRadius: 5,
-                boxShadow: "0px 1px 6px rgba(0, 0, 0, 0.25)"
+                boxShadow: "0px 1px 6px rgba(0, 0, 0, 0.25)",
               }}
               src="https://storage.googleapis.com/opensea-static/opensea-brand/buy-button-white.png"
               alt="Buy on OpenSea badge"

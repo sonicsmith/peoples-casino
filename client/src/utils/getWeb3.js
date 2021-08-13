@@ -1,5 +1,5 @@
 import Web3 from "web3"
-import { getNetworkId, POLYGON_NETWORK } from "./../config"
+import { getNetworkId } from "./../config"
 
 const getWeb3 = () =>
   new Promise((resolve) => {
