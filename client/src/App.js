@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import getWeb3 from "./utils/getWeb3"
-import PeoplesCasinoContract from "./contracts/PeoplesCasino.json"
-import { NETWORK_ID, CONTRACT_ADDRESSES } from "./config"
+import { getNetworkId, CONTRACT_ADDRESSES } from "./config"
+import { abi as contractAbi } from "./contracts/PeoplesCasino.json"
 import { initializeAssist, onboardUser } from "./utils/assist"
 import { getIsTokenMinted } from "./utils/misc"
 import NoToken from "./components/NoToken"
@@ -12,14 +12,14 @@ class App extends Component {
     ownerOfToken: null,
     notificationEvent: () => {
       console.log("event swallowed")
-    }
+    },
   }
 
-  handleNotificationEvent = event => {
+  handleNotificationEvent = (event) => {
     return this.state.notificationEvent(event)
   }
 
-  setNotificationEventListener = callback => {
+  setNotificationEventListener = (callback) => {
     this.setState({ notificationEvent: callback })
   }
 
@@ -27,7 +27,6 @@ class App extends Component {
     try {
       console.log("componentDidMount")
       const web3 = await getWeb3()
-      console.log("web3 got")
       const assistInstance = initializeAssist(
         web3,
         this.handleNotificationEvent
@@ -36,19 +35,16 @@ class App extends Component {
       await onboardUser()
       console.log("User onboarded")
       const accounts = await web3.eth.getAccounts()
-      const network = PeoplesCasinoContract.networks[NETWORK_ID]
-      const contractAddress = CONTRACT_ADDRESSES[NETWORK_ID]
+      const networkId = getNetworkId()
+      const contractAddress = CONTRACT_ADDRESSES[networkId]
       const contract = assistInstance.Contract(
-        new web3.eth.Contract(
-          PeoplesCasinoContract.abi,
-          contractAddress || (network && network.address)
-        )
+        new web3.eth.Contract(contractAbi, contractAddress)
       )
       console.log("Successfully connected to web3")
       try {
-        window.ethereum.on("accountsChanged", newAccounts => {
+        window.ethereum.on("accountsChanged", (newAccounts) => {
           this.setState({
-            accounts: newAccounts
+            accounts: newAccounts,
           })
           this.refresh()
         })
@@ -59,7 +55,7 @@ class App extends Component {
     } catch (error) {
       // Catch any errors for any of the above operations.
       this.setState({
-        web3Error: true
+        web3Error: true,
       })
       console.error(error)
     }
@@ -70,12 +66,6 @@ class App extends Component {
     const { tokenId } = this.props
     if (contract) {
       const { methods } = contract
-      // methods
-      //   .mint(1)
-      //   .send({ from: accounts[0], value: 0, gas: 300000 }, res => !res)
-      //   .then(console.log)
-      //   .catch(console.log)
-      // return
       const ownerOfToken = await methods.ownerOf(tokenId).call()
       if (getIsTokenMinted(ownerOfToken)) {
         const houseReserve = await methods.getHouseReserve(tokenId).call()
@@ -97,7 +87,7 @@ class App extends Component {
       houseReserve,
       ongoingBetSender,
       ownerOfToken,
-      contract
+      contract,
     } = this.state
     const { tokenId } = this.props
 

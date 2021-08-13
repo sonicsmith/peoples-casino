@@ -1,16 +1,17 @@
 import React, { useState, Fragment } from "react"
 import { Button, Text, RangeInput, TextInput, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
+import { getNetworkId } from "../config"
 
 const NUM_DP = 1000000
 const ODDS_MIN = 2
 const ODDS_MAX = 95
 
-const round = amount => {
+const round = (amount) => {
   return Math.round(amount * NUM_DP) / NUM_DP
 }
 
-const roundDown = amount => {
+const roundDown = (amount) => {
   return Math.floor(amount * NUM_DP) / NUM_DP
 }
 
@@ -21,7 +22,7 @@ const MAIN_BOX_STYLE = {
   margin: "medium",
   pad: "medium",
   round: true,
-  background: "white"
+  background: "white",
 }
 
 const BetControls = ({
@@ -33,7 +34,7 @@ const BetControls = ({
   getResult,
   houseReserve,
   subjectEmoji,
-  objectEmoji
+  objectEmoji,
 }) => {
   const [oddsPercentage, setOddsPercentage] = useState(ODDS_MAX)
   const maxBetAmount = convertToEth((houseReserve * oddsPercentage) / 96)
@@ -41,6 +42,8 @@ const BetControls = ({
   const payout = ((betAmount * 96) / oddsPercentage).toFixed(18)
   const payoutInWei = convertToWei(payout)
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
+  const networkId = getNetworkId()
+  const coin = networkId === 1 ? "ETH" : "MATIC"
 
   if (Number(houseReserve) > 0 || betCommited) {
     return (
@@ -65,15 +68,17 @@ const BetControls = ({
                 min={ODDS_MIN}
                 max={ODDS_MAX}
                 value={oddsPercentage}
-                onChange={event => setOddsPercentage(event.target.value)}
+                onChange={(event) => setOddsPercentage(event.target.value)}
               />
             </Box>
-            <Text>BET AMOUNT {betAmount} ETH</Text>
+            <Text>
+              BET AMOUNT {betAmount} {coin}
+            </Text>
             <Box margin="medium">
               <TextInput
                 type="number"
                 value={betAmount}
-                onChange={event => setBetAmount(event.target.value)}
+                onChange={(event) => setBetAmount(event.target.value)}
               />
             </Box>
             <Box
@@ -81,7 +86,9 @@ const BetControls = ({
               margin="medium"
               style={payoutTooHigh ? { color: "red" } : {}}
             >
-              <Text>PAYOUT {round(payout)} ETH</Text>
+              <Text>
+                PAYOUT {round(payout)} {coin}
+              </Text>
               {payoutTooHigh && (
                 <Text>Casino not backed for a wager that high!</Text>
               )}

@@ -21,6 +21,7 @@ const MAIN_BOX_STYLE = {
   border: { color: "border", size: "large" },
   margin: "medium",
   pad: "medium",
+  size: "small",
   round: true,
   background: "white"
 }

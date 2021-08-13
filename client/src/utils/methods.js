@@ -1,11 +1,11 @@
-import { CONTRACT_ADDRESSES } from "./../config"
+import { CONTRACT_ADDRESSES, getNetworkId } from "./../config"
 
 const commitBet = ({
   contract,
   accounts,
   oddsPercentage,
   betAmount,
-  tokenId
+  tokenId,
 }) => {
   if (contract) {
     const { methods } = contract
@@ -15,7 +15,7 @@ const commitBet = ({
       .send({ from, value: betAmount, gas: 300000 }, (err, res) => {
         return { err, res }
       })
-      .catch(e => e)
+      .catch((e) => e)
   }
   return { err: true }
 }
@@ -26,14 +26,14 @@ const getResult = ({ contract, accounts, tokenId }) => {
     const from = accounts[0]
     return methods
       .getResult(tokenId)
-      .send({ from, value: 0, gas: 300000 }, err => {
+      .send({ from, value: 0, gas: 300000 }, (err) => {
         return err && { canceled: true }
       })
       .then(({ events, transactionHash }) => ({
         ...events.BetResult.returnValues,
-        transactionHash
+        transactionHash,
       }))
-      .catch(e => e)
+      .catch((e) => e)
   }
   return { err: true }
 }
@@ -45,7 +45,7 @@ const depositHouseReserve = ({ web3, contract, accounts, tokenId, amount }) => {
     const value = web3.utils.toWei(amount, "ether")
     return methods
       .depositHouseReserve(tokenId)
-      .send({ from, value, gas: 300000 }, res => !res)
+      .send({ from, value, gas: 300000 }, (res) => !res)
       .then(() => true)
       .catch(() => false)
   }
@@ -57,7 +57,7 @@ const withdrawalHouseReserve = ({
   contract,
   accounts,
   tokenId,
-  amount
+  amount,
 }) => {
   if (contract) {
     const { methods } = contract
@@ -65,16 +65,16 @@ const withdrawalHouseReserve = ({
     const wei = web3.utils.toWei(amount, "ether")
     return methods
       .withdrawalHouseReserve(tokenId, wei)
-      .send({ from, value: 0, gas: 300000 }, res => !res)
+      .send({ from, value: 0, gas: 300000 }, (res) => !res)
       .then(() => true)
       .catch(() => false)
   }
   return false
 }
 
-const forceUpdateMetadata = tokenId => {
+const forceUpdateMetadata = (tokenId) => {
   const openSea = `https://api.opensea.io/asset/`
-  const contract = `${CONTRACT_ADDRESSES[1]}`
+  const contract = `${CONTRACT_ADDRESSES[getNetworkId()]}`
   const force = `/${tokenId}/?force_update=true`
   fetch(`${openSea}${contract}${force}`)
 }
@@ -84,5 +84,5 @@ export {
   getResult,
   depositHouseReserve,
   withdrawalHouseReserve,
-  forceUpdateMetadata
+  forceUpdateMetadata,
 }

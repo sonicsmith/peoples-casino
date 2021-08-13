@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "truffle develop",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "remixd": "remixd -s contracts --remix-ide https://remix.ethereum.org"
   },
   "author": "Nic Smith",
   "license": "ISC",

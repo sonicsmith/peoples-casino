@@ -1,5 +1,5 @@
 import assist from "bnc-assist"
-import { NETWORK_ID, ASSIST_DAPP_ID } from "../config"
+import { getNetworkId, ASSIST_DAPP_ID } from "../config"
 
 let assistInstance
 
@@ -7,34 +7,37 @@ let assistInstance
 export const initializeAssist = (web3, handleNotificationEvent) =>
   getAssist(web3, handleNotificationEvent) // Call this function as soon as web3 is initialized
 export const onboardUser = () => getAssist().onboard()
-export const decorateContract = contract => getAssist().Contract(contract)
-export const decorateTransaction = txObject => getAssist().Transaction(txObject)
+export const decorateContract = (contract) => getAssist().Contract(contract)
+export const decorateTransaction = (txObject) =>
+  getAssist().Transaction(txObject)
 export const getUserState = () => getAssist().getState()
 
 const METHOD_TO_WORD = {
   commitBet: "bet",
   getResult: "spin",
   depositHouseReserve: "deposit",
-  withdrawalHouseReserve: "withdrawal"
+  withdrawalHouseReserve: "withdrawal",
 }
 
 // Returns initialized assist object if previously initialized.
 // Otherwise will initialize assist with the config object
 export function getAssist(web3, handleNotificationEvent) {
+  const networkId = getNetworkId()
+  const coin = networkId === 1 ? "ETH" : "MATIC"
   if (!assistInstance) {
     assistInstance = assist.init({
       dappId: ASSIST_DAPP_ID,
-      networkId: NETWORK_ID,
+      networkId,
       mobileBlocked: false,
       web3,
       style: {
         darkMode: false,
-        notificationsPosition: { desktop: "topRight", mobile: "top" }
+        notificationsPosition: { desktop: "topRight", mobile: "top" },
       },
       messages: {
         txRequest: () => "Waiting for you to confirm the transaction",
         nsfFail: ({ contract }) =>
-          `You don't have enough ETH to make this ${
+          `You don't have enough ${coin} to make this ${
             METHOD_TO_WORD[contract.methodName]
           }`,
         txConfirmed: ({ contract }) =>
@@ -42,9 +45,13 @@ export function getAssist(web3, handleNotificationEvent) {
         txFailed: ({ contract }) =>
           `The transaction to make your ${
             METHOD_TO_WORD[contract.methodName]
-          } has failed`
+          } has failed`,
       },
-      handleNotificationEvent
+      handleNotificationEvent,
+      timeouts: {
+        txStallPending: 60000, // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
+        txStallConfirmed: 60000, // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
+      },
     })
   }
 
