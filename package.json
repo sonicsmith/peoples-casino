@@ -9,11 +9,14 @@
   "scripts": {
     "start": "truffle develop",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "remixd": "remixd -s contracts --remix-ide https://remix.ethereum.org"
+    "remixd": "remixd -s contracts --remix-ide https://remix.ethereum.org",
+    "deploy:preview": "netlify deploy",
+    "deploy:prod": "netlify deploy --prod"
   },
   "author": "Nic Smith",
   "license": "ISC",
   "dependencies": {
+    "netlify-cli": "^6.3.5",
     "openzeppelin-solidity": "^2.3.0"
   }
 }
