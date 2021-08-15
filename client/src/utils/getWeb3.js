@@ -6,14 +6,6 @@ const getWeb3 = () =>
     window.addEventListener("load", async () => {
       const networkId = getNetworkId()
       console.log("Intended NetworkId", networkId)
-      // Polygon
-      // if (networkId === POLYGON_NETWORK) {
-      //   const web3 = new Web3(
-      //     "https://rpc-mainnet.maticvigil.com/v1/aa8b0ffd459f69d3673291b7e00061a00cd60762"
-      //   )
-      //   console.log("returning polygon network")
-      //   resolve(web3)
-      // }
       // Modern dapp browsers...
       if (window.ethereum) {
         const web3 = new Web3(window.ethereum)

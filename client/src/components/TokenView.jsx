@@ -14,6 +14,7 @@ import {
   forceUpdateMetadata,
 } from "../utils/methods"
 import NoToken from "./NoToken"
+import { getNetworkId, CONTRACT_ADDRESSES, POLYGON_NETWORK } from "../config"
 
 const MAIN_BOX_STYLE = {
   align: "center",
@@ -98,6 +99,11 @@ const TokenView = ({
     },
   }
 
+  const networkId = getNetworkId()
+  const contractAddress = CONTRACT_ADDRESSES[networkId]
+  const blockchain = networkId === POLYGON_NETWORK ? "matic/" : ""
+  const linkExt = networkId === POLYGON_NETWORK ? "-polygon" : ""
+
   return (
     <Grommet plain theme={tokenTheme}>
       <Box align="center" background="background">
@@ -135,7 +141,7 @@ const TokenView = ({
               <Heading textAlign="center" level={3}>
                 This token is unowned! Buy it in{" "}
                 <a
-                  href={`https://opensea.io/assets/0x8995AD7dEaBd17c31b62AC89EE5f7D850a4BeDb0/${tokenId}`}
+                  href={`https://opensea.io/assets/${blockchain}${contractAddress}/${tokenId}`}
                 >
                   OpenSea!
                 </a>
@@ -248,19 +254,14 @@ const TokenView = ({
         </Box>
         <Box align="center" margin="medium">
           <a
-            href="https://opensea.io/assets/peoplescasino"
+            href={`https://opensea.io/collection/peoplescasino${linkExt}`}
             title="Buy on OpenSea"
             target="_blank"
-            rel="noopener noreferrer"
           >
             <img
-              style={{
-                width: 160,
-                borderRadius: 5,
-                boxShadow: "0px 1px 6px rgba(0, 0, 0, 0.25)",
-              }}
-              src="https://storage.googleapis.com/opensea-static/opensea-brand/buy-button-white.png"
-              alt="Buy on OpenSea badge"
+              style="width:220px; border-radius:5px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);"
+              src="https://storage.googleapis.com/opensea-static/Logomark/Badge%20-%20Available%20On%20-%20Light.png"
+              alt="Available on OpenSea"
             />
           </a>
         </Box>
