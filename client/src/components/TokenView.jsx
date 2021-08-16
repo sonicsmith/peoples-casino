@@ -259,7 +259,11 @@ const TokenView = ({
             target="_blank"
           >
             <img
-              style="width:220px; border-radius:5px; box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);"
+              style={{
+                width: "220",
+                borderRadius: 5,
+                boxShadow: "0px 1px 6px rgba(0, 0, 0, 0.25)",
+              }}
               src="https://storage.googleapis.com/opensea-static/Logomark/Badge%20-%20Available%20On%20-%20Light.png"
               alt="Available on OpenSea"
             />
