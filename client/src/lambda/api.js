@@ -56,8 +56,16 @@ const getCasinoHoldings = (tokenId) => {
 exports.handler = async (event) => {
   const lastSlash = event.path.lastIndexOf("/")
   const tokenId = event.path.substring(lastSlash + 1)
+  const network = event.path.substring(lastSlash - 7, lastSlash)
   const image_data = getRawSvg(tokenId)
-  const metaData = getAPITokenMetadata(tokenId)
+  const metaData = getAPITokenMetadata(tokenId, network)
+  // Don't do prize pool for polygon
+  if (network === "polygon") {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ...metaData, image_data }),
+    }
+  }
   return getCasinoHoldings(tokenId)
     .then((value) => {
       const prizePool = {

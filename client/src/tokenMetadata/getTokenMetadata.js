@@ -2,7 +2,7 @@ import {
   getRandomItem,
   invertColor,
   getRandomColor,
-  titleCase
+  titleCase,
 } from "./../utils/misc"
 import names from "./names"
 import {
@@ -10,17 +10,17 @@ import {
   moneyAdjectives,
   moneySlangs,
   slotMachineSlangs,
-  percentages
+  percentages,
 } from "./misc"
 import subjects from "./subjects"
 import objects from "./objects"
 import imageAttributes from "./imageAttributes"
 
-const getIsMale = tokenId => {
+const getIsMale = (tokenId) => {
   return (tokenId % 75) % 2 === 1
 }
 
-export const getName = tokenId => {
+export const getName = (tokenId) => {
   const first = names.first[tokenId % 75]
   const last = names.last[tokenId % 56]
   const object = getRandomItem(tokenId, objects).name
@@ -31,7 +31,7 @@ export const getName = tokenId => {
   )
 }
 
-export const getDescriptionArray = tokenId => {
+export const getDescriptionArray = (tokenId) => {
   const greeting = getRandomItem(tokenId, greetings)
   const moneyAdjective = getRandomItem(tokenId, moneyAdjectives)
   const moneySlang = getRandomItem(tokenId, moneySlangs)
@@ -40,20 +40,20 @@ export const getDescriptionArray = tokenId => {
   return [
     `${greeting}, wanna try your luck!?`,
     `You can make ${moneyAdjective} ${moneySlang} by 
-    matching three ${subject} in my ${object} themed game!`
+    matching three ${subject} in my ${object} themed game!`,
   ]
 }
 
-export const getDescriptionItems = tokenId => {
+export const getDescriptionItems = (tokenId) => {
   const subject = getRandomItem(tokenId, subjects)
   const object = getRandomItem(tokenId, objects)
   return {
     subject,
-    object
+    object,
   }
 }
 
-export const getImageAttributes = tokenId => {
+export const getImageAttributes = (tokenId) => {
   const sex = getIsMale(tokenId) ? "male" : "female"
   const {
     topTypes,
@@ -65,7 +65,7 @@ export const getImageAttributes = tokenId => {
     eyeTypes,
     eyebrowTypes,
     mouthTypes,
-    skinTypes
+    skinTypes,
   } = imageAttributes
   const tokenBackground = getRandomColor(tokenId)
   const background = invertColor(tokenBackground)
@@ -85,20 +85,20 @@ export const getImageAttributes = tokenId => {
     eyebrowTypes: getRandomItem(tokenId, eyebrowTypes),
     mouthTypes: getRandomItem(tokenId, mouthTypes),
     skinTypes: getRandomItem(tokenId, skinTypes),
-    colorScheme: { tokenBackground, background }
+    colorScheme: { tokenBackground, background },
   }
 }
 
-export const getTokenMetadata = tokenId => {
+export const getTokenMetadata = (tokenId) => {
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId),
     descriptionItems: getDescriptionItems(tokenId),
-    imageAttributes: getImageAttributes(tokenId)
+    imageAttributes: getImageAttributes(tokenId),
   }
 }
 
-const getAttributes = tokenId => {
+const getAttributes = (tokenId) => {
   const sex = getIsMale(tokenId) ? "male" : "female"
   const generation = Math.floor(Number(tokenId) / 1001) + 1
   const mouthType = getRandomItem(tokenId, imageAttributes.mouthTypes)
@@ -113,7 +113,7 @@ const getAttributes = tokenId => {
     Serious: "serious",
     Smile: "happy",
     Tongue: "silly",
-    Twinkle: "gentle"
+    Twinkle: "gentle",
   }
   const personality = personalityMap[mouthType]
   const colorMap = {
@@ -126,13 +126,14 @@ const getAttributes = tokenId => {
     PastelGreen: "Green",
     PastelOrange: "Orange",
     PastelRed: "Red",
-    PastelYellow: "Yellow"
+    PastelYellow: "Yellow",
   }
   const clotheColor = getRandomItem(tokenId, imageAttributes.clotheColors)
   const favouriteColor = colorMap[clotheColor] || clotheColor
   const enjoymentLevel = getRandomItem(tokenId, percentages)
   const favEmoji = getRandomItem(tokenId, subjects).emoji
   return [
+    { display_type: "number", trait_type: "token id", value: tokenId },
     { trait_type: "sex", value: sex },
     { trait_type: "personality", value: personality },
     { trait_type: "favourite color", value: favouriteColor },
@@ -141,17 +142,24 @@ const getAttributes = tokenId => {
     {
       display_type: "boost_percentage",
       trait_type: "enjoyment level",
-      value: enjoymentLevel
-    }
+      value: enjoymentLevel,
+    },
   ]
 }
 
-export const getAPITokenMetadata = tokenId => {
+export const getAPITokenMetadata = (tokenId, network) => {
+  let external_url
+  if (network === "polygon") {
+    external_url = `https://polygon.peoplescasino.online/${tokenId}`
+  } else {
+    external_url = `https://peoplescasino.online/${tokenId}`
+  }
+
   return {
     name: getName(tokenId),
     description: getDescriptionArray(tokenId).join(" "),
-    external_url: `http://peoplescasino.online/${tokenId}`,
+    external_url,
     background_color: getRandomColor(tokenId),
-    attributes: getAttributes(tokenId)
+    attributes: getAttributes(tokenId),
   }
 }

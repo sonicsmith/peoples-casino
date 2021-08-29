@@ -257,6 +257,7 @@ const TokenView = ({
             href={`https://opensea.io/collection/peoplescasino${linkExt}`}
             title="Buy on OpenSea"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               style={{
