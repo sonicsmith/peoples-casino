@@ -1,6 +1,14 @@
 export const ETH_NETWORK = 1
 export const POLYGON_NETWORK = 137
 
+export const getCurrencyCode = () => {
+  if (getNetworkId() === ETH_NETWORK) {
+    return "ETH"
+  } else {
+    return "MATIC"
+  }
+}
+
 export const getNetworkId = () => {
   const isPOLYGON = window.location.href.includes("polygon")
   if (isPOLYGON) {

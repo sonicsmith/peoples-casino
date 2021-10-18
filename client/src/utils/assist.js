@@ -1,5 +1,5 @@
 import assist from "bnc-assist"
-import { getNetworkId, ASSIST_DAPP_ID } from "../config"
+import { getNetworkId, ASSIST_DAPP_ID, getCurrencyCode } from "../config"
 
 let assistInstance
 
@@ -23,7 +23,7 @@ const METHOD_TO_WORD = {
 // Otherwise will initialize assist with the config object
 export function getAssist(web3, handleNotificationEvent) {
   const networkId = getNetworkId()
-  const coin = networkId === 1 ? "ETH" : "MATIC"
+  const coin = getCurrencyCode()
   if (!assistInstance) {
     assistInstance = assist.init({
       dappId: ASSIST_DAPP_ID,
@@ -49,8 +49,8 @@ export function getAssist(web3, handleNotificationEvent) {
       },
       handleNotificationEvent,
       timeouts: {
-        txStallPending: 60000, // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
-        txStallConfirmed: 60000, // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
+        txStallPending: 600000, // The number of milliseconds after a transaction has been sent before showing a stall notification detected in the mempool
+        txStallConfirmed: 600000, // The number of milliseconds after a transaction has been detected in the mempool before showing a stall notification if not confirmed
       },
     })
   }

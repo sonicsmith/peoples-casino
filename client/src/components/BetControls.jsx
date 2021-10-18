@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react"
 import { Button, Text, RangeInput, TextInput, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
-import { getNetworkId } from "../config"
+import { getCurrencyCode } from "../config"
 
 const NUM_DP = 1000000
 const ODDS_MIN = 2
@@ -42,8 +42,7 @@ const BetControls = ({
   const payout = ((betAmount * 96) / oddsPercentage).toFixed(18)
   const payoutInWei = convertToWei(payout)
   const payoutTooHigh = Number(payoutInWei) > Number(houseReserve)
-  const networkId = getNetworkId()
-  const coin = networkId === 1 ? "ETH" : "MATIC"
+  const coin = getCurrencyCode()
 
   if (Number(houseReserve) > 0 || betCommited) {
     return (

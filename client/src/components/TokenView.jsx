@@ -53,7 +53,7 @@ const TokenView = ({
   useEffect(() => {
     setNotificationEventListener(({ eventCode, contract: { methodName } }) => {
       console.log("eventCode", eventCode, methodName)
-      if (eventCode === "txConfirmed") {
+      if (eventCode === "txConfirmed" || eventCode === "txConfirmedClient") {
         if (methodName === "commitBet") {
           setBetState(WAITING_FOR_SPIN)
         }

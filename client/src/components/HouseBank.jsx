@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Button, Text, TextInput, Box } from "grommet"
-import { getNetworkId } from "../config"
+import { getCurrencyCode } from "../config"
 
 const HouseBank = ({
   boxStyle,
@@ -11,7 +11,7 @@ const HouseBank = ({
 }) => {
   const currentBalance = convertToEth(houseReserve)
   const [amount, setAmount] = useState(currentBalance)
-  const coin = getNetworkId() === 1 ? "ETH" : "MATIC"
+  const coin = getCurrencyCode()
   return (
     <Box {...boxStyle}>
       <Box margin="small">
