@@ -1,9 +1,13 @@
 import React from "react"
 import { Button, Text, Box } from "grommet"
 import SlotMachine from "./SlotMachine"
+import { getNetworkId, ETH_NETWORK } from "./config"
 
 const getProofLink = (transactionHash) => {
-  return `https://etherscan.io/tx/${transactionHash}#eventlog`
+  if (getNetworkId() === ETH_NETWORK) {
+    return `https://etherscan.io/tx/${transactionHash}#eventlog`
+  }
+  return `https://polygonscan.com/tx/${transactionHash}#eventlog`
 }
 
 const OutcomeView = ({
