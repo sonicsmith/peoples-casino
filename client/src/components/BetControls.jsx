@@ -97,7 +97,8 @@ const BetControls = ({
         {betCommited && (
           <Box align="center" margin="small">
             <Text>You must complete the bet within approx</Text>
-            <Text>1 hour from start for your chance to win</Text>
+            <Text>1 hour from start for your chance to win.</Text>
+            <Text>(It is safe to refresh the page.)</Text>
           </Box>
         )}
         <Box>
